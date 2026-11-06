@@ -1,0 +1,2 @@
+Prototype atmosphere images bundled from Unsplash image endpoints. They are not representations of real venues in the sample data.
+Font: Noto Serif SC, SIL Open Font License. See the copied OFL.txt license file in the source font directory.

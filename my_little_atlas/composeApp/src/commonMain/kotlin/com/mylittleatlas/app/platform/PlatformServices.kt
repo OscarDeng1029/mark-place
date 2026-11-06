@@ -1,0 +1,23 @@
+package com.mylittleatlas.app.platform
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
+import com.mylittleatlas.app.data.AtlasStorage
+import com.mylittleatlas.app.domain.Place
+
+interface PlatformServices {
+    val storage: AtlasStorage
+    fun today(): String
+    fun uniqueId(): String
+    fun pickPhoto(onResult: (String?) -> Unit)
+    fun exportBackup(json: String)
+    fun importBackup(onResult: (String?) -> Unit)
+    fun shareText(text: String)
+    fun shareImage(bitmap: ImageBitmap)
+    fun navigate(place: Place)
+    fun openSource(url: String)
+}
+
+@Composable
+expect fun LocalPhoto(path: String, modifier: Modifier)

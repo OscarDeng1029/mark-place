@@ -1,0 +1,66 @@
+package com.mylittleatlas.app
+
+import com.mylittleatlas.app.data.AtlasRepository
+import com.mylittleatlas.app.data.AtlasStorage
+import com.mylittleatlas.app.domain.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
+
+class AtlasDomainTest {
+    @Test
+    fun structuredImportProducesCandidatesWithoutCommittingThem() {
+        val candidates = TextPlaceImporter.extract(
+            "河畔咖啡｜滨江路 8 号｜上海\nhttps://www.xiaohongshu.com/explore/abc\n书页咖啡|大学路 18 号|上海",
+        )
+        assertEquals(2, candidates.size)
+        assertEquals("河畔咖啡", candidates.first().name)
+        assertEquals("上海", candidates.first().city)
+    }
+
+    @Test
+    fun datesRejectImpossibleCalendarDaysAndAcceptLeapYears() {
+        assertTrue(isValidAtlasDate("2024-02-29"))
+        assertFalse(isValidAtlasDate("2025-02-29"))
+        assertFalse(isValidAtlasDate("2026-04-31"))
+    }
+
+    @Test
+    fun visitedAndWantRevisitCanBothBeTrue() {
+        val place = Place("p1", "河畔咖啡", wantRevisit = true)
+        val data = AtlasData(places = listOf(place), visits = listOf(Visit("v1", place.id, "2026-11-01", "")))
+        assertTrue(data.matches(place, PlaceFilter.VISITED))
+        assertTrue(data.matches(place, PlaceFilter.REVISIT))
+        assertFalse(data.matches(place, PlaceFilter.WANT))
+    }
+
+    @Test
+    fun backupRejectsVisitsWithoutPlaces() {
+        val repository = AtlasRepository(MemoryStorage())
+        val invalid = AtlasData(visits = listOf(Visit("v1", "missing", "2026-11-01", "")))
+        assertFailsWith<IllegalArgumentException> { repository.restore(repository.export(invalid)) }
+    }
+
+    @Test
+    fun repositoryRoundTripsPrivateCollectionsAndVisits() {
+        val storage = MemoryStorage()
+        val repository = AtlasRepository(storage)
+        val place = Place("p1", "河畔咖啡", collectionIds = listOf("c1"), wantRevisit = true)
+        val expected = AtlasData(
+            places = listOf(place),
+            collections = listOf(Collection("c1", "沿河散步")),
+            visits = listOf(Visit("v1", "p1", "2026-11-01", "风很好")),
+        )
+        repository.save(expected)
+        assertEquals(expected, repository.load())
+        assertEquals(expected, repository.restore(repository.export(expected)))
+    }
+
+    private class MemoryStorage : AtlasStorage {
+        private var value: String? = null
+        override fun read() = value
+        override fun write(content: String) { value = content }
+    }
+}

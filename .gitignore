@@ -1,0 +1,26 @@
+# Local toolchains and editor state
+.git-tools/
+.codex/
+.agents/
+.idea/
+.vscode/
+__pycache__/
+*.pyc
+Thumbs.db
+.DS_Store
+
+# Credentials and machine-specific settings
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.jks
+*.keystore
+
+# Generated installers; keep preview images in dist
+my_little_atlas/dist/**/*.jar
+my_little_atlas/dist/*.apk
+
+# Raw downloaded research pages remain local; summaries and manifests are tracked
+market_research_2026-11-06/sources/
