@@ -11,6 +11,10 @@ struct MyLittleAtlasApp: App {
             AtlasRoot(services: services)
                 .ignoresSafeArea()
                 .preferredColorScheme(.light)
+                .onOpenURL { services.receiveImportURL($0) }
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+                    services.consumeSharedImport()
+                }
         }
     }
 }

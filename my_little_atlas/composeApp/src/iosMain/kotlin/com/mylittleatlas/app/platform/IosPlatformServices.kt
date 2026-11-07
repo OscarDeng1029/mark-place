@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
-import androidx.compose.ui.graphics.toSkiaBitmap
+import androidx.compose.ui.graphics.asSkiaBitmap
 import androidx.compose.ui.layout.ContentScale
 import com.mylittleatlas.app.data.AtlasStorage
 import com.mylittleatlas.app.domain.GeoPoint
@@ -60,7 +60,7 @@ internal class IosPlatformServices(private val bridge: IosPlatformBridge) : Plat
 private var activeBridge: IosPlatformBridge? = null
 
 private fun ImageBitmap.pngBytes(): ByteArray =
-    requireNotNull(SkiaImage.makeFromBitmap(toSkiaBitmap()).encodeToData(EncodedImageFormat.PNG)).bytes
+    requireNotNull(SkiaImage.makeFromBitmap(asSkiaBitmap()).encodeToData(EncodedImageFormat.PNG)).bytes
 
 actual fun decodeMapTile(bytes: ByteArray): ImageBitmap =
     SkiaImage.makeFromEncoded(bytes).toComposeImageBitmap()

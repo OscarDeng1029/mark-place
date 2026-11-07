@@ -16,6 +16,8 @@ final class IosNativeServices: NSObject, IosPlatformBridge, CLLocationManagerDel
     private var locationResult: ((String?, String?, String?) -> KotlinUnit)?
     private var locationTimeout: DispatchWorkItem?
     private var requests: [String: URLSessionDataTask] = [:]
+    private var incomingText: ((String) -> KotlinUnit)?
+    private var pendingText: String?
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.default
         configuration.urlCache = URLCache(memoryCapacity: 24 * 1024 * 1024, diskCapacity: 64 * 1024 * 1024)
@@ -242,6 +244,32 @@ final class IosNativeServices: NSObject, IosPlatformBridge, CLLocationManagerDel
     }
     func cancelRequest(id: String) {
         DispatchQueue.main.async { [weak self] in self?.requests.removeValue(forKey: id)?.cancel() }
+    }
+
+    func observeIncomingText(onText: @escaping (String) -> KotlinUnit) {
+        incomingText = onText
+        if let pendingText { self.pendingText = nil; _ = onText(pendingText) }
+        consumeSharedImport()
+    }
+    func receiveImportURL(_ url: URL) {
+        guard url.scheme == "mylittleatlas", url.host == "import",
+              let text = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+                .queryItems?.first(where: { $0.name == "text" })?.value else { return }
+        receiveText(text)
+    }
+    func consumeSharedImport() {
+        guard let folder = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.mylittleatlas.app") else { return }
+        let file = folder.appendingPathComponent("pending-import.txt")
+        guard let text = try? String(contentsOf: file, encoding: .utf8) else { return }
+        // Consume only after the Compose host is ready, and leave no copy in the shared container.
+        guard incomingText != nil else { return }
+        try? FileManager.default.removeItem(at: file)
+        receiveText(text)
+    }
+    private func receiveText(_ value: String) {
+        let text = String(value.trimmingCharacters(in: .whitespacesAndNewlines).prefix(30_000))
+        guard !text.isEmpty else { return }
+        if let incomingText { _ = incomingText(text) } else { pendingText = text }
     }
 
     private func share(_ items: [Any]) { present(UIActivityViewController(activityItems: items, applicationActivities: nil)) }

@@ -29,6 +29,7 @@ iosArm64 用于 iPhone/iPad 真机；iosSimulatorArm64、iosX64 分别用于两�
 - Photos 添加权限，用于用户主动保存分享图片；等待实际写入结果后才显示成功。
 - Files JSON 导入和导出，原记录通过原子文件写入保留。
 - 系统分享、Safari 来源打开、高德/Apple 地图导航选择。
+- 原生分享扩展接收文字/链接，在下次打开 App 时进入原有导入确认流程；也支持 mylittleatlas://import URL。
 - CoreLocation 使用期间定位，包含授权、拒绝、超时和失败处理。
 - URLSession 请求公开解析服务和地图瓦片，支持取消、大小限制、HTTPS 和系统 HTTP 缓存。
 - Compose safe-area/键盘适配，强制浅色外观以保留既定视觉。
@@ -52,7 +53,7 @@ Artifacts：
 - MyLittleAtlas-iOS：模拟器 .app.zip、未签名的 MyLittleAtlas-unsigned.ipa。
 - iOS-screenshots-and-tests：原生页面截图、测试结果、构建日志和生成的 Xcode 工程。
 
-模拟器包用于 Mac 模拟器。未签名 IPA 不能直接安装到普通 iPhone；真机安装/TestFlight 需要在 Xcode 设置用户自己的 Apple Development Team 和相应签名。仓库不包含证书、私钥或描述文件。
+模拟器包用于 Mac 模拟器。未签名 IPA 不能直接安装到普通 iPhone；真机安装/TestFlight 需要在 Xcode 设置用户自己的 Apple Development Team 和相应签名。主 App 与分享扩展需同时启用 group.com.mylittleatlas.app 的 App Group。仓库不包含证书、私钥或描述文件。
 
 ## 页面验证
 

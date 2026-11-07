@@ -24,4 +24,5 @@ interface IosPlatformBridge {
     fun openSource(url: String)
     fun request(url: String, jsonBody: String?, tile: Boolean, onResult: (ByteArray?, String?) -> Unit): String
     fun cancelRequest(id: String)
+    fun observeIncomingText(onText: (String) -> Unit)
 }
