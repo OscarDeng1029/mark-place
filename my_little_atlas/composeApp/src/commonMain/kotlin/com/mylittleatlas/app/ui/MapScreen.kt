@@ -14,6 +14,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.foundation.border
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
@@ -28,15 +30,23 @@ import kotlinx.coroutines.*
 import kotlin.math.*
 
 @Composable
-fun MapScreen(controller: AtlasController, onPlace: (Place)->Unit, onList: ()->Unit, wide: Boolean) {
+fun MapScreen(controller: AtlasController, onPlace: (Place)->Unit, onList: ()->Unit, wide: Boolean,initialFolder:String?=null,initialCity:String?=null) {
     val data = controller.data
     var filter by remember { mutableStateOf(PlaceFilter.ALL) }
     var selectedId by remember { mutableStateOf<String?>(null) }
-    var collectionId by remember { mutableStateOf<String?>(null) }
+    var collectionId by remember { mutableStateOf(initialFolder) }
+    var city by remember { mutableStateOf(initialCity) }
+    var kind by remember { mutableStateOf<PlaceKind?>(null) }
+    var listMode by remember { mutableStateOf(false) }
+    var permission by remember { mutableStateOf(false) }
+    var locatingUser by remember { mutableStateOf(false) }
+    var locationError by remember { mutableStateOf<String?>(null) }
+    var userPoint by remember { mutableStateOf<GeoPoint?>(null) }
     var layers by remember { mutableStateOf(false) }
     var pending by remember { mutableStateOf(false) }
     var locating by remember { mutableStateOf<Place?>(null) }
-    val places = data.filterPlaces(filter,collectionId=collectionId)
+    var query by remember { mutableStateOf("") }
+    val places = data.filterPlaces(filter,query,collectionId=collectionId).filter{(city==null||it.city==city)&&(kind==null||it.kind==kind)}
     val plotted = places.filter { !data.isDemoPlace(it) && MapGeometry.position(it)!=null }
     val unlocated = places.filter { !data.isDemoPlace(it) && MapGeometry.position(it)==null }
     val sampleCount = places.count { data.isDemoPlace(it) }
@@ -90,6 +100,11 @@ fun MapScreen(controller: AtlasController, onPlace: (Place)->Unit, onList: ()->U
                 }
             }
         }
+        userPoint?.let{point->val projected=MapGeometry.project(point,zoom)
+            val px=((projected.x-origin.x)*tilePx+viewport.width/2).toFloat()/density
+            val py=((projected.y-origin.y)*tilePx+viewport.height/2).toFloat()/density
+            Box(Modifier.offset(x=(px-8).dp,y=(py-8).dp).size(16.dp).background(AtlasColors.Blue,CircleShape).border(3.dp,AtlasColors.Card,CircleShape).semantics{contentDescription="我的当前位置"})
+        }
         plotted.forEach { place ->
             val point=MapGeometry.project(MapGeometry.position(place)!!,zoom)
             val x=((point.x-origin.x)*tilePx+viewport.width/2).toFloat()/density
@@ -99,10 +114,10 @@ fun MapScreen(controller: AtlasController, onPlace: (Place)->Unit, onList: ()->U
                 // The tip is anchored to the real POI location.
                 Column(Modifier.offset(x=(x-21).dp,y=(y-49).dp).width(42.dp).clickable { selectedId=place.id }
                     .semantics { contentDescription="地图标记：${place.name}" },horizontalAlignment=Alignment.CenterHorizontally) {
-                    Box(Modifier.size(42.dp).clip(RoundedCornerShape(15.dp)).background(
-                        if(isSelected) AtlasColors.Card else if(data.isVisited(place.id)) AtlasColors.Green else AtlasColors.Peach),contentAlignment=Alignment.Center) {
-                        if(isSelected) Photo(place.cover,Modifier.padding(4.dp).fillMaxSize().clip(RoundedCornerShape(11.dp)))
-                        else AtlasIcon(Glyph.PIN,color=AtlasColors.Card,size=23.dp)
+                    Box(Modifier.size(42.dp).clip(RoundedCornerShape(5.dp)).background(AtlasColors.Card)
+                        .border(if(isSelected)2.dp else 1.dp,if(data.isVisited(place.id))AtlasColors.Green else AtlasColors.Peach,RoundedCornerShape(5.dp)),contentAlignment=Alignment.Center) {
+                        if(isSelected) Photo(place.cover,Modifier.padding(4.dp).fillMaxSize().clip(RoundedCornerShape(2.dp)))
+                        else AtlasIcon(if(data.isVisited(place.id))Glyph.CHECK else Glyph.BOOKMARK,color=if(data.isVisited(place.id))AtlasColors.Green else AtlasColors.Peach,size=21.dp)
                     }
                     Box(Modifier.width(2.dp).height(5.dp).background(AtlasColors.Green))
                     Box(Modifier.size(4.dp).background(AtlasColors.Green,CircleShape))
@@ -111,11 +126,12 @@ fun MapScreen(controller: AtlasController, onPlace: (Place)->Unit, onList: ()->U
         }
         Column(Modifier.fillMaxWidth().padding(horizontal=20.dp,vertical=22.dp),verticalArrangement=Arrangement.spacedBy(13.dp)) {
             Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
-                Row(Modifier.weight(1f).background(AtlasColors.Paper.copy(alpha=.94f),RoundedCornerShape(12.dp)).padding(8.dp),verticalAlignment=Alignment.CenterVertically) {
-                    AtlasIcon(Glyph.PIN,size=18.dp,color=AtlasColors.Green); Spacer(Modifier.width(7.dp))
-                    Text("我的${selected?.city ?: "城市"}地图",style=MaterialTheme.typography.titleLarge)
-                }
-                Spacer(Modifier.width(10.dp)); IconButton(Glyph.LIST,"查看地点列表",onList,filled=true)
+                OutlinedTextField(query,{query=it;selectedId=null},Modifier.weight(1f).height(52.dp),
+                    placeholder={Text("搜索我的地点",fontSize=12.sp)},leadingIcon={AtlasIcon(Glyph.SEARCH,size=17.dp,color=AtlasColors.Muted)},
+                    singleLine=true,shape=RoundedCornerShape(11.dp),colors=OutlinedTextFieldDefaults.colors(
+                        unfocusedContainerColor=AtlasColors.Card,focusedContainerColor=AtlasColors.Card,
+                        unfocusedBorderColor=AtlasColors.Line,focusedBorderColor=AtlasColors.Sage))
+                Spacer(Modifier.width(10.dp)); IconButton(if(listMode)Glyph.MAP else Glyph.LIST,"切换地图列表",{listMode=!listMode},filled=true)
             }
             FilterRow(filter,{ filter=it; selectedId=null })
             Row(Modifier.background(AtlasColors.Card.copy(alpha=.96f),RoundedCornerShape(10.dp)).padding(horizontal=11.dp,vertical=7.dp),verticalAlignment=Alignment.CenterVertically) {
@@ -124,29 +140,40 @@ fun MapScreen(controller: AtlasController, onPlace: (Place)->Unit, onList: ()->U
                 if(unlocated.isNotEmpty()) Text("  补全",fontSize=10.sp,color=AtlasColors.Green,modifier=Modifier.clickable { pending=true })
             }
         }
-        Column(Modifier.align(Alignment.CenterEnd).padding(end=18.dp),verticalArrangement=Arrangement.spacedBy(10.dp)) {
+        Column(Modifier.align(Alignment.TopEnd).padding(end=18.dp,top=162.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
             IconButton(Glyph.LAYERS,"筛选收藏夹",{ layers=true },filled=true)
             IconButton(Glyph.PLUS,"放大地图",{ zoom=(zoom+1).coerceAtMost(18) },filled=true)
             Surface(Modifier.size(42.dp).clickable { zoom=(zoom-1).coerceAtLeast(3) }.semantics { contentDescription="缩小地图" },shape=CircleShape,color=AtlasColors.Card) {
                 Box(contentAlignment=Alignment.Center) { Text("−",fontSize=24.sp,color=AtlasColors.Green) }
             }
-            IconButton(Glyph.NAVIGATE,"返回收藏地图中心",{ recenter++ },filled=true)
+            if(locatingUser)CircularProgressIndicator(Modifier.size(34.dp),color=AtlasColors.Green,strokeWidth=2.dp)
+            else IconButton(Glyph.NAVIGATE,"使用我的当前位置",{ permission=true },filled=true)
         }
         Column(Modifier.align(Alignment.BottomCenter).widthIn(max=650.dp).fillMaxWidth().padding(20.dp),verticalArrangement=Arrangement.spacedBy(9.dp)) {
             if(failures.values.any { it }) Row(Modifier.fillMaxWidth().background(AtlasColors.Card,RoundedCornerShape(10.dp)).padding(8.dp),verticalAlignment=Alignment.CenterVertically) {
                 Text("部分地图未加载，请检查网络。",fontSize=11.sp,color=AtlasColors.Muted,modifier=Modifier.weight(1f))
                 TextButton(onClick={ retry++ }) { Text("重试",fontSize=11.sp) }
             }
-            if(selected!=null) {
-                Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(AtlasColors.Card).clickable { onPlace(selected) }.padding(12.dp),
+            if(listMode)Column(Modifier.fillMaxWidth().heightIn(max=330.dp).background(AtlasColors.Card,RoundedCornerShape(12.dp)).verticalScroll(rememberScrollState()).padding(12.dp),verticalArrangement=Arrangement.spacedBy(8.dp)){
+                Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){Text("当前筛选 · "+places.size+" 处",style=MaterialTheme.typography.titleMedium,modifier=Modifier.weight(1f));IconButton(Glyph.CLOSE,"收起列表",{listMode=false})}
+                places.forEach{place->PlaceRow(place,data,{onPlace(place)})}
+                if(places.isEmpty())Text("没有符合当前条件的地点。",fontSize=12.sp,color=AtlasColors.Muted)
+            } else if(selected!=null) {
+                Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(13.dp)).background(AtlasColors.Card).padding(12.dp)) {
+                Row(Modifier.fillMaxWidth().clickable { onPlace(selected) },
                     verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)) {
-                    Photo(selected.cover,Modifier.size(75.dp).clip(RoundedCornerShape(12.dp)))
+                    Photo(selected.cover,Modifier.size(62.dp).clip(RoundedCornerShape(7.dp)))
                     Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(7.dp)) {
                         Text(selected.name,style=MaterialTheme.typography.titleMedium)
                         Text(selected.address,fontSize=11.sp,color=AtlasColors.Muted,maxLines=2)
                         Text(if(data.isVisited(selected.id)) "已去过 · 回看这段小记" else "想去 · 等一次刚好的出发",fontSize=10.sp,color=AtlasColors.Green)
                     }
                     AtlasIcon(Glyph.ARROW,size=18.dp,color=AtlasColors.Green)
+                }
+                Row(Modifier.fillMaxWidth().padding(top=10.dp),verticalAlignment=Alignment.CenterVertically) {
+                    Handwritten(selected.reason.ifBlank{"等一次刚好的出发。"},Modifier.weight(1f),size=11)
+                    PrimaryButton("去这里",{controller.navigate(selected)},icon=Glyph.NAVIGATE)
+                }
                 }
             } else Column(Modifier.fillMaxWidth().background(AtlasColors.Card,RoundedCornerShape(20.dp)).padding(20.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
                 Text(if(unlocated.isEmpty()) "这张地图，等你慢慢填满" else "${unlocated.size} 个收藏还没有地图位置",style=MaterialTheme.typography.titleMedium)
@@ -157,10 +184,20 @@ fun MapScreen(controller: AtlasController, onPlace: (Place)->Unit, onList: ()->U
                 .background(AtlasColors.Card.copy(alpha=.9f),RoundedCornerShape(4.dp)).padding(4.dp))
         }
     }
-    if(layers) AlertDialog(onDismissRequest={ layers=false },title={ Text("只看这个收藏夹",style=MaterialTheme.typography.titleLarge) },text={
+    if(permission)AlertDialog(onDismissRequest={permission=false},title={Text("看看身边的下一站")},text={Column{
+        Text("开启定位后，地图会移动到你的位置，方便查看附近的收藏。仅在你点击时获取位置，不会自动记录到访。",fontSize=13.sp,lineHeight=23.sp)
+        Text("也可以跳过，继续手动浏览城市与收藏。",fontSize=11.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=12.dp))
+    }},confirmButton={TextButton(onClick={permission=false;locatingUser=true;controller.platform.locate{point,error->locatingUser=false;locationError=error;point?.let{val gcj=MapGeometry.gcj(it);userPoint=gcj;center=gcj;zoom=15}}}){Text("使用当前位置")}},dismissButton={TextButton(onClick={permission=false}){Text("先手动看看")}},containerColor=AtlasColors.Card)
+    locationError?.let{error->AlertDialog(onDismissRequest={locationError=null},title={Text("可以继续浏览地图")},text={Text(error,fontSize=13.sp)},confirmButton={TextButton(onClick={locationError=null}){Text("继续看看")}},containerColor=AtlasColors.Card)}
+    if(layers) AlertDialog(onDismissRequest={ layers=false },title={ Text("筛选我的地图",style=MaterialTheme.typography.titleLarge) },text={
         Column(Modifier.verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(10.dp)) {
-            Tag("全部收藏",collectionId==null,{ collectionId=null; layers=false })
-            data.collections.forEach { c -> Tag(c.name,collectionId==c.id,{ collectionId=c.id; layers=false }) }
+            Text("城市",fontSize=12.sp,color=AtlasColors.Muted)
+            Tag("全部城市",city==null,{city=null});data.places.map{it.city}.distinct().forEach{c->Tag(c,city==c,{city=c})}
+            Text("地点分类",fontSize=12.sp,color=AtlasColors.Muted)
+            Tag("全部分类",kind==null,{kind=null});PlaceKind.entries.forEach{k->Tag(k.title,kind==k,{kind=k})}
+            Text("收藏夹",fontSize=12.sp,color=AtlasColors.Muted)
+            Tag("全部收藏",collectionId==null,{ collectionId=null })
+            data.collections.forEach { c -> Tag(c.name,collectionId==c.id,{ collectionId=c.id }) }
         }
     },confirmButton={ TextButton(onClick={ layers=false }) { Text("完成") } },containerColor=AtlasColors.Card)
     if(pending) AlertDialog(onDismissRequest={ pending=false },title={ Text("补全地点位置") },text={

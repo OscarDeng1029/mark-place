@@ -27,14 +27,16 @@ import com.mylittleatlas.app.presentation.AtlasController
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun PlaceDetail(controller:AtlasController,place:Place,onClose:()->Unit,onShare:()->Unit) {
+fun PlaceDetail(controller:AtlasController,place:Place,onClose:()->Unit,onShare:()->Unit,onShareVisit:(Visit)->Unit={onShare()}) {
     var checkIn by remember{mutableStateOf(false)}
     var edit by remember{mutableStateOf(false)}
     var delete by remember{mutableStateOf(false)}
+    var savedVisit by remember{mutableStateOf<Visit?>(null)}
+    var savedSuccess by remember{mutableStateOf(false)}
     val data=controller.data
     val visits=data.visits.filter{it.placeId==place.id}.sortedByDescending{it.date}
     Dialog(onDismissRequest=onClose,properties=DialogProperties(usePlatformDefaultWidth=false)) {
-        Paper(Modifier.widthIn(max=620.dp).fillMaxWidth().fillMaxHeight(.96f).clip(RoundedCornerShape(26.dp))) {
+        Paper(Modifier.widthIn(max=620.dp).fillMaxWidth().fillMaxHeight().windowInsetsPadding(WindowInsets.safeDrawing)) {
             Column(Modifier.fillMaxSize()) {
                 Row(Modifier.fillMaxWidth().padding(horizontal=13.dp,vertical=6.dp),verticalAlignment=Alignment.CenterVertically) {
                     IconButton(Glyph.BACK,"返回",onClose);Spacer(Modifier.weight(1f))
@@ -42,12 +44,8 @@ fun PlaceDetail(controller:AtlasController,place:Place,onClose:()->Unit,onShare:
                     Spacer(Modifier.weight(1f));IconButton(Glyph.SHARE,"生成分享卡",onShare)
                 }
                 Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal=24.dp)) {
-                    Box(Modifier.fillMaxWidth().height(260.dp).padding(top=10.dp)) {
-                        Column(Modifier.fillMaxSize().rotate(-1.5f).background(AtlasColors.Card).padding(10.dp)) {
-                            Photo(place.cover,Modifier.fillMaxWidth().weight(1f))
-                            Handwritten(if(visits.isEmpty())"Somewhere I want to be." else "A moment to remember.",Modifier.padding(top=7.dp),size=14)
-                        }
-                        Tape(Modifier.align(Alignment.TopCenter).offset(y=(-2).dp).rotate(5f))
+                    Box(Modifier.fillMaxWidth().height(233.dp).padding(top=10.dp)) {
+                        PolaroidPhoto(place.cover,Modifier.fillMaxSize(),caption=if(visits.isEmpty())"a quiet corner in the city" else "a moment to remember",rotation=-1.5f)
                         if(visits.isNotEmpty()) Column(Modifier.align(Alignment.BottomEnd).padding(end=9.dp,bottom=21.dp).rotate(4f)
                             .background(AtlasColors.Paper).padding(horizontal=15.dp,vertical=9.dp),horizontalAlignment=Alignment.CenterHorizontally) {
                             Text(visits.first().date.takeLast(2),fontSize=31.sp,fontFamily=FontFamily.Serif)
@@ -64,14 +62,16 @@ fun PlaceDetail(controller:AtlasController,place:Place,onClose:()->Unit,onShare:
                     if(data.isDemoPlace(place)) Text("示例地点 · 配图为氛围素材",fontSize=9.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=6.dp))
                     Spacer(Modifier.height(23.dp));ThinDivider();Spacer(Modifier.height(19.dp))
                     Row(verticalAlignment=Alignment.CenterVertically){AtlasIcon(Glyph.BOOKMARK,size=16.dp,color=AtlasColors.Sage);Spacer(Modifier.width(8.dp));Text("为什么想来",fontSize=11.sp,color=AtlasColors.Muted)}
-                    Text(place.reason.ifBlank{"把第一次心动的理由，留在这里。"},style=MaterialTheme.typography.bodyLarge,modifier=Modifier.padding(top=10.dp,bottom=14.dp))
+                    PaperNote(Modifier.fillMaxWidth().padding(top=10.dp,bottom=14.dp)) {
+                        Handwritten(place.reason.ifBlank{"把第一次心动的理由，留在这里。"},size=16)
+                    }
                     if(place.collectionIds.isNotEmpty()) FlowRow(horizontalArrangement=Arrangement.spacedBy(7.dp),verticalArrangement=Arrangement.spacedBy(7.dp)) {
                         data.collections.filter{it.id in place.collectionIds}.forEach{Tag(it.name)}
                     }
                     if(visits.isNotEmpty()) {
                         Spacer(Modifier.height(24.dp));SectionTitle("在这里的小记")
                         visits.forEach{visit->
-                            Column(Modifier.padding(top=12.dp).fillMaxWidth().background(AtlasColors.Card,RoundedCornerShape(16.dp)).padding(16.dp)) {
+                            Column(Modifier.padding(top=12.dp).fillMaxWidth().background(AtlasColors.Card,RoundedCornerShape(16.dp)).clickable{savedVisit=visit}.padding(16.dp)) {
                                 Row(verticalAlignment=Alignment.CenterVertically){Text(visit.date.replace('-','.'),fontFamily=FontFamily.Serif,fontSize=13.sp,color=AtlasColors.Green);Spacer(Modifier.weight(1f));AtlasIcon(Glyph.COFFEE,size=17.dp,color=AtlasColors.Peach)}
                                 Text(visit.note.ifBlank{"在这里，留下一段属于自己的时光。"},fontSize=14.sp,lineHeight=25.sp,modifier=Modifier.padding(top=10.dp))
                                 if(visit.photoPaths.isNotEmpty()) FlowRow(Modifier.padding(top=12.dp),horizontalArrangement=Arrangement.spacedBy(8.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
@@ -100,12 +100,16 @@ fun PlaceDetail(controller:AtlasController,place:Place,onClose:()->Unit,onShare:
                     OutlinedButton(onClick={controller.navigate(place)},Modifier.height(50.dp),shape=RoundedCornerShape(15.dp),contentPadding=PaddingValues(horizontal=17.dp)) {
                         AtlasIcon(Glyph.NAVIGATE,size=18.dp,color=AtlasColors.Green);Spacer(Modifier.width(7.dp));Text("导航",fontSize=13.sp)
                     }
-                    PrimaryButton(if(visits.isEmpty())"我来过这里" else "记下这次到访",{checkIn=true},Modifier.weight(1f),Glyph.CAMERA)
+                    PrimaryButton("记一次到访",{checkIn=true},Modifier.weight(1f),Glyph.BOOK)
                 }
             }
         }
     }
-    if(checkIn) CheckInDialog(controller,place,{checkIn=false})
+    if(checkIn) CheckInPageV2(controller,place,{checkIn=false},onSaved={savedVisit=it;savedSuccess=true})
+    savedVisit?.let{old->controller.data.visits.find{it.id==old.id}?.let{visit->
+        if(savedSuccess)VisitSavedV2(place,visit,{savedSuccess=false},{savedSuccess=false;savedVisit=null})
+        else JournalDetailV2(controller,place,visit,{savedVisit=null},{savedVisit=null},{onShareVisit(visit)})
+    }}
     if(edit) EditPlaceDialog(controller,place,{edit=false})
     if(delete) ConfirmDialog("移出这个去处？","将同时删除这个地点的到访文字记录。导入的照片文件仍保留在应用目录；需要保留记录时请先导出备份。","移出收藏",{if(controller.deletePlace(place)){delete=false;onClose()}},{delete=false})
 }
@@ -157,7 +161,7 @@ fun EditPlaceDialog(controller:AtlasController,place:Place,onClose:()->Unit) {
             latitude=if(changedAddress)null else place.latitude,longitude=if(changedAddress)null else place.longitude,
             gcjLatitude=if(changedAddress)null else place.gcjLatitude,gcjLongitude=if(changedAddress)null else place.gcjLongitude,
             poiId=if(changedAddress)"" else place.poiId)))onClose()
-    },enabled=name.isNotBlank()&&city.isNotBlank()&&address.isNotBlank()){Text("保存")}},dismissButton={TextButton(onClick=onClose){Text("取消")}},containerColor=AtlasColors.Card)
+    },enabled=name.isNotBlank()&&city.isNotBlank()){Text("保存")}},dismissButton={TextButton(onClick=onClose){Text("取消")}},containerColor=AtlasColors.Card)
 }
 
 @Composable

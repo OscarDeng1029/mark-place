@@ -1,0 +1,92 @@
+{
+  "frame": {
+    "wide": {
+      "size": [
+        344,
+        233
+      ],
+      "content": [
+        6,
+        6,
+        332,
+        203
+      ]
+    },
+    "thumb": {
+      "size": [
+        140,
+        150
+      ],
+      "content": [
+        7,
+        7,
+        126,
+        118
+      ]
+    },
+    "small": {
+      "size": [
+        135,
+        128
+      ],
+      "content": [
+        6,
+        6,
+        123,
+        104
+      ]
+    },
+    "portrait": {
+      "size": [
+        180,
+        210
+      ],
+      "content": [
+        8,
+        8,
+        164,
+        174
+      ]
+    }
+  },
+  "tape": {
+    "size": [
+      88,
+      22
+    ],
+    "rotationDegrees": 4,
+    "alpha": "already baked in png"
+  },
+  "stamp": {
+    "ringSize": [
+      86,
+      86
+    ],
+    "cupSize": [
+      36,
+      35
+    ],
+    "text": "render text as separate native label"
+  },
+  "note": {
+    "size": [
+      210,
+      130
+    ],
+    "resize": "nine-slice recommended; preview uses stretching",
+    "capInsets": [
+      8,
+      8,
+      8,
+      8
+    ]
+  },
+  "order": [
+    "paper background",
+    "photo at content rect",
+    "transparent paper frame",
+    "tape overlay",
+    "editable caption",
+    "native buttons above content"
+  ]
+}

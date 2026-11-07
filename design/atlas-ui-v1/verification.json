@@ -1,0 +1,1119 @@
+{
+  "generatedAt": "2026-11-07",
+  "screenCount": 56,
+  "boardCount": 14,
+  "errors": [],
+  "galleryQa": {
+    "phones": 56,
+    "nestedButtons": 0,
+    "brokenImages": []
+  },
+  "flow": [
+    "add",
+    "import",
+    "parsing",
+    "results",
+    "import-success",
+    "map",
+    "place",
+    "visit",
+    "visit-success",
+    "journal",
+    "templates",
+    "share",
+    "saved"
+  ],
+  "selectionAndSwitch": "passed",
+  "qa": [
+    {
+      "imagesOk": true,
+      "phones": 4,
+      "overflow": [
+        {
+          "id": "welcome",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "city",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "home",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "collections",
+          "width": 390,
+          "nestedButtons": 0
+        }
+      ],
+      "brokenTargets": []
+    },
+    {
+      "imagesOk": true,
+      "phones": 4,
+      "overflow": [
+        {
+          "id": "folder",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "new-folder",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "search",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "add",
+          "width": 390,
+          "nestedButtons": 0
+        }
+      ],
+      "brokenTargets": []
+    },
+    {
+      "imagesOk": true,
+      "phones": 4,
+      "overflow": [
+        {
+          "id": "import",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "parsing",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "results",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "branch",
+          "width": 390,
+          "nestedButtons": 0
+        }
+      ],
+      "brokenTargets": []
+    },
+    {
+      "imagesOk": true,
+      "phones": 4,
+      "overflow": [
+        {
+          "id": "duplicate",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "import-success",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "manual",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "unlocated",
+          "width": 390,
+          "nestedButtons": 0
+        }
+      ],
+      "brokenTargets": []
+    },
+    {
+      "imagesOk": true,
+      "phones": 4,
+      "overflow": [
+        {
+          "id": "map",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "maplist",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "filters",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "navigation",
+          "width": 390,
+          "nestedButtons": 0
+        }
+      ],
+      "brokenTargets": []
+    },
+    {
+      "imagesOk": true,
+      "phones": 4,
+      "overflow": [
+        {
+          "id": "place",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "visited",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "visit",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "calendar",
+          "width": 390,
+          "nestedButtons": 0
+        }
+      ],
+      "brokenTargets": []
+    },
+    {
+      "imagesOk": true,
+      "phones": 4,
+      "overflow": [
+        {
+          "id": "visit-success",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "journal",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "layout",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "photo-picker",
+          "width": 390,
+          "nestedButtons": 0
+        }
+      ],
+      "brokenTargets": []
+    },
+    {
+      "imagesOk": true,
+      "phones": 4,
+      "overflow": [
+        {
+          "id": "timeline",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "city-atlas",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "templates",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "share",
+          "width": 390,
+          "nestedButtons": 0
+        }
+      ],
+      "brokenTargets": []
+    },
+    {
+      "imagesOk": true,
+      "phones": 4,
+      "overflow": [
+        {
+          "id": "saved",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "folder-share",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "profile",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "badges",
+          "width": 390,
+          "nestedButtons": 0
+        }
+      ],
+      "brokenTargets": []
+    },
+    {
+      "imagesOk": true,
+      "phones": 4,
+      "overflow": [
+        {
+          "id": "badge-detail",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "badge-progress",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "settings",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "backup",
+          "width": 390,
+          "nestedButtons": 0
+        }
+      ],
+      "brokenTargets": []
+    },
+    {
+      "imagesOk": true,
+      "phones": 4,
+      "overflow": [
+        {
+          "id": "empty",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "error",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "permission",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "bulk",
+          "width": 390,
+          "nestedButtons": 0
+        }
+      ],
+      "brokenTargets": []
+    },
+    {
+      "imagesOk": true,
+      "phones": 4,
+      "overflow": [
+        {
+          "id": "folder-picker",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "draft",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "delete",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "edit-profile",
+          "width": 390,
+          "nestedButtons": 0
+        }
+      ],
+      "brokenTargets": []
+    },
+    {
+      "imagesOk": true,
+      "phones": 4,
+      "overflow": [
+        {
+          "id": "signin",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "folder-options",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "record-options",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "system-share",
+          "width": 390,
+          "nestedButtons": 0
+        }
+      ],
+      "brokenTargets": []
+    },
+    {
+      "imagesOk": true,
+      "phones": 4,
+      "overflow": [
+        {
+          "id": "screenshot-import",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "drafts",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "city-share",
+          "width": 390,
+          "nestedButtons": 0
+        },
+        {
+          "id": "search-empty",
+          "width": 390,
+          "nestedButtons": 0
+        }
+      ],
+      "brokenTargets": []
+    },
+    {
+      "id": "welcome",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "city",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "home",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 722,
+          "total": 820
+        }
+      ]
+    },
+    {
+      "id": "collections",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 747,
+          "total": 858
+        }
+      ]
+    },
+    {
+      "id": "folder",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 747,
+          "total": 747
+        }
+      ]
+    },
+    {
+      "id": "new-folder",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "search",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 747,
+          "total": 747
+        }
+      ]
+    },
+    {
+      "id": "add",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [
+        {
+          "top": 396.609375,
+          "bottom": 844
+        }
+      ],
+      "content": [
+        {
+          "visible": 722,
+          "total": 820
+        }
+      ]
+    },
+    {
+      "id": "import",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "parsing",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "results",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 776
+        }
+      ]
+    },
+    {
+      "id": "branch",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 708
+        }
+      ]
+    },
+    {
+      "id": "duplicate",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [
+        {
+          "top": 405.40625,
+          "bottom": 844
+        }
+      ],
+      "content": [
+        {
+          "visible": 653,
+          "total": 776
+        }
+      ]
+    },
+    {
+      "id": "import-success",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "manual",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 677
+        }
+      ]
+    },
+    {
+      "id": "unlocated",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "map",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": []
+    },
+    {
+      "id": "maplist",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [
+        {
+          "top": 366.609375,
+          "bottom": 844
+        }
+      ],
+      "content": []
+    },
+    {
+      "id": "filters",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [
+        {
+          "top": 317,
+          "bottom": 844
+        }
+      ],
+      "content": []
+    },
+    {
+      "id": "navigation",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [
+        {
+          "top": 426.40625,
+          "bottom": 844
+        }
+      ],
+      "content": [
+        {
+          "visible": 653,
+          "total": 747
+        }
+      ]
+    },
+    {
+      "id": "place",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 747
+        }
+      ]
+    },
+    {
+      "id": "visited",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 753
+        }
+      ]
+    },
+    {
+      "id": "visit",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "calendar",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [
+        {
+          "top": 267.203125,
+          "bottom": 844
+        }
+      ],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "visit-success",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 685
+        }
+      ]
+    },
+    {
+      "id": "journal",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 681
+        }
+      ]
+    },
+    {
+      "id": "layout",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 539,
+          "total": 539
+        }
+      ]
+    },
+    {
+      "id": "photo-picker",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "timeline",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 722,
+          "total": 788
+        }
+      ]
+    },
+    {
+      "id": "city-atlas",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 747,
+          "total": 747
+        }
+      ]
+    },
+    {
+      "id": "templates",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 714
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "saved",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 712
+        }
+      ]
+    },
+    {
+      "id": "folder-share",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "profile",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 722,
+          "total": 842
+        }
+      ]
+    },
+    {
+      "id": "badges",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 747,
+          "total": 756
+        }
+      ]
+    },
+    {
+      "id": "badge-detail",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 674
+        }
+      ]
+    },
+    {
+      "id": "badge-progress",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 692
+        }
+      ]
+    },
+    {
+      "id": "settings",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 747,
+          "total": 747
+        }
+      ]
+    },
+    {
+      "id": "backup",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 747,
+          "total": 747
+        }
+      ]
+    },
+    {
+      "id": "empty",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 722,
+          "total": 736
+        }
+      ]
+    },
+    {
+      "id": "error",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 661
+        }
+      ]
+    },
+    {
+      "id": "permission",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [
+        {
+          "top": 488.8125,
+          "bottom": 844
+        }
+      ],
+      "content": []
+    },
+    {
+      "id": "bulk",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "folder-picker",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [
+        {
+          "top": 316.203125,
+          "bottom": 844
+        }
+      ],
+      "content": [
+        {
+          "visible": 653,
+          "total": 747
+        }
+      ]
+    },
+    {
+      "id": "draft",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [
+        {
+          "top": 505.8125,
+          "bottom": 844
+        }
+      ],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "delete",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 753
+        }
+      ]
+    },
+    {
+      "id": "edit-profile",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "signin",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 653
+        }
+      ]
+    },
+    {
+      "id": "folder-options",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [
+        {
+          "top": 418.609375,
+          "bottom": 844
+        }
+      ],
+      "content": [
+        {
+          "visible": 747,
+          "total": 747
+        }
+      ]
+    },
+    {
+      "id": "record-options",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [
+        {
+          "top": 418.609375,
+          "bottom": 844
+        }
+      ],
+      "content": [
+        {
+          "visible": 653,
+          "total": 681
+        }
+      ]
+    },
+    {
+      "id": "system-share",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [
+        {
+          "top": 470,
+          "bottom": 844
+        }
+      ],
+      "content": [
+        {
+          "visible": 653,
+          "total": 712
+        }
+      ]
+    },
+    {
+      "id": "screenshot-import",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 764
+        }
+      ]
+    },
+    {
+      "id": "drafts",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 702
+        }
+      ]
+    },
+    {
+      "id": "city-share",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 653,
+          "total": 659
+        }
+      ]
+    },
+    {
+      "id": "search-empty",
+      "width": 390,
+      "imgOk": true,
+      "sheets": [],
+      "content": [
+        {
+          "visible": 747,
+          "total": 747
+        }
+      ]
+    }
+  ]
+}

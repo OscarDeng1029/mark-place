@@ -1,0 +1,35 @@
+{
+  "colors": {
+    "paper": "#f7f2e9",
+    "cream": "#fffaf1",
+    "ink": "#3e4639",
+    "muted": "#8b877c",
+    "green": "#75836a",
+    "dark": "#53634e",
+    "sage": "#e7eadd",
+    "orange": "#c58360",
+    "peach": "#f0dac2",
+    "line": "#e5dfd2",
+    "blue": "#a8bbc1",
+    "red": "#aa6b54"
+  },
+  "canvas": {
+    "width": 390,
+    "height": 844
+  },
+  "rasterDensities": [
+    1,
+    2,
+    3
+  ],
+  "typography": {
+    "title": "AtlasSerif / supplied OFL font",
+    "body": "Microsoft YaHei in browser; app must supply licensed CJK sans for matching metrics",
+    "handwritten": "KaiTi in browser; not redistributed, app needs licensed hand font or accept metric changes"
+  },
+  "safeArea": {
+    "topSimulation": 43,
+    "bottomIndicator": 21
+  },
+  "note": "Coordinates exclude actual device status-bar differences; screenshots are visual reference, do not ship system chrome as bitmap."
+}

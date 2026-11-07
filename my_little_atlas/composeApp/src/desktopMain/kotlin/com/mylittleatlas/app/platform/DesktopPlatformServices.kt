@@ -44,6 +44,7 @@ class DesktopPlatformServices : PlatformServices {
         }
     }
     override fun today() = LocalDate.now().toString()
+    override fun locate(onResult:(com.mylittleatlas.app.domain.GeoPoint?,String?)->Unit){onResult(null,"桌面端暂不提供设备定位，可通过城市与收藏夹浏览地图。")}
     override fun uniqueId() = UUID.randomUUID().toString()
     override fun pickPhoto(onResult: (String?) -> Unit) {
         val chooser = JFileChooser().apply { dialogTitle = "选择照片"; fileFilter = FileNameExtensionFilter("图片", "jpg", "jpeg", "png", "webp") }
@@ -77,6 +78,12 @@ class DesktopPlatformServices : PlatformServices {
             runCatching { ImageIO.write(bitmap.toAwtImage(), "png", file) }
         }
     }
+    override fun saveImage(bitmap: ImageBitmap): Boolean {
+        val chooser=JFileChooser().apply{dialogTitle="保存图鉴图片";selectedFile=File("my-little-atlas.png");fileFilter=FileNameExtensionFilter("PNG 图片","png")}
+        if(chooser.showSaveDialog(null)!=JFileChooser.APPROVE_OPTION)return false
+        val target=chooser.selectedFile.let{if(it.extension.equals("png",true))it else File(it.parentFile,it.name+".png")}
+        return runCatching{ImageIO.write(bitmap.toAwtImage(),"png",target)}.getOrDefault(false)
+    }
     override fun navigate(place: Place) {
         val query = java.net.URLEncoder.encode("${place.name} ${place.address} ${place.city}", "UTF-8")
         val city = java.net.URLEncoder.encode(place.city, "UTF-8")
@@ -97,3 +104,9 @@ actual fun LocalPhoto(path: String, modifier: Modifier) {
     if (bitmap != null) Image(bitmap, null, modifier, contentScale = ContentScale.Crop)
     else Box(modifier.background(Color(0xFFE5E8DC)))
 }
+
+@Composable
+actual fun AtlasBackHandler(enabled:Boolean,onBack:()->Unit){}
+
+@Composable
+actual fun AtlasWindowStyle(){}

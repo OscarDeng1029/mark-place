@@ -2,6 +2,7 @@ package com.mylittleatlas.app
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.view.WindowCompat
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,8 +18,14 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window,false)
+        WindowCompat.getInsetsController(window,window.decorView).apply {
+            isAppearanceLightStatusBars = true
+            isAppearanceLightNavigationBars = true
+        }
         incomingText = sharedText(intent)
         services = AndroidPlatformServices(this)
+        services.locationPermission=registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){services.acceptLocationPermission()}
         services.photoPicker = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             services.acceptPickedPhoto(uri)
         }

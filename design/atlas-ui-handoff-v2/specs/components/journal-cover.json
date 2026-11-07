@@ -1,0 +1,341 @@
+{
+  "screen": "journal",
+  "parent": {
+    "id": "L025",
+    "parent": "L018",
+    "order": 25,
+    "tag": "div",
+    "class": "journal-cover",
+    "kind": "layout",
+    "visible": true,
+    "viewportBounds": {
+      "x": 18.389,
+      "y": 147.027,
+      "width": 353.223,
+      "height": 224.945
+    },
+    "layoutBox": {
+      "offsetX": 22,
+      "offsetY": 153,
+      "offsetWidth": 346,
+      "offsetHeight": 213,
+      "offsetParent": "L000"
+    },
+    "asset": null,
+    "src": null,
+    "naturalSize": null,
+    "resize": null,
+    "action": null,
+    "text": "",
+    "svg": null,
+    "style": {
+      "position": "relative",
+      "display": "block",
+      "flexDirection": "row",
+      "gap": "normal",
+      "padding": "0px",
+      "margin": "6px 0px 19px",
+      "overflow": "visible",
+      "opacity": "1",
+      "zIndex": "auto",
+      "transform": "matrix(0.999391, -0.0348995, 0.0348995, 0.999391, 0, 0)",
+      "transformOrigin": "173px 106.5px",
+      "color": "rgb(62, 70, 57)",
+      "fontFamily": "\"Microsoft YaHei\", \"PingFang SC\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "fontStyle": "normal",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "textAlign": "start",
+      "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+      "backgroundImage": "none",
+      "backgroundSize": "auto",
+      "border": "0px none rgb(62, 70, 57)",
+      "borderRadius": "0px",
+      "boxShadow": "rgba(117, 98, 68, 0.133) 0px 4px 9px 0px",
+      "filter": "none"
+    },
+    "pseudo": {
+      "before": {
+        "content": "\"\"",
+        "background": "rgba(217, 197, 152, 0.65) none repeat scroll 0% 0% / auto padding-box border-box",
+        "transform": "none",
+        "width": "84px",
+        "height": "22px"
+      },
+      "after": null
+    }
+  },
+  "children": [
+    {
+      "id": "L026",
+      "parent": "L025",
+      "order": 26,
+      "tag": "img",
+      "class": "mat-content-photo",
+      "kind": "image",
+      "visible": true,
+      "viewportBounds": {
+        "x": 24.594,
+        "y": 153.233,
+        "width": 340.183,
+        "height": 194.545
+      },
+      "layoutBox": {
+        "offsetX": 6,
+        "offsetY": 6,
+        "offsetWidth": 334,
+        "offsetHeight": 183,
+        "offsetParent": "L025"
+      },
+      "asset": "photo_cafe_interior",
+      "src": "../assets/photos/photo_cafe_interior.jpg",
+      "naturalSize": {
+        "width": 1000,
+        "height": 686
+      },
+      "resize": {
+        "mode": "cover",
+        "position": "50% 50%"
+      },
+      "action": null,
+      "text": "",
+      "svg": null,
+      "style": {
+        "position": "absolute",
+        "display": "block",
+        "flexDirection": "row",
+        "gap": "normal",
+        "padding": "0px",
+        "margin": "0px",
+        "overflow": "clip",
+        "opacity": "1",
+        "zIndex": "auto",
+        "transform": "none",
+        "transformOrigin": "167px 91.5px",
+        "color": "rgb(62, 70, 57)",
+        "fontFamily": "\"Microsoft YaHei\", \"PingFang SC\", sans-serif",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "lineHeight": "normal",
+        "letterSpacing": "normal",
+        "textAlign": "start",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "backgroundImage": "none",
+        "backgroundSize": "auto",
+        "border": "0px none rgb(62, 70, 57)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "filter": "none"
+      },
+      "pseudo": {
+        "before": null,
+        "after": null
+      }
+    },
+    {
+      "id": "L027",
+      "parent": "L025",
+      "order": 27,
+      "tag": "span",
+      "class": "caption hand",
+      "kind": "text",
+      "visible": true,
+      "viewportBounds": {
+        "x": 41.08,
+        "y": 345.053,
+        "width": 154.36,
+        "height": 18.367
+      },
+      "layoutBox": {
+        "offsetX": 16,
+        "offsetY": 192,
+        "offsetWidth": 154,
+        "offsetHeight": 13,
+        "offsetParent": "L025"
+      },
+      "asset": null,
+      "src": null,
+      "naturalSize": null,
+      "resize": null,
+      "action": null,
+      "text": "a slow afternoon in Shanghai",
+      "svg": null,
+      "style": {
+        "position": "absolute",
+        "display": "block",
+        "flexDirection": "row",
+        "gap": "normal",
+        "padding": "0px",
+        "margin": "0px",
+        "overflow": "visible",
+        "opacity": "1",
+        "zIndex": "3",
+        "transform": "none",
+        "transformOrigin": "77px 6.5px",
+        "color": "rgb(136, 139, 117)",
+        "fontFamily": "KaiTi, STKaiti, 楷体, serif",
+        "fontSize": "11px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "lineHeight": "normal",
+        "letterSpacing": "normal",
+        "textAlign": "start",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "backgroundImage": "none",
+        "backgroundSize": "auto",
+        "border": "0px none rgb(136, 139, 117)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "filter": "none"
+      },
+      "pseudo": {
+        "before": null,
+        "after": null
+      }
+    },
+    {
+      "id": "L028",
+      "parent": "L025",
+      "order": 28,
+      "tag": "img",
+      "class": "mat-asset mat-frame",
+      "kind": "image",
+      "visible": true,
+      "viewportBounds": {
+        "x": 18.389,
+        "y": 147.027,
+        "width": 353.223,
+        "height": 224.945
+      },
+      "layoutBox": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetWidth": 346,
+        "offsetHeight": 213,
+        "offsetParent": "L025"
+      },
+      "asset": "frame_polaroid_wide",
+      "src": "../assets/materials/frame_polaroid_wide@3x.png",
+      "naturalSize": {
+        "width": 1032,
+        "height": 699
+      },
+      "resize": {
+        "mode": "fill",
+        "position": "50% 50%"
+      },
+      "action": null,
+      "text": "",
+      "svg": null,
+      "style": {
+        "position": "absolute",
+        "display": "block",
+        "flexDirection": "row",
+        "gap": "normal",
+        "padding": "0px",
+        "margin": "0px",
+        "overflow": "clip",
+        "opacity": "1",
+        "zIndex": "2",
+        "transform": "none",
+        "transformOrigin": "173px 106.5px",
+        "color": "rgb(62, 70, 57)",
+        "fontFamily": "\"Microsoft YaHei\", \"PingFang SC\", sans-serif",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "lineHeight": "normal",
+        "letterSpacing": "normal",
+        "textAlign": "start",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "backgroundImage": "none",
+        "backgroundSize": "auto",
+        "border": "0px none rgb(62, 70, 57)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "filter": "none"
+      },
+      "pseudo": {
+        "before": null,
+        "after": null
+      }
+    },
+    {
+      "id": "L029",
+      "parent": "L025",
+      "order": 29,
+      "tag": "img",
+      "class": "mat-asset mat-tape",
+      "kind": "image",
+      "visible": true,
+      "viewportBounds": {
+        "x": 147.031,
+        "y": 143.534,
+        "width": 88.714,
+        "height": 25.058
+      },
+      "layoutBox": {
+        "offsetX": 129,
+        "offsetY": -8,
+        "offsetWidth": 88,
+        "offsetHeight": 22,
+        "offsetParent": "L025"
+      },
+      "asset": "tape_oat",
+      "src": "../assets/materials/tape_oat@3x.png",
+      "naturalSize": {
+        "width": 264,
+        "height": 66
+      },
+      "resize": {
+        "mode": "fill",
+        "position": "50% 50%"
+      },
+      "action": null,
+      "text": "",
+      "svg": null,
+      "style": {
+        "position": "absolute",
+        "display": "block",
+        "flexDirection": "row",
+        "gap": "normal",
+        "padding": "0px",
+        "margin": "0px",
+        "overflow": "clip",
+        "opacity": "1",
+        "zIndex": "4",
+        "transform": "matrix(0.997564, 0.0697565, -0.0697565, 0.997564, 0, 0)",
+        "transformOrigin": "44px 11px",
+        "color": "rgb(62, 70, 57)",
+        "fontFamily": "\"Microsoft YaHei\", \"PingFang SC\", sans-serif",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "lineHeight": "normal",
+        "letterSpacing": "normal",
+        "textAlign": "start",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "backgroundImage": "none",
+        "backgroundSize": "auto",
+        "border": "0px none rgb(62, 70, 57)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "filter": "none"
+      },
+      "pseudo": {
+        "before": null,
+        "after": null
+      }
+    }
+  ],
+  "order": [
+    "photo",
+    "frame",
+    "caption (z3)",
+    "tape (z4)"
+  ],
+  "note": "The tape is above the caption in paint order. Caption is native text. All dimensions use logical units; viewportBounds include rotation."
+}

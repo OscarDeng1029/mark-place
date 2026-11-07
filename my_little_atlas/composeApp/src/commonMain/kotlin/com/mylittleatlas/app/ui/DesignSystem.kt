@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,18 +38,18 @@ import org.jetbrains.compose.resources.painterResource
 import kotlin.random.Random
 
 object AtlasColors {
-    val Paper = Color(0xFFF5F0E7)
-    val Card = Color(0xFFFFFCF6)
-    val Ink = Color(0xFF343E31)
-    val Green = Color(0xFF65765B)
-    val Sage = Color(0xFF87947A)
-    val SagePale = Color(0xFFE5E8DC)
-    val Peach = Color(0xFFE9A078)
-    val PeachPale = Color(0xFFF3E2D2)
-    val Blue = Color(0xFFA9BBC4)
+    val Paper = Color(0xFFF7F2E9)
+    val Card = Color(0xFFFFFAF1)
+    val Ink = Color(0xFF3E4639)
+    val Green = Color(0xFF53634E)
+    val Sage = Color(0xFF75836A)
+    val SagePale = Color(0xFFE7EADD)
+    val Peach = Color(0xFFC58360)
+    val PeachPale = Color(0xFFF0DAC2)
+    val Blue = Color(0xFFA8BBC1)
     val BluePale = Color(0xFFE2E8E8)
-    val Muted = Color(0xFF8D887F)
-    val Line = Color(0xFFE6DED1)
+    val Muted = Color(0xFF8B877C)
+    val Line = Color(0xFFE5DFD2)
 }
 
 @Composable
@@ -59,7 +60,7 @@ fun AtlasTheme(content: @Composable () -> Unit) {
             primary = AtlasColors.Green, onPrimary = AtlasColors.Card,
             secondary = AtlasColors.Peach, background = AtlasColors.Paper,
             surface = AtlasColors.Card, onSurface = AtlasColors.Ink,
-            onBackground = AtlasColors.Ink, outline = AtlasColors.Line,
+            onBackground = AtlasColors.Ink, outline = AtlasColors.Line,outlineVariant=AtlasColors.Line,
             surfaceVariant = AtlasColors.SagePale,
         ),
         typography = Typography(
@@ -73,28 +74,24 @@ fun AtlasTheme(content: @Composable () -> Unit) {
             labelMedium = TextStyle(fontSize = 11.sp, letterSpacing = 0.4.sp),
         ),
         shapes = Shapes(medium = RoundedCornerShape(20.dp), large = RoundedCornerShape(28.dp)),
-        content = content,
+        content = {
+            CompositionLocalProvider(LocalContentColor provides AtlasColors.Ink) {
+                ProvideTextStyle(TextStyle(fontSize=13.sp,lineHeight=18.sp,color=AtlasColors.Ink)) { content() }
+            }
+        },
     )
 }
 
 @Composable
-fun Paper(modifier: Modifier = Modifier, content: @Composable BoxScope.() -> Unit) {
-    val specks = remember {
-        val r = Random(42)
-        List(1350) { Offset(r.nextFloat(), r.nextFloat()) }
-    }
-    Box(modifier.background(AtlasColors.Paper)) {
-        Canvas(Modifier.matchParentSize()) {
-            specks.forEachIndexed { i, p ->
-                drawCircle(Color(0xFF9A8566).copy(alpha = if (i % 3 == 0) 0.045f else 0.025f),
-                    (if (i % 7 == 0) 0.85f else 0.45f) * density, Offset(p.x * size.width, p.y * size.height))
-            }
-        }
+fun Paper(modifier: Modifier = Modifier, textured: Boolean = false, color: Color = AtlasColors.Paper, content: @Composable BoxScope.() -> Unit) {
+    com.mylittleatlas.app.platform.AtlasWindowStyle()
+    Box(modifier.background(color)) {
+        if (textured) AtlasPaperTexture(Modifier.matchParentSize())
         content()
     }
 }
 
-enum class Glyph { HOME, MAP, BOOKMARK, HEART, PERSON, PLUS, SEARCH, PIN, ARROW, BACK, CLOSE, CHECK, MORE, LAYERS, NAVIGATE, SHARE, CAMERA, FOLDER, COFFEE, DOWNLOAD, SETTINGS, LOCK, SPARKLE, LIST, EDIT }
+enum class Glyph { HOME, MAP, BOOKMARK, HEART, PERSON, PLUS, BOOK, SEARCH, PIN, ARROW, BACK, CLOSE, CHECK, MORE, LAYERS, NAVIGATE, SHARE, CAMERA, FOLDER, COFFEE, DOWNLOAD, SETTINGS, LOCK, SPARKLE, LIST, EDIT }
 
 @Composable
 fun AtlasIcon(glyph: Glyph, modifier: Modifier = Modifier, color: Color = AtlasColors.Ink, size: Dp = 22.dp) {
@@ -113,6 +110,7 @@ fun AtlasIcon(glyph: Glyph, modifier: Modifier = Modifier, color: Color = AtlasC
             Glyph.BOOKMARK -> { path(6f to 3f,18f to 3f,18f to 21f,12f to 17f,6f to 21f,close=true) }
             Glyph.HEART -> { val p=Path().apply {moveTo(12*scale,21*scale);cubicTo(3*scale,15*scale,0f,9*scale,5*scale,5*scale);cubicTo(8*scale,2*scale,11*scale,5*scale,12*scale,7*scale);cubicTo(15*scale,1*scale,22*scale,4*scale,22*scale,9*scale);cubicTo(22*scale,14*scale,16*scale,18*scale,12*scale,21*scale)};drawPath(p,color,style=stroke) }
             Glyph.PERSON -> {drawCircle(color,3.4f*scale,pt(12f,7f),style=stroke);drawArc(color,180f,180f,false,pt(4f,14f),Size(16*scale,14*scale),style=stroke);line(4f,21f,20f,21f)}
+            Glyph.BOOK -> { path(3f to 4f,10f to 4f,12f to 6f,14f to 4f,21f to 4f,21f to 21f,14f to 21f,12f to 23f,10f to 21f,3f to 21f,close=true);line(12f,6f,12f,22f) }
             Glyph.PLUS -> {line(5f,12f,19f,12f);line(12f,5f,12f,19f)}
             Glyph.SEARCH -> {drawCircle(color,6.7f*scale,pt(10f,10f),style=stroke);line(15f,15f,21f,21f)}
             Glyph.PIN -> {val p=Path().apply {moveTo(12*scale,22*scale);cubicTo(8*scale,17*scale,4*scale,13*scale,4*scale,9*scale);cubicTo(4*scale,-1f*scale,20*scale,-1f*scale,20*scale,9*scale);cubicTo(20*scale,13*scale,16*scale,17*scale,12*scale,22*scale)};drawPath(p,color,style=stroke);drawCircle(color,2.5f*scale,pt(12f,9f),style=stroke)}
@@ -148,10 +146,14 @@ fun IconButton(glyph: Glyph, description: String, onClick: () -> Unit, modifier:
 
 @Composable
 fun Photo(cover: String, modifier: Modifier = Modifier, description: String? = null) {
+    if(cover.startsWith("local:")) {
+        com.mylittleatlas.app.platform.LocalPhoto(cover.removePrefix("local:"),modifier)
+        return
+    }
     val resource = when(cover) {
-        "coffee" -> Res.drawable.coffee; "bookshop" -> Res.drawable.bookshop
-        "dessert" -> Res.drawable.dessert; "city" -> Res.drawable.city
-        "interior" -> Res.drawable.interior; else -> Res.drawable.cafe
+        "coffee" -> Res.drawable.atlas_photo_coffee_table; "bookshop" -> Res.drawable.atlas_photo_bookshop
+        "dessert" -> Res.drawable.atlas_photo_dessert; "city" -> Res.drawable.atlas_photo_city_walk
+        "interior" -> Res.drawable.atlas_photo_cafe_interior; else -> Res.drawable.atlas_photo_cafe_exterior
     }
     Image(painterResource(resource), description, modifier, contentScale = ContentScale.Crop)
 }
@@ -159,7 +161,7 @@ fun Photo(cover: String, modifier: Modifier = Modifier, description: String? = n
 @Composable
 fun SectionTitle(title: String, action: String? = null, onAction: () -> Unit = {}, modifier: Modifier = Modifier) {
     Row(modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Text(title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
+        Text(title, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
         if(action != null) TextButton(onClick = onAction, contentPadding = PaddingValues(start=8.dp)) {
             Text(action, color=AtlasColors.Muted, fontSize=12.sp); Spacer(Modifier.width(4.dp)); AtlasIcon(Glyph.ARROW,size=14.dp,color=AtlasColors.Muted)
         }
@@ -168,10 +170,10 @@ fun SectionTitle(title: String, action: String? = null, onAction: () -> Unit = {
 
 @Composable
 fun PrimaryButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, icon: Glyph? = null, enabled: Boolean = true) {
-    Button(onClick, modifier.height(50.dp), enabled=enabled, shape=RoundedCornerShape(15.dp),
+    Button(onClick, modifier.height(48.dp), enabled=enabled, shape=RoundedCornerShape(15.dp),
         contentPadding=PaddingValues(horizontal=20.dp), colors=ButtonDefaults.buttonColors(containerColor=AtlasColors.Green)) {
         if(icon != null) {AtlasIcon(icon,color=AtlasColors.Card,size=18.dp); Spacer(Modifier.width(9.dp))}
-        Text(text, fontSize=14.sp)
+        Text(text, fontSize=14.sp,color=AtlasColors.Card)
     }
 }
 
@@ -201,7 +203,7 @@ fun Handwritten(text: String, modifier: Modifier = Modifier, color: Color = Atla
 
 @Composable
 fun Tape(modifier: Modifier = Modifier) {
-    Box(modifier.size(65.dp,19.dp).background(Color(0xFFDCC5A0).copy(alpha=.66f)))
+    Image(painterResource(Res.drawable.atlas_tape_oat), null, modifier.size(88.dp,22.dp), contentScale=ContentScale.FillBounds)
 }
 
 @Composable

@@ -1,0 +1,320 @@
+{
+  "date": "2026-11-07",
+  "paidApiCalls": 0,
+  "pages": 56,
+  "boards": 14,
+  "annotatedPages": 14,
+  "rasterFiles": 50,
+  "uniqueRasterAssets": 22,
+  "svgIcons": 43,
+  "errors": [],
+  "badPages": [],
+  "alpha": [
+    {
+      "id": "paper_cream_tile",
+      "min": 255,
+      "max": 255,
+      "realTransparency": false,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "paper_torn_note",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "paper_torn_note@2x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "paper_torn_note@3x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "tape_oat",
+      "min": 0,
+      "max": 191,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "tape_oat@2x",
+      "min": 0,
+      "max": 191,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "tape_oat@3x",
+      "min": 0,
+      "max": 170,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "tape_sage",
+      "min": 0,
+      "max": 191,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "tape_sage@2x",
+      "min": 0,
+      "max": 191,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "tape_sage@3x",
+      "min": 0,
+      "max": 170,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "frame_polaroid_thumb",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "frame_polaroid_thumb@2x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "frame_polaroid_thumb@3x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "frame_polaroid_wide",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "frame_polaroid_wide@2x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "frame_polaroid_wide@3x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "frame_polaroid_small",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "frame_polaroid_small@2x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "frame_polaroid_small@3x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "frame_polaroid_portrait",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "frame_polaroid_portrait@2x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "frame_polaroid_portrait@3x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "sticker_mountain",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "sticker_mountain@2x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "sticker_mountain@3x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "sticker_coffee",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "sticker_coffee@2x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "sticker_coffee@3x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "sticker_camera",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "sticker_camera@2x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "sticker_camera@3x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "sticker_star",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "sticker_star@2x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "sticker_star@3x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "doodle_cat",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "doodle_cat@2x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "doodle_cat@3x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "stamp_ring",
+      "min": 0,
+      "max": 248,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "stamp_ring@2x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "stamp_ring@3x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "stamp_coffee_ink",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "stamp_coffee_ink@2x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    },
+    {
+      "id": "stamp_coffee_ink@3x",
+      "min": 0,
+      "max": 255,
+      "realTransparency": true,
+      "hasVisiblePixels": true
+    }
+  ],
+  "limits": [
+    "Reference cutouts retain original source detail; 2x/3x exports are resampling, not new detail.",
+    "Reference and existing photos are prototype sources; verify rights before shipping.",
+    "User generated replacements have not yet been supplied."
+  ]
+}

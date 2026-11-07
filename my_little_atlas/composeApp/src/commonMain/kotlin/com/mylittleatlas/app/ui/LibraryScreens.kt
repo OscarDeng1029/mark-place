@@ -65,9 +65,13 @@ fun CollectionsScreen(controller:AtlasController,collectionId:String?,onCollecti
 }
 
 @Composable
-fun JournalScreen(data:AtlasData,onPlace:(Place)->Unit,onExplore:()->Unit,wide:Boolean) {
+fun JournalScreen(data:AtlasData,onPlace:(Place)->Unit,onExplore:()->Unit,wide:Boolean,onVisit:(Visit)->Unit = {},onCities:()->Unit={}) {
+    var city by remember{mutableStateOf<String?>(null)}
+    var month by remember{mutableStateOf<String?>(null)}
+    var selecting by remember{mutableStateOf("")}
+    val visits=data.visits.filter{v->(month==null||v.date.startsWith(month!!))&&(city==null||data.places.find{it.id==v.placeId}?.city==city)}
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom=30.dp)) {
-        PageHeader("THE LITTLE MOMENTS","走过的日子","不是为了打卡，只是想记住这一刻。")
+        PageHeader("MY LITTLE JOURNAL","我的足迹","把每一次抵达，留成自己的一页。"){IconButton(Glyph.MAP,"城市图鉴",onCities)}
         Column(Modifier.padding(horizontal=24.dp),verticalArrangement=Arrangement.spacedBy(20.dp)) {
             if(data.visits.isNotEmpty()) {
                 Row(Modifier.fillMaxWidth().background(AtlasColors.PeachPale,RoundedCornerShape(18.dp)).padding(18.dp),verticalAlignment=Alignment.CenterVertically) {
@@ -75,7 +79,8 @@ fun JournalScreen(data:AtlasData,onPlace:(Place)->Unit,onExplore:()->Unit,wide:B
                     Column {Text("${data.visits.size} 段小小的回忆",style=MaterialTheme.typography.titleMedium);Text("每一次抵达，都值得被记住。",fontSize=11.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=5.dp))}
                 }
             }
-            data.visits.sortedByDescending{it.date}.forEach {visit ->
+            Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){Tag(city ?: "全部城市",city!=null,{selecting="city"});Tag(month ?: "全部月份",month!=null,{selecting="month"})}
+            visits.sortedByDescending{it.date}.forEach {visit ->
                 data.places.find{it.id==visit.placeId}?.let {place ->
                     Row(horizontalArrangement=Arrangement.spacedBy(15.dp),modifier=Modifier.fillMaxWidth()) {
                         Column(Modifier.width(37.dp),horizontalAlignment=Alignment.CenterHorizontally) {
@@ -83,7 +88,7 @@ fun JournalScreen(data:AtlasData,onPlace:(Place)->Unit,onExplore:()->Unit,wide:B
                             Text(visit.date.take(7).replace('-','.'),fontSize=8.sp,color=AtlasColors.Muted)
                             Box(Modifier.padding(top=14.dp).width(1.dp).height(190.dp).background(AtlasColors.Line))
                         }
-                        Column(Modifier.weight(1f).clip(RoundedCornerShape(4.dp)).background(AtlasColors.Card).clickable{onPlace(place)}.padding(10.dp)) {
+                        Column(Modifier.weight(1f).clip(RoundedCornerShape(4.dp)).background(AtlasColors.Card).clickable{onVisit(visit)}.padding(10.dp)) {
                             Box(Modifier.fillMaxWidth().height(if(wide) 240.dp else 180.dp)) {
                                 if(visit.photoPaths.isNotEmpty()) com.mylittleatlas.app.platform.LocalPhoto(visit.photoPaths.first(),Modifier.fillMaxSize().clip(RoundedCornerShape(3.dp)))
                                 else Photo(place.cover,Modifier.fillMaxSize().clip(RoundedCornerShape(3.dp)))
@@ -99,9 +104,14 @@ fun JournalScreen(data:AtlasData,onPlace:(Place)->Unit,onExplore:()->Unit,wide:B
                 }
             }
             if(data.visits.isEmpty()) EmptyPage("回忆，从一次出发开始","选一家想去的小店，留下你的第一篇手账。","看看我的收藏",onExplore)
+            else if(visits.isEmpty())EmptyPage("这段时间，还没有留下足迹","换一个城市或月份，再回看其他记忆。")
             Handwritten("And so the little adventures begin. ♡",Modifier.align(Alignment.CenterHorizontally),size=16)
         }
     }
+    if(selecting.isNotBlank())AlertDialog(onDismissRequest={selecting=""},title={Text(if(selecting=="city")"按城市回看" else "按月份回看")},text={Column(Modifier.heightIn(max=380.dp).verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(8.dp)){
+        Tag("全部",if(selecting=="city")city==null else month==null,{if(selecting=="city")city=null else month=null;selecting=""})
+        (if(selecting=="city")data.places.map{it.city}.distinct() else data.visits.map{it.date.take(7)}.distinct().sortedDescending()).forEach{value->Tag(value,if(selecting=="city")city==value else month==value,{if(selecting=="city")city=value else month=value;selecting=""})}
+    }},confirmButton={TextButton(onClick={selecting=""}){Text("收好")}},containerColor=AtlasColors.Card)
 }
 
 @Composable
@@ -111,15 +121,21 @@ fun ProfileScreen(controller:AtlasController,onShare:()->Unit,onJournal:()->Unit
     var restore by remember{mutableStateOf(false)}
     var clear by remember{mutableStateOf(false)}
     var about by remember{mutableStateOf(false)}
-    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp),horizontalAlignment=Alignment.CenterHorizontally) {
+    var badgeIndex by remember{mutableStateOf<Int?>(null)}
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(18.dp),horizontalAlignment=Alignment.Start) {
         Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
-            Text("MY LITTLE WORLD",fontSize=10.sp,letterSpacing=2.sp,color=AtlasColors.Muted,modifier=Modifier.weight(1f))
+            Text("A PERSONAL ATLAS",fontSize=10.sp,letterSpacing=2.sp,color=AtlasColors.Muted,modifier=Modifier.weight(1f))
             IconButton(Glyph.SETTINGS,"关于应用",{about=true})
         }
-        Box(Modifier.padding(top=15.dp).size(80.dp).clip(CircleShape).background(AtlasColors.SagePale).clickable{rename=true},contentAlignment=Alignment.Center) {
+        Box(Modifier.padding(top=10.dp).fillMaxWidth().height(160.dp)) {
+            Photo(data.places.firstOrNull()?.cover ?: "city",Modifier.fillMaxSize().clip(RoundedCornerShape(11.dp)))
+            Tape(Modifier.align(Alignment.TopStart).offset(x=20.dp,y=(-5).dp).rotate(-5f))
+            TextButton(onClick={rename=true},modifier=Modifier.align(Alignment.BottomEnd)) { Text("编辑资料",fontSize=10.sp,color=AtlasColors.Card) }
+        }
+        Box(Modifier.offset(y=(-30).dp).padding(start=14.dp).size(64.dp).clip(CircleShape).background(AtlasColors.SagePale).clickable{rename=true},contentAlignment=Alignment.Center) {
             Text(data.nickname.take(1),style=MaterialTheme.typography.headlineLarge,color=AtlasColors.Green)
         }
-        Text(data.nickname,style=MaterialTheme.typography.titleLarge,modifier=Modifier.padding(top=15.dp).clickable{rename=true})
+        Text(data.nickname+"的城市手账",style=MaterialTheme.typography.titleLarge,modifier=Modifier.offset(y=(-14).dp).clickable{rename=true})
         Text("收集生活，也收集自己。",fontSize=12.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=6.dp))
         Spacer(Modifier.height(25.dp))
         Row(Modifier.fillMaxWidth().background(AtlasColors.Card,RoundedCornerShape(20.dp)).padding(vertical=21.dp),horizontalArrangement=Arrangement.SpaceEvenly) {
@@ -128,7 +144,16 @@ fun ProfileScreen(controller:AtlasController,onShare:()->Unit,onJournal:()->Unit
             }
         }
         Spacer(Modifier.height(20.dp))
-        Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(AtlasColors.PeachPale).padding(22.dp)) {
+        SectionTitle("我的小小成就","勋章墙",{badgeIndex=0})
+        Row(Modifier.fillMaxWidth().padding(top=13.dp,bottom=20.dp),horizontalArrangement=Arrangement.SpaceEvenly) {
+            listOf("城市探索家","咖啡爱好者","留住光影").forEachIndexed { index,label ->
+                Column(Modifier.weight(1f).clickable{badgeIndex=index},horizontalAlignment=Alignment.CenterHorizontally) {
+                    ScrapbookBadge(index,label,Modifier.size(66.dp))
+                    Text(label,fontSize=10.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=8.dp))
+                }
+            }
+        }
+        Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(AtlasColors.SagePale).padding(18.dp)) {
             Row(verticalAlignment=Alignment.CenterVertically){AtlasIcon(Glyph.SPARKLE,color=AtlasColors.Green);Spacer(Modifier.width(10.dp));Text("我的城市护照",style=MaterialTheme.typography.titleLarge)}
             Text("让每一段小小的探索，都有自己的模样。",fontSize=12.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=9.dp,bottom=18.dp))
             PrimaryButton("生成我的图鉴",onShare,Modifier.fillMaxWidth(),Glyph.SHARE)
@@ -147,6 +172,15 @@ fun ProfileScreen(controller:AtlasController,onShare:()->Unit,onJournal:()->Unit
         Spacer(Modifier.height(24.dp));Row(verticalAlignment=Alignment.CenterVertically){AtlasIcon(Glyph.LOCK,size=14.dp,color=AtlasColors.Sage);Spacer(Modifier.width(7.dp));Text("默认私密 · 记录保存在此设备",fontSize=11.sp,color=AtlasColors.Muted)}
         Handwritten("Collect a better life ♡",Modifier.padding(top=24.dp),size=21)
         Text("My Little Atlas  ·  0.1.0",fontSize=9.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=12.dp))
+    }
+    badgeIndex?.let { index ->
+        val count=when(index){0->data.places.filter{data.isVisited(it.id)}.map{it.city}.distinct().size;1->data.places.count{it.kind==PlaceKind.COFFEE&&data.isVisited(it.id)};else->data.visits.count{it.photoPaths.isNotEmpty()}}
+        AlertDialog(onDismissRequest={badgeIndex=null},title={Text(listOf("城市探索家","咖啡爱好者","留住光影")[index])},
+            text={Column(horizontalAlignment=Alignment.CenterHorizontally,modifier=Modifier.fillMaxWidth()){
+                ScrapbookBadge(index,null,Modifier.size(140.dp),unlocked=count>0)
+                Text(when(index){0->"已留下足迹的城市：";1->"已到访的咖啡馆：";else->"有照片的到访记录："}+count,fontSize=13.sp,modifier=Modifier.padding(top=18.dp))
+                Text("每一次出发，都在慢慢丰富这本图鉴。",fontSize=12.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=9.dp))
+            }},confirmButton={TextButton(onClick={badgeIndex=null}){Text("收好了")}},containerColor=AtlasColors.Card)
     }
     if(rename) TextEditDialog("我的昵称",data.nickname,{controller.rename(it);rename=false},{rename=false})
     if(restore) ConfirmDialog("恢复备份","恢复将替换当前地点和记录。建议先导出一份当前备份。照片路径仅在原设备文件仍存在时可用。","选择备份",{restore=false;controller.restoreBackup()},{restore=false})

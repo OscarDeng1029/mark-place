@@ -1,0 +1,1297 @@
+{
+  "version": "2.0",
+  "date": "2026-11-07",
+  "canvas": {
+    "width": 390,
+    "height": 844,
+    "unit": "logical px / dp at reference size"
+  },
+  "assets": [
+    {
+      "id": "photo_cafe_exterior",
+      "path": "assets/photos/photo_cafe_exterior.jpg",
+      "pixelWidth": 1000,
+      "pixelHeight": 661,
+      "hasAlpha": false,
+      "sha256": "9ed2974f0fa41721d1c1bf0624e6632027905f6146d61dca4ea569c01dd5957f",
+      "source": {
+        "type": "project-photo",
+        "file": "design/atlas-ui-v1/assets/cafe.jpg"
+      },
+      "replacementFile": "photo_cafe_exterior.jpg",
+      "fit": "cover",
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "status": "provisional",
+      "limit": "Coffee atmosphere fallback; existing photo does not show the proposed storefront.",
+      "originalUnmodified": "../atlas-ui-v1/assets/cafe.jpg"
+    },
+    {
+      "id": "photo_cafe_interior",
+      "path": "assets/photos/photo_cafe_interior.jpg",
+      "pixelWidth": 1000,
+      "pixelHeight": 686,
+      "hasAlpha": false,
+      "sha256": "2d89f45ac85134a751e1dd4970790ebc410a1b443c5eaf97b741b85d2f9cf2be",
+      "source": {
+        "type": "project-photo",
+        "file": "design/atlas-ui-v1/assets/interior.jpg"
+      },
+      "replacementFile": "photo_cafe_interior.jpg",
+      "fit": "cover",
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "status": "provisional",
+      "limit": "Existing interior atmosphere, replace with matching generated shop.",
+      "originalUnmodified": "../atlas-ui-v1/assets/interior.jpg"
+    },
+    {
+      "id": "photo_coffee_table",
+      "path": "assets/photos/photo_coffee_table.jpg",
+      "pixelWidth": 1000,
+      "pixelHeight": 667,
+      "hasAlpha": false,
+      "sha256": "38a77305b7665c86de911424a8925eaadf65f1169d89a068ade4a9fc2652e133",
+      "source": {
+        "type": "project-photo",
+        "file": "design/atlas-ui-v1/assets/coffee.jpg"
+      },
+      "replacementFile": "photo_coffee_table.jpg",
+      "fit": "cover",
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "status": "provisional",
+      "limit": "Existing coffee detail, replace with matching generated cup.",
+      "originalUnmodified": "../atlas-ui-v1/assets/coffee.jpg"
+    },
+    {
+      "id": "photo_dessert",
+      "path": "assets/photos/photo_dessert.jpg",
+      "pixelWidth": 1000,
+      "pixelHeight": 1293,
+      "hasAlpha": false,
+      "sha256": "4d125ec9196c76013c0064fe71c728a96618ac6de7d245d4dc58c5b5dfa1481a",
+      "source": {
+        "type": "project-photo",
+        "file": "design/atlas-ui-v1/assets/dessert.jpg"
+      },
+      "replacementFile": "photo_dessert.jpg",
+      "fit": "cover",
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "status": "provisional",
+      "limit": "Existing food photo.",
+      "originalUnmodified": "../atlas-ui-v1/assets/dessert.jpg"
+    },
+    {
+      "id": "photo_bookshop",
+      "path": "assets/photos/photo_bookshop.jpg",
+      "pixelWidth": 1000,
+      "pixelHeight": 586,
+      "hasAlpha": false,
+      "sha256": "1490debea94774fcdb49fa76482e5c6ace4b378bd4c28427200a4887b2b0dc3f",
+      "source": {
+        "type": "project-photo",
+        "file": "design/atlas-ui-v1/assets/bookshop.jpg"
+      },
+      "replacementFile": "photo_bookshop.jpg",
+      "fit": "cover",
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "status": "provisional",
+      "limit": "Existing bookshelf photo.",
+      "originalUnmodified": "../atlas-ui-v1/assets/bookshop.jpg"
+    },
+    {
+      "id": "photo_city_walk",
+      "path": "assets/photos/photo_city_walk.jpg",
+      "pixelWidth": 123,
+      "pixelHeight": 95,
+      "hasAlpha": false,
+      "sha256": "0194e69ff90a0f2fb4b6881d8707dbb8efa356e31cf6aa098062051cbe72abc0",
+      "source": {
+        "type": "reference-photo-crop",
+        "file": "source/user-reference.png",
+        "crop": [
+          400,
+          473,
+          123,
+          95
+        ]
+      },
+      "replacementFile": "photo_city_walk.jpg",
+      "status": "LOW_RES_REPLACE",
+      "fit": "cover",
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "limit": "Native reference crop only. Upscaling does not produce additional detail."
+    },
+    {
+      "id": "photo_shanghai_skyline",
+      "path": "assets/photos/photo_shanghai_skyline.jpg",
+      "pixelWidth": 119,
+      "pixelHeight": 117,
+      "hasAlpha": false,
+      "sha256": "1cb7488d5a5e0df1d404455e23a634a5dbff3c174985887234fa952228c25151",
+      "source": {
+        "type": "reference-photo-crop",
+        "file": "source/user-reference.png",
+        "crop": [
+          694,
+          64,
+          119,
+          117
+        ]
+      },
+      "replacementFile": "photo_shanghai_skyline.jpg",
+      "status": "LOW_RES_REPLACE",
+      "fit": "cover",
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "limit": "Native reference crop only. Upscaling does not produce additional detail."
+    },
+    {
+      "id": "paper_cream_tile",
+      "path": "assets/materials/paper_cream_tile.png",
+      "pixelWidth": 192,
+      "pixelHeight": 48,
+      "hasAlpha": true,
+      "sha256": "d57e6a13e6c56f51a653736c95c6b789b662789d6a397e5b74bd0ef715659a16",
+      "source": {
+        "type": "reference-texture",
+        "file": "source/user-reference.png",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ]
+      },
+      "logicalWidth": 192,
+      "logicalHeight": 48,
+      "tileMode": "repeat",
+      "opacity": 1,
+      "stretch": false
+    },
+    {
+      "id": "paper_torn_note",
+      "path": "assets/materials/paper_torn_note.png",
+      "pixelWidth": 210,
+      "pixelHeight": 130,
+      "hasAlpha": true,
+      "sha256": "fb3b8786c6716b6e2ceac48950f348ad939c5933222775da490f7ed4c9c39931",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "paper sample with authored alpha contour"
+      },
+      "logicalWidth": 210,
+      "logicalHeight": 130,
+      "density": 1,
+      "capInsets": {
+        "left": 8,
+        "top": 8,
+        "right": 8,
+        "bottom": 8
+      },
+      "resizeMode": "nine-slice",
+      "bakedText": false
+    },
+    {
+      "id": "paper_torn_note@2x",
+      "path": "assets/materials/paper_torn_note@2x.png",
+      "pixelWidth": 420,
+      "pixelHeight": 260,
+      "hasAlpha": true,
+      "sha256": "0ec160c3c485abe1285d929234a5cd59b9802bc730138a3e6877789ddc9d77eb",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "paper sample with authored alpha contour"
+      },
+      "logicalWidth": 210,
+      "logicalHeight": 130,
+      "density": 2,
+      "capInsets": {
+        "left": 8,
+        "top": 8,
+        "right": 8,
+        "bottom": 8
+      },
+      "resizeMode": "nine-slice",
+      "bakedText": false
+    },
+    {
+      "id": "paper_torn_note@3x",
+      "path": "assets/materials/paper_torn_note@3x.png",
+      "pixelWidth": 630,
+      "pixelHeight": 390,
+      "hasAlpha": true,
+      "sha256": "90a47254b3da889c0039f3215fd7f5d3d3a7f66a782733e51850a1ec2e17fffb",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "paper sample with authored alpha contour"
+      },
+      "logicalWidth": 210,
+      "logicalHeight": 130,
+      "density": 3,
+      "capInsets": {
+        "left": 8,
+        "top": 8,
+        "right": 8,
+        "bottom": 8
+      },
+      "resizeMode": "nine-slice",
+      "bakedText": false
+    },
+    {
+      "id": "tape_oat",
+      "path": "assets/materials/tape_oat.png",
+      "pixelWidth": 88,
+      "pixelHeight": 22,
+      "hasAlpha": true,
+      "sha256": "49510c5513915d6c1c5962eb48fb6b485a68b98f2940613d1d3170a58b00e976",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "tinted paper sample, semi-transparent alpha, authored torn ends"
+      },
+      "logicalWidth": 88,
+      "logicalHeight": 22,
+      "density": 1,
+      "opacityBaked": 0.6666666666666666,
+      "bakedText": false,
+      "rotationBaked": false
+    },
+    {
+      "id": "tape_oat@2x",
+      "path": "assets/materials/tape_oat@2x.png",
+      "pixelWidth": 176,
+      "pixelHeight": 44,
+      "hasAlpha": true,
+      "sha256": "4f275e4badc4396b3b08675545238f28564a5b3e9a57b9fce0d97d15345cbef2",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "tinted paper sample, semi-transparent alpha, authored torn ends"
+      },
+      "logicalWidth": 88,
+      "logicalHeight": 22,
+      "density": 2,
+      "opacityBaked": 0.6666666666666666,
+      "bakedText": false,
+      "rotationBaked": false
+    },
+    {
+      "id": "tape_oat@3x",
+      "path": "assets/materials/tape_oat@3x.png",
+      "pixelWidth": 264,
+      "pixelHeight": 66,
+      "hasAlpha": true,
+      "sha256": "0a1067810f3231ef7c02da8e11ae9e88303b6585b520ac73ebce331ee2b2c0c4",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "tinted paper sample, semi-transparent alpha, authored torn ends"
+      },
+      "logicalWidth": 88,
+      "logicalHeight": 22,
+      "density": 3,
+      "opacityBaked": 0.6666666666666666,
+      "bakedText": false,
+      "rotationBaked": false
+    },
+    {
+      "id": "tape_sage",
+      "path": "assets/materials/tape_sage.png",
+      "pixelWidth": 88,
+      "pixelHeight": 22,
+      "hasAlpha": true,
+      "sha256": "226ccdcf9acfcb2978def2486ab7d99d49709c68074eafe9bbe2aa2e8756e414",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "tinted paper sample, semi-transparent alpha, authored torn ends"
+      },
+      "logicalWidth": 88,
+      "logicalHeight": 22,
+      "density": 1,
+      "opacityBaked": 0.6666666666666666,
+      "bakedText": false,
+      "rotationBaked": false
+    },
+    {
+      "id": "tape_sage@2x",
+      "path": "assets/materials/tape_sage@2x.png",
+      "pixelWidth": 176,
+      "pixelHeight": 44,
+      "hasAlpha": true,
+      "sha256": "fc681ad6ca50bea9caab183db65943f7b64bf76c70a04ea866762cec29451c86",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "tinted paper sample, semi-transparent alpha, authored torn ends"
+      },
+      "logicalWidth": 88,
+      "logicalHeight": 22,
+      "density": 2,
+      "opacityBaked": 0.6666666666666666,
+      "bakedText": false,
+      "rotationBaked": false
+    },
+    {
+      "id": "tape_sage@3x",
+      "path": "assets/materials/tape_sage@3x.png",
+      "pixelWidth": 264,
+      "pixelHeight": 66,
+      "hasAlpha": true,
+      "sha256": "944e99b311462f696a1c8303c304796d3b9359285bea733ca15a15a83ae877d7",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "tinted paper sample, semi-transparent alpha, authored torn ends"
+      },
+      "logicalWidth": 88,
+      "logicalHeight": 22,
+      "density": 3,
+      "opacityBaked": 0.6666666666666666,
+      "bakedText": false,
+      "rotationBaked": false
+    },
+    {
+      "id": "frame_polaroid_thumb",
+      "path": "assets/materials/frame_polaroid_thumb.png",
+      "pixelWidth": 140,
+      "pixelHeight": 150,
+      "hasAlpha": true,
+      "sha256": "ec77f1138e7ae5f350e8bfe7b84b73f1105f49e822292b452cbe12cf6242c5e0",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "unrotated paper frame with transparent image aperture"
+      },
+      "logicalWidth": 140,
+      "logicalHeight": 150,
+      "density": 1,
+      "contentRect": {
+        "x": 7,
+        "y": 7,
+        "width": 126,
+        "height": 118
+      },
+      "shadowBaked": false,
+      "rotationBaked": false,
+      "bakedText": false
+    },
+    {
+      "id": "frame_polaroid_thumb@2x",
+      "path": "assets/materials/frame_polaroid_thumb@2x.png",
+      "pixelWidth": 280,
+      "pixelHeight": 300,
+      "hasAlpha": true,
+      "sha256": "c765e613fd6a68ac8d28aae132d7ba917941304ca5e99837519bbb692c0aa1a1",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "unrotated paper frame with transparent image aperture"
+      },
+      "logicalWidth": 140,
+      "logicalHeight": 150,
+      "density": 2,
+      "contentRect": {
+        "x": 7,
+        "y": 7,
+        "width": 126,
+        "height": 118
+      },
+      "shadowBaked": false,
+      "rotationBaked": false,
+      "bakedText": false
+    },
+    {
+      "id": "frame_polaroid_thumb@3x",
+      "path": "assets/materials/frame_polaroid_thumb@3x.png",
+      "pixelWidth": 420,
+      "pixelHeight": 450,
+      "hasAlpha": true,
+      "sha256": "28d3c91e54c6ba6fb158539d5933302f197f80a1c6798f69def7609f565beb55",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "unrotated paper frame with transparent image aperture"
+      },
+      "logicalWidth": 140,
+      "logicalHeight": 150,
+      "density": 3,
+      "contentRect": {
+        "x": 7,
+        "y": 7,
+        "width": 126,
+        "height": 118
+      },
+      "shadowBaked": false,
+      "rotationBaked": false,
+      "bakedText": false
+    },
+    {
+      "id": "frame_polaroid_wide",
+      "path": "assets/materials/frame_polaroid_wide.png",
+      "pixelWidth": 344,
+      "pixelHeight": 233,
+      "hasAlpha": true,
+      "sha256": "d2c45e1220ea392c1be2f15b2c5da88b61774a068e77a8fd4aa3e05347b7d4c4",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "unrotated paper frame with transparent image aperture"
+      },
+      "logicalWidth": 344,
+      "logicalHeight": 233,
+      "density": 1,
+      "contentRect": {
+        "x": 6,
+        "y": 6,
+        "width": 332,
+        "height": 203
+      },
+      "shadowBaked": false,
+      "rotationBaked": false,
+      "bakedText": false
+    },
+    {
+      "id": "frame_polaroid_wide@2x",
+      "path": "assets/materials/frame_polaroid_wide@2x.png",
+      "pixelWidth": 688,
+      "pixelHeight": 466,
+      "hasAlpha": true,
+      "sha256": "d638fa5202b22698ec9a2b08fca16ab71c98761ca871634c3ae7c32788cc53ad",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "unrotated paper frame with transparent image aperture"
+      },
+      "logicalWidth": 344,
+      "logicalHeight": 233,
+      "density": 2,
+      "contentRect": {
+        "x": 6,
+        "y": 6,
+        "width": 332,
+        "height": 203
+      },
+      "shadowBaked": false,
+      "rotationBaked": false,
+      "bakedText": false
+    },
+    {
+      "id": "frame_polaroid_wide@3x",
+      "path": "assets/materials/frame_polaroid_wide@3x.png",
+      "pixelWidth": 1032,
+      "pixelHeight": 699,
+      "hasAlpha": true,
+      "sha256": "c6634e7d62932c8837393758ba444c2390b4c47bb0ba081a7d98005c7c7a7e9d",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "unrotated paper frame with transparent image aperture"
+      },
+      "logicalWidth": 344,
+      "logicalHeight": 233,
+      "density": 3,
+      "contentRect": {
+        "x": 6,
+        "y": 6,
+        "width": 332,
+        "height": 203
+      },
+      "shadowBaked": false,
+      "rotationBaked": false,
+      "bakedText": false
+    },
+    {
+      "id": "frame_polaroid_small",
+      "path": "assets/materials/frame_polaroid_small.png",
+      "pixelWidth": 135,
+      "pixelHeight": 128,
+      "hasAlpha": true,
+      "sha256": "c0c51ee9cf35ebc0581263bb21e0aefd69fd559e2ff4cdef830664e02535577b",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "unrotated paper frame with transparent image aperture"
+      },
+      "logicalWidth": 135,
+      "logicalHeight": 128,
+      "density": 1,
+      "contentRect": {
+        "x": 6,
+        "y": 6,
+        "width": 123,
+        "height": 104
+      },
+      "shadowBaked": false,
+      "rotationBaked": false,
+      "bakedText": false
+    },
+    {
+      "id": "frame_polaroid_small@2x",
+      "path": "assets/materials/frame_polaroid_small@2x.png",
+      "pixelWidth": 270,
+      "pixelHeight": 256,
+      "hasAlpha": true,
+      "sha256": "99244528ddfb7d713692587cdd34cb8ca877647433aacafab7db2ad76f3f9c88",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "unrotated paper frame with transparent image aperture"
+      },
+      "logicalWidth": 135,
+      "logicalHeight": 128,
+      "density": 2,
+      "contentRect": {
+        "x": 6,
+        "y": 6,
+        "width": 123,
+        "height": 104
+      },
+      "shadowBaked": false,
+      "rotationBaked": false,
+      "bakedText": false
+    },
+    {
+      "id": "frame_polaroid_small@3x",
+      "path": "assets/materials/frame_polaroid_small@3x.png",
+      "pixelWidth": 405,
+      "pixelHeight": 384,
+      "hasAlpha": true,
+      "sha256": "ab56bdc283c5e619a14da960388e0f91e9c3049d8700bfd9020ad23d511397c1",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "unrotated paper frame with transparent image aperture"
+      },
+      "logicalWidth": 135,
+      "logicalHeight": 128,
+      "density": 3,
+      "contentRect": {
+        "x": 6,
+        "y": 6,
+        "width": 123,
+        "height": 104
+      },
+      "shadowBaked": false,
+      "rotationBaked": false,
+      "bakedText": false
+    },
+    {
+      "id": "frame_polaroid_portrait",
+      "path": "assets/materials/frame_polaroid_portrait.png",
+      "pixelWidth": 180,
+      "pixelHeight": 210,
+      "hasAlpha": true,
+      "sha256": "43926ac60e5012c7c8370b12ffcb6836b531e048858e89afdd01fc1bdc397f61",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "unrotated paper frame with transparent image aperture"
+      },
+      "logicalWidth": 180,
+      "logicalHeight": 210,
+      "density": 1,
+      "contentRect": {
+        "x": 8,
+        "y": 8,
+        "width": 164,
+        "height": 174
+      },
+      "shadowBaked": false,
+      "rotationBaked": false,
+      "bakedText": false
+    },
+    {
+      "id": "frame_polaroid_portrait@2x",
+      "path": "assets/materials/frame_polaroid_portrait@2x.png",
+      "pixelWidth": 360,
+      "pixelHeight": 420,
+      "hasAlpha": true,
+      "sha256": "880f05720144927660d0ce8e18855caf04c141176a862a0e6c034abb90448731",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "unrotated paper frame with transparent image aperture"
+      },
+      "logicalWidth": 180,
+      "logicalHeight": 210,
+      "density": 2,
+      "contentRect": {
+        "x": 8,
+        "y": 8,
+        "width": 164,
+        "height": 174
+      },
+      "shadowBaked": false,
+      "rotationBaked": false,
+      "bakedText": false
+    },
+    {
+      "id": "frame_polaroid_portrait@3x",
+      "path": "assets/materials/frame_polaroid_portrait@3x.png",
+      "pixelWidth": 540,
+      "pixelHeight": 630,
+      "hasAlpha": true,
+      "sha256": "3270bcb2c8db65da051c7076cbf5caf93b176976318958be098841aa2663255a",
+      "source": {
+        "type": "derived-reference-texture",
+        "crop": [
+          16,
+          4,
+          192,
+          48
+        ],
+        "construction": "unrotated paper frame with transparent image aperture"
+      },
+      "logicalWidth": 180,
+      "logicalHeight": 210,
+      "density": 3,
+      "contentRect": {
+        "x": 8,
+        "y": 8,
+        "width": 164,
+        "height": 174
+      },
+      "shadowBaked": false,
+      "rotationBaked": false,
+      "bakedText": false
+    },
+    {
+      "id": "sticker_mountain",
+      "path": "assets/stickers/sticker_mountain.png",
+      "pixelWidth": 88,
+      "pixelHeight": 66,
+      "hasAlpha": true,
+      "sha256": "b08a2ad18a0e7cac466e227b80431ba9ab50e5e25cba301b7d7f8ade2cc76895",
+      "source": {
+        "type": "reference-cutout",
+        "file": "source/user-reference.png",
+        "crop": [
+          975,
+          1041,
+          77,
+          55
+        ]
+      },
+      "logicalWidth": 88,
+      "logicalHeight": 66,
+      "density": 1,
+      "label": "城市探索家",
+      "originalDetail": {
+        "width": 77,
+        "height": 55
+      },
+      "replaceWithUserGenerated": true,
+      "alphaMethod": "Explicit contour alpha mask; excludes outer tile and baked label."
+    },
+    {
+      "id": "sticker_mountain@2x",
+      "path": "assets/stickers/sticker_mountain@2x.png",
+      "pixelWidth": 176,
+      "pixelHeight": 132,
+      "hasAlpha": true,
+      "sha256": "d7ef546bb39e57c2240e836ad1754c20e77067e39238a279872bb3836cff6550",
+      "source": {
+        "type": "reference-cutout",
+        "file": "source/user-reference.png",
+        "crop": [
+          975,
+          1041,
+          77,
+          55
+        ]
+      },
+      "logicalWidth": 88,
+      "logicalHeight": 66,
+      "density": 2,
+      "label": "城市探索家",
+      "originalDetail": {
+        "width": 77,
+        "height": 55
+      },
+      "replaceWithUserGenerated": true,
+      "alphaMethod": "Explicit contour alpha mask; excludes outer tile and baked label."
+    },
+    {
+      "id": "sticker_mountain@3x",
+      "path": "assets/stickers/sticker_mountain@3x.png",
+      "pixelWidth": 264,
+      "pixelHeight": 198,
+      "hasAlpha": true,
+      "sha256": "62d4eaa5fead4ddff9350c8428f6b90d8d4137630577e0acb7f4ad5b821021c9",
+      "source": {
+        "type": "reference-cutout",
+        "file": "source/user-reference.png",
+        "crop": [
+          975,
+          1041,
+          77,
+          55
+        ]
+      },
+      "logicalWidth": 88,
+      "logicalHeight": 66,
+      "density": 3,
+      "label": "城市探索家",
+      "originalDetail": {
+        "width": 77,
+        "height": 55
+      },
+      "replaceWithUserGenerated": true,
+      "alphaMethod": "Explicit contour alpha mask; excludes outer tile and baked label."
+    },
+    {
+      "id": "sticker_coffee",
+      "path": "assets/stickers/sticker_coffee.png",
+      "pixelWidth": 76,
+      "pixelHeight": 76,
+      "hasAlpha": true,
+      "sha256": "ff752eb8f4bae247495ad9d992b72b9d37f190c4afcb847e06624ae0b096963f",
+      "source": {
+        "type": "reference-cutout",
+        "file": "source/user-reference.png",
+        "crop": [
+          1086,
+          1040,
+          60,
+          56
+        ]
+      },
+      "logicalWidth": 76,
+      "logicalHeight": 76,
+      "density": 1,
+      "label": "咖啡爱好者",
+      "originalDetail": {
+        "width": 60,
+        "height": 56
+      },
+      "replaceWithUserGenerated": true,
+      "alphaMethod": "Explicit contour alpha mask; excludes outer tile and baked label."
+    },
+    {
+      "id": "sticker_coffee@2x",
+      "path": "assets/stickers/sticker_coffee@2x.png",
+      "pixelWidth": 152,
+      "pixelHeight": 152,
+      "hasAlpha": true,
+      "sha256": "dbbab63bd6e25e7fb0dbaba99089657e2fc8e6d778e803265d63ce236be9a6d8",
+      "source": {
+        "type": "reference-cutout",
+        "file": "source/user-reference.png",
+        "crop": [
+          1086,
+          1040,
+          60,
+          56
+        ]
+      },
+      "logicalWidth": 76,
+      "logicalHeight": 76,
+      "density": 2,
+      "label": "咖啡爱好者",
+      "originalDetail": {
+        "width": 60,
+        "height": 56
+      },
+      "replaceWithUserGenerated": true,
+      "alphaMethod": "Explicit contour alpha mask; excludes outer tile and baked label."
+    },
+    {
+      "id": "sticker_coffee@3x",
+      "path": "assets/stickers/sticker_coffee@3x.png",
+      "pixelWidth": 228,
+      "pixelHeight": 228,
+      "hasAlpha": true,
+      "sha256": "3866b072ede5c5f22a8a165452fe3b408c977de860fc5e199c53db05ac6debdb",
+      "source": {
+        "type": "reference-cutout",
+        "file": "source/user-reference.png",
+        "crop": [
+          1086,
+          1040,
+          60,
+          56
+        ]
+      },
+      "logicalWidth": 76,
+      "logicalHeight": 76,
+      "density": 3,
+      "label": "咖啡爱好者",
+      "originalDetail": {
+        "width": 60,
+        "height": 56
+      },
+      "replaceWithUserGenerated": true,
+      "alphaMethod": "Explicit contour alpha mask; excludes outer tile and baked label."
+    },
+    {
+      "id": "sticker_camera",
+      "path": "assets/stickers/sticker_camera.png",
+      "pixelWidth": 76,
+      "pixelHeight": 72,
+      "hasAlpha": true,
+      "sha256": "9083e441cf68f30cd82e25f232d62c9aaaa23a83f03516a6b1b704c66516f4c9",
+      "source": {
+        "type": "reference-cutout",
+        "file": "source/user-reference.png",
+        "crop": [
+          982,
+          1129,
+          64,
+          57
+        ]
+      },
+      "logicalWidth": 76,
+      "logicalHeight": 72,
+      "density": 1,
+      "label": "拍照达人",
+      "originalDetail": {
+        "width": 64,
+        "height": 57
+      },
+      "replaceWithUserGenerated": true,
+      "alphaMethod": "Explicit contour alpha mask; excludes outer tile and baked label."
+    },
+    {
+      "id": "sticker_camera@2x",
+      "path": "assets/stickers/sticker_camera@2x.png",
+      "pixelWidth": 152,
+      "pixelHeight": 144,
+      "hasAlpha": true,
+      "sha256": "860b0d16199f29b1c68efea4fa9fda4517ec22ad631cc88382cf4e405667175d",
+      "source": {
+        "type": "reference-cutout",
+        "file": "source/user-reference.png",
+        "crop": [
+          982,
+          1129,
+          64,
+          57
+        ]
+      },
+      "logicalWidth": 76,
+      "logicalHeight": 72,
+      "density": 2,
+      "label": "拍照达人",
+      "originalDetail": {
+        "width": 64,
+        "height": 57
+      },
+      "replaceWithUserGenerated": true,
+      "alphaMethod": "Explicit contour alpha mask; excludes outer tile and baked label."
+    },
+    {
+      "id": "sticker_camera@3x",
+      "path": "assets/stickers/sticker_camera@3x.png",
+      "pixelWidth": 228,
+      "pixelHeight": 216,
+      "hasAlpha": true,
+      "sha256": "95b5a2dd083ba043a8f7992dbb8d8ded49a5d002d8dbf6fc2f15d22b68c75cd6",
+      "source": {
+        "type": "reference-cutout",
+        "file": "source/user-reference.png",
+        "crop": [
+          982,
+          1129,
+          64,
+          57
+        ]
+      },
+      "logicalWidth": 76,
+      "logicalHeight": 72,
+      "density": 3,
+      "label": "拍照达人",
+      "originalDetail": {
+        "width": 64,
+        "height": 57
+      },
+      "replaceWithUserGenerated": true,
+      "alphaMethod": "Explicit contour alpha mask; excludes outer tile and baked label."
+    },
+    {
+      "id": "sticker_star",
+      "path": "assets/stickers/sticker_star.png",
+      "pixelWidth": 76,
+      "pixelHeight": 76,
+      "hasAlpha": true,
+      "sha256": "4c8c5e2a707330ffd14d3ab937a9da18d5cb1c1ada548d20fce9409f6be8312b",
+      "source": {
+        "type": "reference-cutout",
+        "file": "source/user-reference.png",
+        "crop": [
+          1090,
+          1129,
+          62,
+          56
+        ]
+      },
+      "logicalWidth": 76,
+      "logicalHeight": 76,
+      "density": 1,
+      "label": "百店俱乐部",
+      "originalDetail": {
+        "width": 62,
+        "height": 56
+      },
+      "replaceWithUserGenerated": true,
+      "alphaMethod": "Explicit contour alpha mask; excludes outer tile and baked label."
+    },
+    {
+      "id": "sticker_star@2x",
+      "path": "assets/stickers/sticker_star@2x.png",
+      "pixelWidth": 152,
+      "pixelHeight": 152,
+      "hasAlpha": true,
+      "sha256": "af2abd89439102416b26df63cbee684b796c2bddad3a91bc510ecb785b1c82e7",
+      "source": {
+        "type": "reference-cutout",
+        "file": "source/user-reference.png",
+        "crop": [
+          1090,
+          1129,
+          62,
+          56
+        ]
+      },
+      "logicalWidth": 76,
+      "logicalHeight": 76,
+      "density": 2,
+      "label": "百店俱乐部",
+      "originalDetail": {
+        "width": 62,
+        "height": 56
+      },
+      "replaceWithUserGenerated": true,
+      "alphaMethod": "Explicit contour alpha mask; excludes outer tile and baked label."
+    },
+    {
+      "id": "sticker_star@3x",
+      "path": "assets/stickers/sticker_star@3x.png",
+      "pixelWidth": 228,
+      "pixelHeight": 228,
+      "hasAlpha": true,
+      "sha256": "24b82b666d2c9b99b7e427d699a97d66530fc608ab5a513c6a71b600f41333ae",
+      "source": {
+        "type": "reference-cutout",
+        "file": "source/user-reference.png",
+        "crop": [
+          1090,
+          1129,
+          62,
+          56
+        ]
+      },
+      "logicalWidth": 76,
+      "logicalHeight": 76,
+      "density": 3,
+      "label": "百店俱乐部",
+      "originalDetail": {
+        "width": 62,
+        "height": 56
+      },
+      "replaceWithUserGenerated": true,
+      "alphaMethod": "Explicit contour alpha mask; excludes outer tile and baked label."
+    },
+    {
+      "id": "doodle_cat",
+      "path": "assets/stickers/doodle_cat.png",
+      "pixelWidth": 96,
+      "pixelHeight": 61,
+      "hasAlpha": true,
+      "sha256": "424986035d27e7e019f341e1cab89ff2ff94122eb4d17ba00c234337c2ce3cc1",
+      "source": {
+        "type": "reference-ink-extraction",
+        "file": "source/user-reference.png",
+        "crop": [
+          40,
+          1183,
+          144,
+          91
+        ]
+      },
+      "logicalWidth": 96,
+      "logicalHeight": 61,
+      "density": 1,
+      "originalDetail": {
+        "width": 144,
+        "height": 91
+      },
+      "method": "luminance-key transparent ink; no background tile"
+    },
+    {
+      "id": "doodle_cat@2x",
+      "path": "assets/stickers/doodle_cat@2x.png",
+      "pixelWidth": 192,
+      "pixelHeight": 122,
+      "hasAlpha": true,
+      "sha256": "ed621955ffe8bc12a5295a716ee4ca45c744b4bc1b5e72b42572240315374ee1",
+      "source": {
+        "type": "reference-ink-extraction",
+        "file": "source/user-reference.png",
+        "crop": [
+          40,
+          1183,
+          144,
+          91
+        ]
+      },
+      "logicalWidth": 96,
+      "logicalHeight": 61,
+      "density": 2,
+      "originalDetail": {
+        "width": 144,
+        "height": 91
+      },
+      "method": "luminance-key transparent ink; no background tile"
+    },
+    {
+      "id": "doodle_cat@3x",
+      "path": "assets/stickers/doodle_cat@3x.png",
+      "pixelWidth": 288,
+      "pixelHeight": 183,
+      "hasAlpha": true,
+      "sha256": "6cbba41c6f19dfd3ca4c212223644da2eca8120bacff27dab6fd91bdf032a2e9",
+      "source": {
+        "type": "reference-ink-extraction",
+        "file": "source/user-reference.png",
+        "crop": [
+          40,
+          1183,
+          144,
+          91
+        ]
+      },
+      "logicalWidth": 96,
+      "logicalHeight": 61,
+      "density": 3,
+      "originalDetail": {
+        "width": 144,
+        "height": 91
+      },
+      "method": "luminance-key transparent ink; no background tile"
+    },
+    {
+      "id": "stamp_ring",
+      "path": "assets/stickers/stamp_ring.png",
+      "pixelWidth": 86,
+      "pixelHeight": 86,
+      "hasAlpha": true,
+      "sha256": "8555fc46adbaeec2d98da2a5c7a760bf7cf1e145774bba552644a40b99dad894",
+      "source": {
+        "type": "authored-vector-to-raster",
+        "construction": "clean decorative border, no generated lettering"
+      },
+      "logicalWidth": 86,
+      "logicalHeight": 86,
+      "density": 1,
+      "bakedText": false
+    },
+    {
+      "id": "stamp_ring@2x",
+      "path": "assets/stickers/stamp_ring@2x.png",
+      "pixelWidth": 172,
+      "pixelHeight": 172,
+      "hasAlpha": true,
+      "sha256": "795f3a81e72f737cec5bac63344d36963348dcfd9931fddeaa83027b7e48161f",
+      "source": {
+        "type": "authored-vector-to-raster",
+        "construction": "clean decorative border, no generated lettering"
+      },
+      "logicalWidth": 86,
+      "logicalHeight": 86,
+      "density": 2,
+      "bakedText": false
+    },
+    {
+      "id": "stamp_ring@3x",
+      "path": "assets/stickers/stamp_ring@3x.png",
+      "pixelWidth": 258,
+      "pixelHeight": 258,
+      "hasAlpha": true,
+      "sha256": "5bd24b7fdb2614362e349bae1157c658cb3185451d119abc6ade16a133ccbad2",
+      "source": {
+        "type": "authored-vector-to-raster",
+        "construction": "clean decorative border, no generated lettering"
+      },
+      "logicalWidth": 86,
+      "logicalHeight": 86,
+      "density": 3,
+      "bakedText": false
+    },
+    {
+      "id": "stamp_coffee_ink",
+      "path": "assets/stickers/stamp_coffee_ink.png",
+      "pixelWidth": 36,
+      "pixelHeight": 35,
+      "hasAlpha": true,
+      "sha256": "3152881545b5e8ac518d51bb8f55aa4957ed8774f43d29df24ebf458ed1b1bc6",
+      "source": {
+        "type": "existing-icon-rasterization",
+        "construction": "Existing UI coffee outline; clean text-free asset, no source lettering."
+      },
+      "logicalWidth": 36,
+      "logicalHeight": 35,
+      "density": 1,
+      "bakedText": false
+    },
+    {
+      "id": "stamp_coffee_ink@2x",
+      "path": "assets/stickers/stamp_coffee_ink@2x.png",
+      "pixelWidth": 72,
+      "pixelHeight": 70,
+      "hasAlpha": true,
+      "sha256": "0c0a8217aba8286254677ece918086273ff6321640c659a3ec90a55cecdd15af",
+      "source": {
+        "type": "existing-icon-rasterization",
+        "construction": "Existing UI coffee outline; clean text-free asset, no source lettering."
+      },
+      "logicalWidth": 36,
+      "logicalHeight": 35,
+      "density": 2,
+      "bakedText": false
+    },
+    {
+      "id": "stamp_coffee_ink@3x",
+      "path": "assets/stickers/stamp_coffee_ink@3x.png",
+      "pixelWidth": 108,
+      "pixelHeight": 105,
+      "hasAlpha": true,
+      "sha256": "531980562483417a4a03edc90aa29fa3e0334349d24e7f9c0fe12338333ac1e4",
+      "source": {
+        "type": "existing-icon-rasterization",
+        "construction": "Existing UI coffee outline; clean text-free asset, no source lettering."
+      },
+      "logicalWidth": 36,
+      "logicalHeight": 35,
+      "density": 3,
+      "bakedText": false
+    }
+  ],
+  "limits": [
+    "Reference cutouts retain original source detail; 2x/3x exports are resampling, not new detail.",
+    "Reference and existing photos are prototype sources; verify rights before shipping.",
+    "User generated replacements have not yet been supplied."
+  ]
+}

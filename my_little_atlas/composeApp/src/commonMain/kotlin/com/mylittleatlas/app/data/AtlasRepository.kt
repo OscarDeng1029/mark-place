@@ -14,7 +14,7 @@ class AtlasRepository(private val storage: AtlasStorage) {
     private val json = Json { prettyPrint = true; ignoreUnknownKeys = true }
 
     fun load(): AtlasData {
-        val raw = storage.read() ?: return DemoAtlas.create()
+        val raw = storage.read() ?: return AtlasData(demoContent=false,onboarded=false)
         return json.decodeFromString<AtlasData>(raw).also {
             require(it.schemaVersion == 1) { "此备份来自较新版本，请先更新 App。" }
         }
@@ -29,6 +29,9 @@ class AtlasRepository(private val storage: AtlasStorage) {
         require(data.places.map { it.id }.distinct().size == data.places.size) { "备份中有重复地点编号。" }
         require(data.collections.map { it.id }.distinct().size == data.collections.size) { "备份中有重复收藏夹编号。" }
         require(data.visits.all { v -> data.places.any { it.id == v.placeId } }) { "备份包含没有对应地点的到访记录。" }
+        require(data.drafts.all { v -> data.places.any { it.id == v.placeId } }) { "备份包含没有对应地点的草稿。" }
+        require(data.visits.map{it.id}.distinct().size==data.visits.size) { "备份中有重复到访编号。" }
+        require(data.drafts.map{it.id}.distinct().size==data.drafts.size) { "备份中有重复草稿编号。" }
         return data
     }
 }

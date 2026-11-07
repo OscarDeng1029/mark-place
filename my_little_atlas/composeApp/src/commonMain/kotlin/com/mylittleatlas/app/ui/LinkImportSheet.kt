@@ -25,9 +25,14 @@ import kotlinx.serialization.json.*
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ImportSheet(controller: AtlasController, initialText: String, onClose: () -> Unit) {
+fun ImportSheet(controller: AtlasController, initialText: String, onClose: () -> Unit,initialTab:Int=0) {
     var text by remember { mutableStateOf(initialText) }
-    var tab by remember { mutableStateOf(0) }
+    var tab by remember { mutableStateOf(initialTab) }
+    var screenshot by remember { mutableStateOf<String?>(null) }
+    var success by remember { mutableStateOf(0) }
+    var newFolder by remember { mutableStateOf(false) }
+    var discard by remember { mutableStateOf(false) }
+    var duplicatePlace by remember { mutableStateOf<Place?>(null) }
     var name by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
     var city by remember { mutableStateOf("上海") }
@@ -50,6 +55,7 @@ fun ImportSheet(controller: AtlasController, initialText: String, onClose: () ->
     val candidates = note?.shops?.map { it.candidate(city, note!!.source) } ?: structured
     val busy = phase.isNotEmpty()
     val key: (ImportCandidate) -> String = { "${it.city}|${it.name}|${it.address}" }
+    val close={if(text!=initialText||name.isNotBlank()||address.isNotBlank()||screenshot!=null)discard=true else onClose()}
     fun reset() { requestVersion++; job?.cancel(); phase = ""; note = null; error = null; selected = emptySet() }
     fun parse() {
         val version = ++requestVersion
@@ -71,23 +77,29 @@ fun ImportSheet(controller: AtlasController, initialText: String, onClose: () ->
             finally { if(version == requestVersion) phase = "" }
         }
     }
-    Dialog(onDismissRequest = onClose, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-        Surface(Modifier.widthIn(max = 620.dp).fillMaxWidth().fillMaxHeight(.94f).padding(12.dp),
-            shape = RoundedCornerShape(22.dp), color = AtlasColors.Paper) {
+    Dialog(onDismissRequest = close, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+        Paper(Modifier.widthIn(max = 620.dp).fillMaxWidth().fillMaxHeight().windowInsetsPadding(WindowInsets.safeDrawing).imePadding()) {
             Column(Modifier.fillMaxSize()) {
                 Row(Modifier.fillMaxWidth().padding(start = 22.dp, end = 10.dp, top = 13.dp), verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
                         Text("收藏一处新去处", style = MaterialTheme.typography.titleLarge)
                         Text("慢慢收集，按自己的节奏出发", fontSize = 11.sp, color = AtlasColors.Muted)
                     }
-                    IconButton(Glyph.CLOSE, "关闭", onClose)
+                    IconButton(Glyph.SETTINGS,"导入服务设置",{serviceSettings=true})
+                    IconButton(Glyph.CLOSE, "关闭", close)
                 }
                 Row(Modifier.padding(horizontal = 22.dp, vertical = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Tag("粘贴笔记 / 链接", tab == 0, { tab = 0 })
+                    Tag("链接 / 文字", tab == 0, { tab = 0 })
+                    Tag("攻略截图", tab == 2, { tab = 2 })
                     Tag("手动添加", tab == 1, { tab = 1 })
                 }
                 Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 22.dp), verticalArrangement = Arrangement.spacedBy(13.dp)) {
-                    if (tab == 0) {
+                    if (tab != 1) {
+                        if(tab==2){
+                            PaperNote(Modifier.fillMaxWidth()){Text("截图辅助整理：先选图，再把店名与地址粘贴到下方。当前版本还没有自动读图功能。",fontSize=12.sp,color=AtlasColors.Muted)}
+                            screenshot?.let{Photo("local:"+it,Modifier.fillMaxWidth().height(180.dp).clip(RoundedCornerShape(6.dp)))}
+                            OutlinedButton(onClick={controller.platform.pickPhoto{if(it!=null)screenshot=it}},modifier=Modifier.fillMaxWidth()){AtlasIcon(Glyph.CAMERA,size=17.dp);Spacer(Modifier.width(8.dp));Text(if(screenshot==null)"选择一张攻略截图" else "更换截图")}
+                        }
                         Text("粘贴小红书分享链接或笔记正文，识别后由你挑选收藏。也支持每行「店名｜地址｜城市」。", fontSize = 12.sp, color = AtlasColors.Muted)
                         BasicTextField(text, { reset(); text = it }, Modifier.fillMaxWidth().heightIn(min = 110.dp, max = 180.dp)
                             .clip(RoundedCornerShape(13.dp)).background(AtlasColors.Card).padding(14.dp),
@@ -104,7 +116,6 @@ fun ImportSheet(controller: AtlasController, initialText: String, onClose: () ->
                                 TextButton(onClick = { job?.cancel(); phase = "" }) { Text("停止") }
                             }
                         }
-                        TextButton(onClick = { serviceSettings = true }) { Text("解析服务", fontSize = 11.sp) }
                         error?.let { message ->
                             Text(message, fontSize = 12.sp, color = AtlasColors.Ink)
                             TextButton(onClick = { tab = 1; source = SourceLinks.extract(text).orEmpty() }) { Text("保留来源，手动补充地点") }
@@ -134,6 +145,7 @@ fun ImportSheet(controller: AtlasController, initialText: String, onClose: () ->
                                             Text(candidate.name, style = MaterialTheme.typography.titleMedium)
                                             Text(candidate.address.ifBlank { "地址待确认 · ${candidate.city}" }, fontSize = 11.sp, color = AtlasColors.Muted)
                                             Text(if(duplicate) "已收藏" else if(candidate.latitude != null) "已定位 · 收藏后显示在地图" else "待定位 · 可先收藏", fontSize = 10.sp, color = AtlasColors.Green)
+                                            if(duplicate)TextButton(onClick={duplicatePlace=controller.data.places.find{p->TextPlaceImporter.isDuplicate(candidate,listOf(p))}}){Text("整理已收藏地点",fontSize=11.sp)}
                                         }
                                     }
                                     note?.shops?.getOrNull(index)?.let { shop ->
@@ -147,10 +159,11 @@ fun ImportSheet(controller: AtlasController, initialText: String, onClose: () ->
                     } else {
                         Text("记录你自己挑中的地点，来源链接会一并保留。", fontSize = 12.sp, color = AtlasColors.Muted)
                         AtlasField(name, { name = it; manualPoi = null }, "地点名称")
-                        AtlasField(address, { address = it; manualPoi = null }, "地址 / 街道")
+                        AtlasField(address, { address = it; manualPoi = null }, "地址 / 街道（可之后补全）")
                         AtlasField(city, { reset(); city = it; manualPoi = null }, "城市")
                         AtlasField(source, { source = it }, "灵感来源链接（选填）")
                         TextButton(onClick = { manualLocator = true }, enabled = name.isNotBlank() && city.isNotBlank()) { Text(if(manualPoi == null) "在高德确认门店位置" else "已确认位置 · 重新选择") }
+                        if(address.isBlank())PaperNote(Modifier.fillMaxWidth()){Text("先把心动留下。没有确认位置的地点会出现在「待定位」中，补全地址后再上地图。",fontSize=11.sp,color=AtlasColors.Muted)}
                     }
                     Text("放进收藏夹", fontSize = 12.sp, color = AtlasColors.Muted)
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(7.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
@@ -158,25 +171,40 @@ fun ImportSheet(controller: AtlasController, initialText: String, onClose: () ->
                             Tag(folder.name, folder.id in folders, { folders = if(folder.id in folders) folders - folder.id else folders + folder.id })
                         }
                     }
+                    TextButton(onClick={newFolder=true}){Text("＋ 新建收藏夹",fontSize=11.sp)}
                     Spacer(Modifier.height(12.dp))
                 }
                 Row(Modifier.fillMaxWidth().background(AtlasColors.Card).padding(16.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    OutlinedButton(onClick = onClose, Modifier.height(50.dp).weight(1f), shape = RoundedCornerShape(14.dp)) { Text("先不收藏") }
-                    PrimaryButton(if(tab == 0) "收藏已选 ${selected.size} 处" else "收藏这个地点", {
-                        if(tab == 0) {
-                            if(controller.importSelected(candidates.filter { key(it) in selected }, folders.toList()) > 0) onClose()
+                    OutlinedButton(onClick = close, Modifier.height(50.dp).weight(1f), shape = RoundedCornerShape(14.dp)) { Text("先不收藏") }
+                    PrimaryButton(if(tab != 1) "收藏已选 ${selected.size} 处" else "收藏这个地点", {
+                        if(tab != 1) {
+                            val count=controller.importSelected(candidates.filter { key(it) in selected }, folders.toList());if(count>0)success=count
                         } else {
                             val p = manualPoi
                             val place = Place(controller.platform.uniqueId(), name.trim(), city.trim(), address = address.trim(),
                                 district = p?.district.orEmpty(), latitude = p?.latitude, longitude = p?.longitude,
                                 gcjLatitude = p?.gcjLatitude, gcjLongitude = p?.gcjLongitude, poiId = p?.id.orEmpty(),
                                 collectionIds = folders.toList(), source = SourceLinks.persistent(source.trim()), addedOn = controller.platform.today())
-                            if(controller.addPlace(place)) onClose()
+                            if(controller.addPlace(place))success=1
                         }
-                    }, Modifier.weight(1.4f), Glyph.PLUS, enabled = !busy && if(tab == 0) selected.isNotEmpty() else name.isNotBlank() && address.isNotBlank() && city.isNotBlank())
+                    }, Modifier.weight(1.4f), Glyph.PLUS, enabled = !busy && if(tab != 1) selected.isNotEmpty() else name.isNotBlank() && city.isNotBlank())
                 }
             }
         }
+    }
+    if(newFolder)FolderEditorV2(controller,null,{newFolder=false})
+    duplicatePlace?.let{existing->AlertDialog(onDismissRequest={duplicatePlace=null},title={Text("这个地点已在图鉴里")},text={Column{
+        Text(existing.name,style=MaterialTheme.typography.titleMedium)
+        Text(existing.address,fontSize=12.sp,color=AtlasColors.Muted)
+        Text("保留原地点和到访记录，可以将上面选中的收藏夹追加给它。",fontSize=12.sp,modifier=Modifier.padding(top=12.dp))
+    }},confirmButton={TextButton(onClick={if(controller.updatePlace(existing.copy(collectionIds=(existing.collectionIds+folders).distinct(),source=existing.source.ifBlank{SourceLinks.extract(text).orEmpty()}))){duplicatePlace=null;controller.message="已更新原地点的归类，没有创建重复地点。"}}){Text("追加当前归类")}},dismissButton={TextButton(onClick={duplicatePlace=null}){Text("保留原样")}},containerColor=AtlasColors.Card)}
+    if(discard)ConfirmDialog("先把灵感放一放？","关闭后，本次尚未收藏的输入不会保存。已经收藏的地点继续保留。","放弃并关闭",onClose,{discard=false})
+    if(success>0)AtlasFullPage("已收下这份心动",onClose){
+        ScrapbookBadge(3,null,Modifier.size(100.dp).align(Alignment.CenterHorizontally))
+        Text(success.toString()+" 处地点，已收进图鉴",style=MaterialTheme.typography.headlineMedium)
+        Text("它们都还是「想去」。确认位置后会显示在私人地图，真正到访时再留下一篇手账。",fontSize=13.sp,lineHeight=23.sp,color=AtlasColors.Muted)
+        PrimaryButton("回到我的图鉴",onClose,Modifier.fillMaxWidth(),Glyph.BOOKMARK)
+        OutlinedButton(onClick={success=0;reset();text="";name="";address="";manualPoi=null;screenshot=null},modifier=Modifier.fillMaxWidth()){Text("继续收藏下一处")}
     }
     locating?.let { shop -> PoiPicker(controller.platform, city, shop.name, shop.candidates, { p ->
         selected = emptySet(); note = note?.copy(shops = note!!.shops.map { if(it.id == shop.id) it.copy(place = p, matchReason = "手动确认高德门店") else it }); locating = null

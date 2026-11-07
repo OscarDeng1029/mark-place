@@ -1,0 +1,554 @@
+{
+  "screens": [
+    {
+      "id": "welcome",
+      "name": "欢迎与品牌",
+      "group": 1,
+      "entry": "首次打开",
+      "note": "先感受产品，再开始收藏。"
+    },
+    {
+      "id": "city",
+      "name": "城市选择",
+      "group": 1,
+      "entry": "欢迎页／首页城市",
+      "note": "可手动选城市，不强求定位。"
+    },
+    {
+      "id": "home",
+      "name": "收藏首页",
+      "group": 1,
+      "entry": "底部「收藏」",
+      "note": "搜索、状态、主题和最近收藏。"
+    },
+    {
+      "id": "collections",
+      "name": "全部收藏夹",
+      "group": 1,
+      "entry": "首页「我的收藏夹 → 全部」",
+      "note": "主题分类；一个地点可加入多个夹。"
+    },
+    {
+      "id": "folder",
+      "name": "收藏夹详情",
+      "group": 2,
+      "entry": "收藏夹卡片",
+      "note": "列表与地图切换；管理地点归类。"
+    },
+    {
+      "id": "new-folder",
+      "name": "新建收藏夹",
+      "group": 2,
+      "entry": "收藏夹右上角「＋」",
+      "note": "名称必填；封面与样式有默认值。"
+    },
+    {
+      "id": "search",
+      "name": "搜索地点",
+      "group": 2,
+      "entry": "首页／地图搜索",
+      "note": "先呈现自己的收藏，再找新地点。"
+    },
+    {
+      "id": "add",
+      "name": "添加操作菜单",
+      "group": 2,
+      "entry": "底部居中「＋」",
+      "note": "三个明确任务，减少入口犹豫。"
+    },
+    {
+      "id": "import",
+      "name": "导入灵感",
+      "group": 3,
+      "entry": "「＋ → 导入地点」",
+      "note": "文字／链接／截图；保留来源。"
+    },
+    {
+      "id": "parsing",
+      "name": "识别进行中",
+      "group": 3,
+      "entry": "点击「识别里面的地点」",
+      "note": "展示阶段与取消入口，保留输入。"
+    },
+    {
+      "id": "results",
+      "name": "导入结果与明确选择",
+      "group": 3,
+      "entry": "识别完成；图示为选中两项后的状态",
+      "note": "选中的才保存；重复与待确认分开。"
+    },
+    {
+      "id": "branch",
+      "name": "分店匹配",
+      "group": 3,
+      "entry": "导入结果「更换／匹配分店」",
+      "note": "用区域与完整地址区分同名门店。"
+    },
+    {
+      "id": "duplicate",
+      "name": "重复地点处理",
+      "group": 4,
+      "entry": "导入时发现已收藏",
+      "note": "保留原地点，可追加来源和归类。"
+    },
+    {
+      "id": "import-success",
+      "name": "收藏完成",
+      "group": 4,
+      "entry": "确认选中地点后",
+      "note": "明确保存数量，衔接地图和继续导入。"
+    },
+    {
+      "id": "manual",
+      "name": "手动添加地点",
+      "group": 4,
+      "entry": "搜索无结果／分店匹配",
+      "note": "地址与选点关联；允许后补定位。"
+    },
+    {
+      "id": "unlocated",
+      "name": "待定位地点",
+      "group": 4,
+      "entry": "手动保存时没有地址",
+      "note": "保存灵感，清楚提示尚未上地图。"
+    },
+    {
+      "id": "map",
+      "name": "私人地图",
+      "group": 5,
+      "entry": "底部「地图」",
+      "note": "只看自己的地点；标记与卡片联动。"
+    },
+    {
+      "id": "maplist",
+      "name": "地图列表视图",
+      "group": 5,
+      "entry": "地图右侧「列表」",
+      "note": "保留地图与筛选，按距离查看收藏。"
+    },
+    {
+      "id": "filters",
+      "name": "地图筛选",
+      "group": 5,
+      "entry": "地图筛选按钮",
+      "note": "状态、分类与收藏夹可组合筛选。"
+    },
+    {
+      "id": "navigation",
+      "name": "选择导航方式",
+      "group": 5,
+      "entry": "地点卡或详情「导航」",
+      "note": "交给常用地图导航，返回保留位置。"
+    },
+    {
+      "id": "place",
+      "name": "想去的地点详情",
+      "group": 6,
+      "entry": "地图／搜索／收藏卡片",
+      "note": "聚合地址、理由、归类和来源。"
+    },
+    {
+      "id": "visited",
+      "name": "去过的地点详情",
+      "group": 6,
+      "entry": "足迹／已到访地点",
+      "note": "同一地点展示多次到访及再去意愿。"
+    },
+    {
+      "id": "visit",
+      "name": "记录一次到访",
+      "group": 6,
+      "entry": "地点详情／「＋ → 记录到访」",
+      "note": "日期可改，照片与文字均可跳过。"
+    },
+    {
+      "id": "calendar",
+      "name": "补记与日期选择",
+      "group": 6,
+      "entry": "记录页「到访日期」",
+      "note": "明确日期，不默认导航即打卡。"
+    },
+    {
+      "id": "visit-success",
+      "name": "到访保存成功",
+      "group": 7,
+      "entry": "记录页「留住这次到访」",
+      "note": "先完成记录，再邀请美化。"
+    },
+    {
+      "id": "journal",
+      "name": "到访手账详情",
+      "group": 7,
+      "entry": "足迹卡片／保存到访后",
+      "note": "保留照片与故事，分享和编辑清楚。"
+    },
+    {
+      "id": "layout",
+      "name": "手账排版编辑",
+      "group": 7,
+      "entry": "手账详情「调整排版」",
+      "note": "模板、照片顺序与装饰；保留草稿。"
+    },
+    {
+      "id": "photo-picker",
+      "name": "选择照片",
+      "group": 7,
+      "entry": "记录添加照片／更换封面",
+      "note": "照片选择数量明确，返回继续编辑。"
+    },
+    {
+      "id": "timeline",
+      "name": "足迹时间线",
+      "group": 8,
+      "entry": "底部「足迹」",
+      "note": "按日回忆；城市与月份都可切换。"
+    },
+    {
+      "id": "city-atlas",
+      "name": "城市图鉴",
+      "group": 8,
+      "entry": "足迹「城市图鉴」／城市卡片",
+      "note": "按城市汇总地点、到访与个人记忆。"
+    },
+    {
+      "id": "templates",
+      "name": "选择分享模板",
+      "group": 8,
+      "entry": "手账／地点／图鉴「分享」",
+      "note": "沿用当前内容，不要求重新填写。"
+    },
+    {
+      "id": "share",
+      "name": "海报预览与隐私选项",
+      "group": 8,
+      "entry": "选择分享模板后",
+      "note": "看到实际导出内容，再保存或分享。"
+    },
+    {
+      "id": "saved",
+      "name": "导出完成与分享",
+      "group": 9,
+      "entry": "海报「保存到相册」",
+      "note": "完成反馈；系统分享和继续浏览。"
+    },
+    {
+      "id": "folder-share",
+      "name": "收藏夹与城市分享",
+      "group": 9,
+      "entry": "收藏夹／城市图鉴「分享」",
+      "note": "集合海报自动带入主题与统计。"
+    },
+    {
+      "id": "profile",
+      "name": "我的图鉴",
+      "group": 9,
+      "entry": "底部「我的」",
+      "note": "个人封面、统计、成就与设置。"
+    },
+    {
+      "id": "badges",
+      "name": "我的勋章墙",
+      "group": 9,
+      "entry": "我的「小小成就」",
+      "note": "条件、数量与未解锁进度透明。"
+    },
+    {
+      "id": "badge-detail",
+      "name": "已获得的勋章",
+      "group": 10,
+      "entry": "勋章墙／我的成就",
+      "note": "纪念获得时刻，回看走过的城市。"
+    },
+    {
+      "id": "badge-progress",
+      "name": "未解锁勋章与进度",
+      "group": 10,
+      "entry": "勋章墙未解锁项",
+      "note": "展示条件，不制造连续签到压力。"
+    },
+    {
+      "id": "settings",
+      "name": "设置",
+      "group": 10,
+      "entry": "我的右上角「设置」",
+      "note": "账号、权限、数据与外观集中。"
+    },
+    {
+      "id": "backup",
+      "name": "备份与数据",
+      "group": 10,
+      "entry": "我的／设置「备份与数据」",
+      "note": "如实区分本机、备份文件与云同步。"
+    },
+    {
+      "id": "empty",
+      "name": "首次收藏空状态",
+      "group": 11,
+      "entry": "新用户进入收藏首页",
+      "note": "有方向的空页，两个清晰起点。"
+    },
+    {
+      "id": "error",
+      "name": "导入失败与替代路径",
+      "group": 11,
+      "entry": "链接读取失败",
+      "note": "保留输入，给出可完成任务的方式。"
+    },
+    {
+      "id": "permission",
+      "name": "定位权限说明",
+      "group": 11,
+      "entry": "点击「定位／使用当前位置」",
+      "note": "说明价值，拒绝后仍可使用地图。"
+    },
+    {
+      "id": "bulk",
+      "name": "批量整理地点",
+      "group": 11,
+      "entry": "收藏夹「整理／多选」",
+      "note": "移出当前夹与删除地点明确区分。"
+    },
+    {
+      "id": "folder-picker",
+      "name": "选择收藏夹",
+      "group": 12,
+      "entry": "导入／地点详情／批量整理",
+      "note": "允许多选，支持就地新建。"
+    },
+    {
+      "id": "draft",
+      "name": "退出编辑与草稿",
+      "group": 12,
+      "entry": "未保存到访时返回",
+      "note": "保护输入；继续、存草稿和放弃。"
+    },
+    {
+      "id": "delete",
+      "name": "删除地点确认",
+      "group": 12,
+      "entry": "批量整理／地点更多菜单",
+      "note": "展示关联记录；删除前说明影响。"
+    },
+    {
+      "id": "edit-profile",
+      "name": "编辑个人资料",
+      "group": 12,
+      "entry": "我的「编辑资料／封面」",
+      "note": "个人表达集中，不影响核心操作。"
+    },
+    {
+      "id": "signin",
+      "name": "账号与登录规划",
+      "group": 13,
+      "entry": "设置「登录与设备同步」",
+      "note": "先体验再登录；清楚标注后续能力。"
+    },
+    {
+      "id": "folder-options",
+      "name": "收藏夹更多操作",
+      "group": 13,
+      "entry": "收藏夹右上角「更多」",
+      "note": "编辑、批量整理、封面与删除分层。"
+    },
+    {
+      "id": "record-options",
+      "name": "到访记录更多操作",
+      "group": 13,
+      "entry": "手账详情右上角「更多」",
+      "note": "编辑本次记录，与删除整个地点区分。"
+    },
+    {
+      "id": "system-share",
+      "name": "系统分享衔接",
+      "group": 13,
+      "entry": "海报导出后「系统分享」",
+      "note": "用户主动选择目标，不自动发布。"
+    },
+    {
+      "id": "screenshot-import",
+      "name": "选择攻略截图",
+      "group": 14,
+      "entry": "导入灵感「从截图里找地点」",
+      "note": "攻略截图与到访照片分开，返回导入核对。"
+    },
+    {
+      "id": "drafts",
+      "name": "我的草稿",
+      "group": 14,
+      "entry": "我的「未完成的草稿」",
+      "note": "草稿单独展示，继续编辑后才正式记录。"
+    },
+    {
+      "id": "city-share",
+      "name": "城市图鉴分享",
+      "group": 14,
+      "entry": "城市图鉴右上角「分享」",
+      "note": "带入当前城市，展示城市统计而非收藏夹。"
+    },
+    {
+      "id": "search-empty",
+      "name": "没有找到地点",
+      "group": 14,
+      "entry": "地点搜索无匹配结果",
+      "note": "保留搜索词，可换城市、导入或手动添加。"
+    }
+  ],
+  "boards": [
+    [
+      "welcome",
+      "city",
+      "home",
+      "collections"
+    ],
+    [
+      "folder",
+      "new-folder",
+      "search",
+      "add"
+    ],
+    [
+      "import",
+      "parsing",
+      "results",
+      "branch"
+    ],
+    [
+      "duplicate",
+      "import-success",
+      "manual",
+      "unlocated"
+    ],
+    [
+      "map",
+      "maplist",
+      "filters",
+      "navigation"
+    ],
+    [
+      "place",
+      "visited",
+      "visit",
+      "calendar"
+    ],
+    [
+      "visit-success",
+      "journal",
+      "layout",
+      "photo-picker"
+    ],
+    [
+      "timeline",
+      "city-atlas",
+      "templates",
+      "share"
+    ],
+    [
+      "saved",
+      "folder-share",
+      "profile",
+      "badges"
+    ],
+    [
+      "badge-detail",
+      "badge-progress",
+      "settings",
+      "backup"
+    ],
+    [
+      "empty",
+      "error",
+      "permission",
+      "bulk"
+    ],
+    [
+      "folder-picker",
+      "draft",
+      "delete",
+      "edit-profile"
+    ],
+    [
+      "signin",
+      "folder-options",
+      "record-options",
+      "system-share"
+    ],
+    [
+      "screenshot-import",
+      "drafts",
+      "city-share",
+      "search-empty"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "01 / 开始与收藏",
+      "subtitle": "从第一次打开，到看见属于自己的心动清单。"
+    },
+    {
+      "id": 2,
+      "title": "02 / 整理与添加",
+      "subtitle": "主题收藏、搜索与三个明确的添加入口。"
+    },
+    {
+      "id": 3,
+      "title": "03 / 灵感变地点",
+      "subtitle": "识别 → 核对分店 → 明确选择；收藏始终由你决定。"
+    },
+    {
+      "id": 4,
+      "title": "04 / 保存与补全",
+      "subtitle": "重复不重建；地址不确定，也能先把灵感留下。"
+    },
+    {
+      "id": 5,
+      "title": "05 / 地图与出发",
+      "subtitle": "在自己的收藏里选下一站，随手交给常用地图导航。"
+    },
+    {
+      "id": 6,
+      "title": "06 / 地点与到访",
+      "subtitle": "同一个地点，保存每一次不一样的到访。"
+    },
+    {
+      "id": 7,
+      "title": "07 / 手账与回忆",
+      "subtitle": "先轻松记录，再把照片和心情排成喜欢的样子。"
+    },
+    {
+      "id": 8,
+      "title": "08 / 足迹与分享",
+      "subtitle": "按时间回看，按城市整理，只分享想展示的内容。"
+    },
+    {
+      "id": 9,
+      "title": "09 / 个人图鉴",
+      "subtitle": "主题海报、个人封面与那些慢慢获得的小成就。"
+    },
+    {
+      "id": 10,
+      "title": "10 / 成就与设置",
+      "subtitle": "有温度的反馈，也有清楚可靠的数据状态。"
+    },
+    {
+      "id": 11,
+      "title": "11 / 必要状态",
+      "subtitle": "空白、失败、权限与批量整理，都有顺手的下一步。"
+    },
+    {
+      "id": 12,
+      "title": "12 / 编辑与保护",
+      "subtitle": "归类、草稿、删除和个人表达，提前说明操作影响。"
+    },
+    {
+      "id": 13,
+      "title": "13 / 补充入口",
+      "subtitle": "账号规划、更多操作及系统分享的衔接状态。"
+    },
+    {
+      "id": 14,
+      "title": "14 / 辅助选择与回看",
+      "subtitle": "截图导入、草稿续写、城市分享与搜索空结果，各有合适的下一步。"
+    }
+  ]
+}

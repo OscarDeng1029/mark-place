@@ -1,0 +1,809 @@
+[
+  {
+    "id": "welcome",
+    "legend": [
+      {
+        "number": 1,
+        "layer": "L020",
+        "asset": "photo_city_walk",
+        "bounds": {
+          "x": 21.488,
+          "y": 254.112,
+          "width": 193.866,
+          "height": 204.65
+        }
+      },
+      {
+        "number": 2,
+        "layer": "L021",
+        "asset": "frame_polaroid_portrait",
+        "bounds": {
+          "x": 11.999,
+          "y": 244.624,
+          "width": 217.001,
+          "height": 243.19
+        }
+      },
+      {
+        "number": 3,
+        "layer": "L023",
+        "asset": "photo_coffee_table",
+        "bounds": {
+          "x": 176.691,
+          "y": 298.15,
+          "width": 191.434,
+          "height": 202.505
+        }
+      },
+      {
+        "number": 4,
+        "layer": "L024",
+        "asset": "frame_polaroid_portrait",
+        "bounds": {
+          "x": 163.496,
+          "y": 288.77,
+          "width": 214.009,
+          "height": 240.897
+        }
+      },
+      {
+        "number": 5,
+        "layer": "L025",
+        "asset": "tape_oat",
+        "bounds": {
+          "x": 95.66,
+          "y": 246.374,
+          "width": 77.681,
+          "height": 34.689
+        }
+      },
+      {
+        "number": 6,
+        "layer": "L027",
+        "asset": "stamp_ring",
+        "bounds": {
+          "x": 34.024,
+          "y": 475.742,
+          "width": 83.952,
+          "height": 83.952
+        }
+      },
+      {
+        "number": 7,
+        "layer": "L028",
+        "asset": "stamp_coffee_ink",
+        "bounds": {
+          "x": 61.666,
+          "y": 498.959,
+          "width": 26.643,
+          "height": 28.751
+        }
+      }
+    ]
+  },
+  {
+    "id": "home",
+    "legend": [
+      {
+        "number": 1,
+        "layer": "L026",
+        "asset": "photo_city_walk",
+        "bounds": {
+          "x": 213.376,
+          "y": 201.517,
+          "width": 139.441,
+          "height": 132.476
+        }
+      },
+      {
+        "number": 2,
+        "layer": "L028",
+        "asset": "frame_polaroid_thumb",
+        "bounds": {
+          "x": 203.382,
+          "y": 193.716,
+          "width": 157.237,
+          "height": 165.944
+        }
+      },
+      {
+        "number": 3,
+        "layer": "L029",
+        "asset": "tape_oat",
+        "bounds": {
+          "x": 255.245,
+          "y": 192.215,
+          "width": 71.302,
+          "height": 24.032
+        }
+      },
+      {
+        "number": 4,
+        "layer": "L053",
+        "asset": "photo_cafe_exterior",
+        "bounds": {
+          "x": 23,
+          "y": 533.281,
+          "width": 106.656,
+          "height": 86
+        }
+      },
+      {
+        "number": 5,
+        "layer": "L058",
+        "asset": "photo_dessert",
+        "bounds": {
+          "x": 141.656,
+          "y": 533.281,
+          "width": 106.672,
+          "height": 86
+        }
+      },
+      {
+        "number": 6,
+        "layer": "L063",
+        "asset": "photo_city_walk",
+        "bounds": {
+          "x": 260.328,
+          "y": 533.281,
+          "width": 106.656,
+          "height": 86
+        }
+      },
+      {
+        "number": 7,
+        "layer": "L072",
+        "asset": "photo_cafe_interior",
+        "bounds": {
+          "x": 22,
+          "y": 737.672,
+          "width": 61,
+          "height": 61
+        }
+      }
+    ]
+  },
+  {
+    "id": "collections",
+    "legend": [
+      {
+        "number": 1,
+        "layer": "L025",
+        "asset": "photo_cafe_exterior",
+        "bounds": {
+          "x": 23,
+          "y": 218,
+          "width": 164.5,
+          "height": 125
+        }
+      },
+      {
+        "number": 2,
+        "layer": "L030",
+        "asset": "photo_dessert",
+        "bounds": {
+          "x": 202.5,
+          "y": 218,
+          "width": 164.5,
+          "height": 125
+        }
+      },
+      {
+        "number": 3,
+        "layer": "L035",
+        "asset": "photo_city_walk",
+        "bounds": {
+          "x": 23,
+          "y": 426,
+          "width": 164.5,
+          "height": 125
+        }
+      },
+      {
+        "number": 4,
+        "layer": "L040",
+        "asset": "photo_bookshop",
+        "bounds": {
+          "x": 202.5,
+          "y": 426,
+          "width": 164.5,
+          "height": 125
+        }
+      },
+      {
+        "number": 5,
+        "layer": "L046",
+        "asset": "paper_torn_note",
+        "bounds": {
+          "x": 22,
+          "y": 840,
+          "width": 346,
+          "height": 91.5
+        }
+      }
+    ]
+  },
+  {
+    "id": "folder",
+    "legend": [
+      {
+        "number": 1,
+        "layer": "L019",
+        "asset": "photo_cafe_exterior",
+        "bounds": {
+          "x": 71.458,
+          "y": 113.112,
+          "width": 243.084,
+          "height": 182.777
+        }
+      },
+      {
+        "number": 2,
+        "layer": "L038",
+        "asset": "photo_cafe_interior",
+        "bounds": {
+          "x": 22,
+          "y": 514.781,
+          "width": 76,
+          "height": 76
+        }
+      },
+      {
+        "number": 3,
+        "layer": "L047",
+        "asset": "photo_cafe_exterior",
+        "bounds": {
+          "x": 22,
+          "y": 615.781,
+          "width": 76,
+          "height": 76
+        }
+      },
+      {
+        "number": 4,
+        "layer": "L057",
+        "asset": "photo_coffee_table",
+        "bounds": {
+          "x": 22,
+          "y": 716.781,
+          "width": 76,
+          "height": 76
+        }
+      }
+    ]
+  },
+  {
+    "id": "place",
+    "legend": [
+      {
+        "number": 1,
+        "layer": "L016",
+        "asset": "photo_cafe_interior",
+        "bounds": {
+          "x": 25.165,
+          "y": 111.666,
+          "width": 339.199,
+          "height": 211.674
+        }
+      },
+      {
+        "number": 2,
+        "layer": "L018",
+        "asset": "frame_polaroid_wide",
+        "bounds": {
+          "x": 19.01,
+          "y": 105.511,
+          "width": 351.981,
+          "height": 241.977
+        }
+      },
+      {
+        "number": 3,
+        "layer": "L019",
+        "asset": "tape_oat",
+        "bounds": {
+          "x": 147.591,
+          "y": 100.13,
+          "width": 88.876,
+          "height": 25.818
+        }
+      },
+      {
+        "number": 4,
+        "layer": "L037",
+        "asset": "paper_torn_note",
+        "bounds": {
+          "x": 22,
+          "y": 524.375,
+          "width": 346,
+          "height": 91.5
+        }
+      }
+    ]
+  },
+  {
+    "id": "visited",
+    "legend": [
+      {
+        "number": 1,
+        "layer": "L016",
+        "asset": "photo_cafe_interior",
+        "bounds": {
+          "x": 25.165,
+          "y": 111.666,
+          "width": 339.199,
+          "height": 211.674
+        }
+      },
+      {
+        "number": 2,
+        "layer": "L021",
+        "asset": "frame_polaroid_wide",
+        "bounds": {
+          "x": 19.01,
+          "y": 105.511,
+          "width": 351.981,
+          "height": 241.977
+        }
+      },
+      {
+        "number": 3,
+        "layer": "L022",
+        "asset": "tape_oat",
+        "bounds": {
+          "x": 147.591,
+          "y": 100.13,
+          "width": 88.876,
+          "height": 25.818
+        }
+      },
+      {
+        "number": 4,
+        "layer": "L040",
+        "asset": "paper_torn_note",
+        "bounds": {
+          "x": 22,
+          "y": 524.375,
+          "width": 346,
+          "height": 91.5
+        }
+      },
+      {
+        "number": 5,
+        "layer": "L057",
+        "asset": "photo_coffee_table",
+        "bounds": {
+          "x": 44,
+          "y": 771.156,
+          "width": 65,
+          "height": 53
+        }
+      },
+      {
+        "number": 6,
+        "layer": "L058",
+        "asset": "photo_cafe_interior",
+        "bounds": {
+          "x": 115,
+          "y": 771.156,
+          "width": 65,
+          "height": 53
+        }
+      }
+    ]
+  },
+  {
+    "id": "journal",
+    "legend": [
+      {
+        "number": 1,
+        "layer": "L026",
+        "asset": "photo_cafe_interior",
+        "bounds": {
+          "x": 24.594,
+          "y": 153.233,
+          "width": 340.183,
+          "height": 194.545
+        }
+      },
+      {
+        "number": 2,
+        "layer": "L028",
+        "asset": "frame_polaroid_wide",
+        "bounds": {
+          "x": 18.389,
+          "y": 147.027,
+          "width": 353.223,
+          "height": 224.945
+        }
+      },
+      {
+        "number": 3,
+        "layer": "L029",
+        "asset": "tape_oat",
+        "bounds": {
+          "x": 147.031,
+          "y": 143.534,
+          "width": 88.714,
+          "height": 25.058
+        }
+      },
+      {
+        "number": 4,
+        "layer": "L040",
+        "asset": "photo_coffee_table",
+        "bounds": {
+          "x": 30.39,
+          "y": 565.937,
+          "width": 134.758,
+          "height": 118.215
+        }
+      },
+      {
+        "number": 5,
+        "layer": "L041",
+        "asset": "frame_polaroid_small",
+        "bounds": {
+          "x": 23.703,
+          "y": 559.251,
+          "width": 149.593,
+          "height": 143.498
+        }
+      },
+      {
+        "number": 6,
+        "layer": "L043",
+        "asset": "photo_cafe_exterior",
+        "bounds": {
+          "x": 148.529,
+          "y": 573.889,
+          "width": 133.197,
+          "height": 116.287
+        }
+      },
+      {
+        "number": 7,
+        "layer": "L044",
+        "asset": "frame_polaroid_small",
+        "bounds": {
+          "x": 140.68,
+          "y": 567.295,
+          "width": 147.64,
+          "height": 141.41
+        }
+      },
+      {
+        "number": 8,
+        "layer": "L046",
+        "asset": "stamp_ring",
+        "bounds": {
+          "x": 293.123,
+          "y": 624.123,
+          "width": 82.753,
+          "height": 82.753
+        }
+      },
+      {
+        "number": 9,
+        "layer": "L047",
+        "asset": "stamp_coffee_ink",
+        "bounds": {
+          "x": 319.457,
+          "y": 643.045,
+          "width": 26.258,
+          "height": 28.33
+        }
+      }
+    ]
+  },
+  {
+    "id": "timeline",
+    "legend": [
+      {
+        "number": 1,
+        "layer": "L037",
+        "asset": "photo_cafe_interior",
+        "bounds": {
+          "x": 91,
+          "y": 326.188,
+          "width": 269,
+          "height": 130
+        }
+      },
+      {
+        "number": 2,
+        "layer": "L048",
+        "asset": "photo_bookshop",
+        "bounds": {
+          "x": 91,
+          "y": 571.781,
+          "width": 269,
+          "height": 130
+        }
+      }
+    ]
+  },
+  {
+    "id": "city-atlas",
+    "legend": [
+      {
+        "number": 1,
+        "layer": "L016",
+        "asset": "photo_city_walk",
+        "bounds": {
+          "x": 22,
+          "y": 113,
+          "width": 346,
+          "height": 175
+        }
+      },
+      {
+        "number": 2,
+        "layer": "L058",
+        "asset": "photo_cafe_interior",
+        "bounds": {
+          "x": 22,
+          "y": 718.578,
+          "width": 61,
+          "height": 61
+        }
+      }
+    ]
+  },
+  {
+    "id": "share",
+    "legend": [
+      {
+        "number": 1,
+        "layer": "L017",
+        "asset": "tape_oat",
+        "bounds": {
+          "x": 155.432,
+          "y": 181.303,
+          "width": 79.135,
+          "height": 24.395
+        }
+      },
+      {
+        "number": 2,
+        "layer": "L018",
+        "asset": "photo_cafe_interior",
+        "bounds": {
+          "x": 38.764,
+          "y": 177.13,
+          "width": 312.472,
+          "height": 223.52
+        }
+      },
+      {
+        "number": 3,
+        "layer": "L023",
+        "asset": "stamp_ring",
+        "bounds": {
+          "x": 278.921,
+          "y": 430.921,
+          "width": 73.159,
+          "height": 73.159
+        }
+      },
+      {
+        "number": 4,
+        "layer": "L024",
+        "asset": "stamp_coffee_ink",
+        "bounds": {
+          "x": 301.976,
+          "y": 446.693,
+          "width": 23.223,
+          "height": 25.05
+        }
+      }
+    ]
+  },
+  {
+    "id": "profile",
+    "legend": [
+      {
+        "number": 1,
+        "layer": "L014",
+        "asset": "photo_city_walk",
+        "bounds": {
+          "x": 22,
+          "y": 104,
+          "width": 346,
+          "height": 143
+        }
+      },
+      {
+        "number": 2,
+        "layer": "L015",
+        "asset": "tape_oat",
+        "bounds": {
+          "x": 45.341,
+          "y": 95.158,
+          "width": 67.318,
+          "height": 23.684
+        }
+      },
+      {
+        "number": 3,
+        "layer": "L041",
+        "asset": "sticker_mountain",
+        "bounds": {
+          "x": 25.442,
+          "y": 483.036,
+          "width": 81.116,
+          "height": 81.116
+        }
+      },
+      {
+        "number": 4,
+        "layer": "L045",
+        "asset": "sticker_coffee",
+        "bounds": {
+          "x": 154.442,
+          "y": 483.036,
+          "width": 81.116,
+          "height": 81.116
+        }
+      },
+      {
+        "number": 5,
+        "layer": "L049",
+        "asset": "sticker_camera",
+        "bounds": {
+          "x": 284.063,
+          "y": 483.657,
+          "width": 79.873,
+          "height": 79.873
+        }
+      }
+    ]
+  },
+  {
+    "id": "badges",
+    "legend": [
+      {
+        "number": 1,
+        "layer": "L025",
+        "asset": "sticker_mountain",
+        "bounds": {
+          "x": 32.034,
+          "y": 319.8,
+          "width": 88.588,
+          "height": 88.588
+        }
+      },
+      {
+        "number": 2,
+        "layer": "L030",
+        "asset": "sticker_coffee",
+        "bounds": {
+          "x": 150.691,
+          "y": 319.8,
+          "width": 88.588,
+          "height": 88.588
+        }
+      },
+      {
+        "number": 3,
+        "layer": "L035",
+        "asset": "sticker_camera",
+        "bounds": {
+          "x": 270.041,
+          "y": 320.479,
+          "width": 87.23,
+          "height": 87.23
+        }
+      },
+      {
+        "number": 4,
+        "layer": "L040",
+        "asset": "sticker_star",
+        "bounds": {
+          "x": 32.713,
+          "y": 463.869,
+          "width": 87.23,
+          "height": 87.23
+        }
+      },
+      {
+        "number": 5,
+        "layer": "L045",
+        "asset": "sticker_star",
+        "bounds": {
+          "x": 150.691,
+          "y": 463.191,
+          "width": 88.588,
+          "height": 88.588
+        }
+      },
+      {
+        "number": 6,
+        "layer": "L050",
+        "asset": "sticker_star",
+        "bounds": {
+          "x": 269.362,
+          "y": 463.191,
+          "width": 88.588,
+          "height": 88.588
+        }
+      },
+      {
+        "number": 7,
+        "layer": "L055",
+        "asset": "sticker_star",
+        "bounds": {
+          "x": 32.034,
+          "y": 606.581,
+          "width": 88.588,
+          "height": 88.588
+        }
+      },
+      {
+        "number": 8,
+        "layer": "L060",
+        "asset": "sticker_star",
+        "bounds": {
+          "x": 150.691,
+          "y": 606.581,
+          "width": 88.588,
+          "height": 88.588
+        }
+      },
+      {
+        "number": 9,
+        "layer": "L065",
+        "asset": "sticker_star",
+        "bounds": {
+          "x": 269.362,
+          "y": 606.581,
+          "width": 88.588,
+          "height": 88.588
+        }
+      },
+      {
+        "number": 10,
+        "layer": "L068",
+        "asset": "paper_torn_note",
+        "bounds": {
+          "x": 22,
+          "y": 759.766,
+          "width": 346,
+          "height": 70.5
+        }
+      }
+    ]
+  },
+  {
+    "id": "badge-detail",
+    "legend": [
+      {
+        "number": 1,
+        "layer": "L018",
+        "asset": "sticker_mountain",
+        "bounds": {
+          "x": 117.633,
+          "y": 145.133,
+          "width": 154.733,
+          "height": 154.733
+        }
+      }
+    ]
+  },
+  {
+    "id": "city-share",
+    "legend": [
+      {
+        "number": 1,
+        "layer": "L019",
+        "asset": "photo_city_walk",
+        "bounds": {
+          "x": 38.502,
+          "y": 255.137,
+          "width": 312.995,
+          "height": 233.507
+        }
+      }
+    ]
+  }
+]

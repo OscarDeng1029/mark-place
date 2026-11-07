@@ -63,4 +63,46 @@ class AtlasDomainTest {
         override fun read() = value
         override fun write(content: String) { value = content }
     }
+
+    @Test
+    fun draftLayoutAndProfileRoundTripWithoutBecomingVisits() {
+        val storage=MemoryStorage()
+        val repository=AtlasRepository(storage)
+        val expected=AtlasData(places=listOf(Place("p","小店")),visits=listOf(Visit("v","p","2026-11-01","那一天",listOf("photo-one","photo-two"),"film")),
+            drafts=listOf(VisitDraft("d","p","2026-11-02","待续",listOf("draft-photo"),true)),signature="慢慢走",profileCover="local:cover",preferredCity="杭州")
+        repository.save(expected)
+        assertEquals(expected,repository.load())
+        assertEquals(expected,repository.restore(repository.export(expected)))
+        assertEquals(1,repository.load().visits.size)
+        assertFalse(AtlasData(places=expected.places,drafts=expected.drafts).isVisited("p"))
+    }
+
+    @Test
+    fun legacyDataKeepsExistingUsersPastWelcome() {
+        val storage=MemoryStorage()
+        storage.write("""{"schemaVersion":1,"nickname":"旧用户","places":[{"id":"p","name":"小店"}]}""")
+        val data=AtlasRepository(storage).load()
+        assertTrue(data.onboarded)
+        assertEquals("旧用户",data.nickname)
+        assertTrue(data.drafts.isEmpty())
+        assertEquals("p",data.places.single().id)
+    }
+
+    @Test
+    fun newLibraryStartsEmptyAndRequestsWelcome() {
+        val data=AtlasRepository(MemoryStorage()).load()
+        assertFalse(data.onboarded)
+        assertFalse(data.demoContent)
+        assertTrue(data.places.isEmpty())
+    }
+
+    @Test
+    fun backupRejectsOrphanDraftsAndDuplicateVisitIds() {
+        val repository=AtlasRepository(MemoryStorage())
+        val orphan=AtlasData(drafts=listOf(VisitDraft("d","missing","2026-11-01")))
+        assertFailsWith<IllegalArgumentException>{repository.restore(repository.export(orphan))}
+        val visit=Visit("same","p","2026-11-01","")
+        val duplicate=AtlasData(places=listOf(Place("p","小店")),visits=listOf(visit,visit))
+        assertFailsWith<IllegalArgumentException>{repository.restore(repository.export(duplicate))}
+    }
 }

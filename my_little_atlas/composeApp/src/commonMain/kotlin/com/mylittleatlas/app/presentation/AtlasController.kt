@@ -55,11 +55,18 @@ class AtlasController(val platform: PlatformServices) {
     fun updatePlace(place: Place): Boolean = commit(data.copy(places = data.places.map { if (it.id == place.id) place else it }))
     fun deletePlace(place: Place): Boolean = commit(data.copy(
         places = data.places.filterNot { it.id == place.id }, visits = data.visits.filterNot { it.placeId == place.id },
+        drafts = data.drafts.filterNot { it.placeId == place.id },
     ))
     fun addCollection(name: String): Boolean {
         if (name.isBlank()) return false
         if (data.collections.any { it.name == name.trim() }) { message = "已经有同名收藏夹了。"; return false }
         return commit(data.copy(collections = data.collections + Collection(platform.uniqueId(), name.trim())))
+    }
+
+    fun createCollection(name: String, subtitle: String, cover: String): Boolean {
+        if(name.isBlank())return false
+        if(data.collections.any{it.name==name.trim()}){message="已经有同名收藏夹了。";return false}
+        return commit(data.copy(collections=data.collections+Collection(platform.uniqueId(),name.trim(),subtitle.trim(),cover)))
     }
 
     fun addVisit(place: Place, date: String, note: String, photos: List<String>, revisit: Boolean): Boolean {
@@ -69,6 +76,17 @@ class AtlasController(val platform: PlatformServices) {
         )).also { if (it) message = "又一段小小的回忆，被好好收下了。" }
     }
 
+    fun updateVisit(visit: Visit): Boolean = commit(data.copy(visits=data.visits.map{if(it.id==visit.id)visit else it}))
+    fun deleteVisit(id: String): Boolean = commit(data.copy(visits=data.visits.filterNot{it.id==id}))
+    fun saveDraft(draft: VisitDraft): Boolean = commit(data.copy(drafts=listOf(draft)+data.drafts.filterNot{it.id==draft.id}))
+    fun deleteDraft(id: String): Boolean = commit(data.copy(drafts=data.drafts.filterNot{it.id==id}))
+    fun updateProfile(name: String, signature: String, cover: String): Boolean = commit(data.copy(nickname=name.trim().take(24),signature=signature.trim().take(120),profileCover=cover))
+    fun completeOnboarding(): Boolean = commit(data.copy(onboarded=true))
+    fun chooseCity(city:String): Boolean = commit(data.copy(preferredCity=city.trim()))
+    fun updateCollection(collection: com.mylittleatlas.app.domain.Collection): Boolean = commit(data.copy(collections=data.collections.map{if(it.id==collection.id)collection else it}))
+    fun deleteCollection(id: String): Boolean = commit(data.copy(collections=data.collections.filterNot{it.id==id},places=data.places.map{it.copy(collectionIds=it.collectionIds-id)}))
+    fun assignCollections(ids: Set<String>, folders: List<String>): Boolean = commit(data.copy(places=data.places.map{if(it.id in ids)it.copy(collectionIds=folders) else it}))
+    fun deletePlaces(ids: Set<String>): Boolean = commit(data.copy(places=data.places.filterNot{it.id in ids},visits=data.visits.filterNot{it.placeId in ids},drafts=data.drafts.filterNot{it.placeId in ids}))
     fun rename(name: String) { if (name.isNotBlank()) commit(data.copy(nickname = name.trim().take(24))) }
     fun navigate(place: Place) {
         platform.navigate(if (data.isDemoPlace(place)) place.copy(latitude = null, longitude = null) else place)
@@ -82,5 +100,5 @@ class AtlasController(val platform: PlatformServices) {
             message = "备份已恢复。照片文件需保留在原设备。"
         }.onFailure { message = "未恢复：${it.message ?: "备份格式不正确"}" }
     }
-    fun clearDemo(): Boolean = commit(AtlasData(nickname = data.nickname, demoContent = false))
+    fun clearDemo(): Boolean = commit(AtlasData(nickname = data.nickname, demoContent = false,signature=data.signature,profileCover=data.profileCover))
 }

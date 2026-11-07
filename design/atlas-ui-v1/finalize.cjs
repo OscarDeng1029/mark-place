@@ -1,0 +1,21 @@
+const fs=require('fs'),path=require('path');
+const root=__dirname;
+const app=path.join(root,'app.js');
+const lines=fs.readFileSync(app,'utf8').split(String.fromCharCode(10));
+const result=lines.map(line=>{
+ if(line.startsWith("add('import',")||line.startsWith("add('error',"))line=line.replaceAll("go('photo-picker',","go('screenshot-import',");
+ if(line.startsWith("add('profile',"))line=line.replace("['draft','edit','未完成的草稿'","['drafts','edit','未完成的草稿'");
+ if(line.startsWith("add('city-atlas',"))line=line.replace("rid:'folder-share'","rid:'city-share'");
+ if(line.startsWith("window.ATLAS_DESIGN="))line=line.replace('});render();','});');
+ return line;
+}).join(String.fromCharCode(10));
+fs.writeFileSync(app,result);
+const html=path.join(root,'index.html');
+let content=fs.readFileSync(html,'utf8');
+if(!content.includes('extra-pages.js'))content=content.replace('</body>','<script src="extra-pages.js"></script></body>');
+fs.writeFileSync(html,content);
+const css=path.join(root,'refinements.css');
+let style=fs.readFileSync(css,'utf8');
+if(!style.includes('screenshot-card'))style+=String.fromCharCode(10)+'.searchbar{text-align:left}.searchbar .grow{font-weight:400}.dock{background:#f9f6ee;backdrop-filter:blur(16px)}.phone>.content:has(+.dock){height:calc(100% - 191px);padding-bottom:28px!important}.phone>.content:has(+.layout-controls){height:calc(100% - 305px)}.screenshot-card{height:237px;position:relative;background:#fffaf1;border:1px solid var(--line);border-radius:9px;padding:7px;overflow:hidden;text-align:left}.screenshot-card>img{width:100%;height:164px;object-fit:cover;border-radius:5px}.screenshot-caption strong{font-size:11px;display:block;margin:10px 3px 6px}.screenshot-caption small{font-size:8px;color:#939580;display:block;margin:0 3px}.screenshot-card .selection{position:absolute;right:13px;top:13px}.sheet .primary{min-height:45px}.gallery-footer{line-height:2}';
+fs.writeFileSync(css,style);
+console.log('UI links, auxiliary pages and surface layout updated.');

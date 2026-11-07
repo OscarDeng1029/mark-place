@@ -18,6 +18,13 @@ Thumbs.db
 *.jks
 *.keystore
 
+# Local Codex configuration and verification runtime output
+/config.toml
+/design/atlas-ui-handoff-v2/implementation/*.log
+/design/atlas-ui-handoff-v2/implementation/*.jsonl
+/design/atlas-ui-handoff-v2/implementation/screenshots/*.json
+/design/atlas-ui-handoff-v2/implementation/screenshots/*.xml
+
 # Generated installers; keep preview images in dist
 my_little_atlas/dist/**/*.jar
 my_little_atlas/dist/*.apk

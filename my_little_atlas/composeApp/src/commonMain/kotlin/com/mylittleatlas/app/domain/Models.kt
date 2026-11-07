@@ -46,6 +46,13 @@ data class Visit(
     val date: String,
     val note: String,
     val photoPaths: List<String> = emptyList(),
+    val layout: String = "warm",
+)
+
+@Serializable
+data class VisitDraft(
+    val id: String, val placeId: String, val date: String, val note: String = "",
+    val photoPaths: List<String> = emptyList(), val revisit: Boolean = false,
 )
 
 @Serializable
@@ -56,6 +63,11 @@ data class AtlasData(
     val visits: List<Visit> = emptyList(),
     val nickname: String = "小满",
     val demoContent: Boolean = true,
+    val signature: String = "收集生活，也收集自己。",
+    val profileCover: String = "city",
+    val drafts: List<VisitDraft> = emptyList(),
+    val onboarded: Boolean = true,
+    val preferredCity: String = "",
 )
 
 fun AtlasData.isVisited(id: String) = visits.any { it.placeId == id }
