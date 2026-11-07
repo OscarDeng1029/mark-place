@@ -2,7 +2,7 @@
 
 一款私人的城市收藏图鉴：把想去的地方，慢慢变成去过的地方。
 
-App 使用 **Kotlin Compose Multiplatform**，Android 与桌面 JVM 共用界面和业务逻辑，平台适配层负责系统图片选择、文件备份、分享与导航。
+App 使用 **Kotlin Compose Multiplatform**，Android、iOS 与桌面 JVM 共用界面和业务逻辑，平台适配层负责系统图片选择、文件备份、分享与导航。
 
 ## 项目内容
 
@@ -12,12 +12,14 @@ App 使用 **Kotlin Compose Multiplatform**，Android 与桌面 JVM 共用界面
 - [市场调研样本与来源清单](market_research_2026-11-06/)
 - [视觉参考图](my_little_atlas_scrapbook_concept.png)
 
-底栏采用四个一级入口：图鉴、地图、收藏、我的；中间保留新增动作。足迹日记从“我的”与首页足迹统计进入。
+底栏为「手账 / 地图 / ＋ / 收藏 / 我的」。手账直接展示到访记录，目录可按城市查找并跳页；中间「＋」提供写手账与收藏地点。收藏按城市及想去/去过筛选，个人页保留大封面布局，城市统计直接在地图查看。
 
 ## Android 模拟器实拍
 
-<img src="my_little_atlas/dist/MyLittleAtlas-emulator.png" alt="图鉴首页与底部导航" width="280" />
-<img src="my_little_atlas/dist/MyLittleAtlas-profile.png" alt="我的页面与足迹入口" width="280" />
+<img src="design/atlas-ui-handoff-v2/implementation/screenshots/simplified/02-demo-home.png" alt="手账首页与底部导航" width="280" />
+<img src="design/atlas-ui-handoff-v2/implementation/screenshots/simplified/04-directory-hangzhou.png" alt="手账目录的城市筛选" width="280" />
+
+最新改版与验证记录：[简化动线与城市分类落地](design/atlas-ui-handoff-v2/implementation/简化动线与城市分类落地.md)。
 
 ## 本地构建
 

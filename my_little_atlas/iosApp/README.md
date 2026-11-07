@@ -1,6 +1,6 @@
 # iOS 原生版本
 
-iOS 宿主直接调用共享 AtlasApp，不另写页面、不使用 WebView。手账首页 V3、当前恢复的大封面个人页 ProfileV2、收藏、地图、到访、草稿、资料编辑和分享均使用与 Android 相同的 Kotlin Compose 代码、字体与素材。
+iOS 宿主直接调用共享 AtlasApp，不另写页面、不使用 WebView。简化后的手账首页、城市目录与收藏筛选、大封面个人页 ProfileV2、地图、到访、草稿、资料编辑和分享均使用与 Android 相同的 Kotlin Compose 代码、字体与素材。
 
 ## 在 Mac 构建
 
@@ -57,6 +57,8 @@ Artifacts：
 
 ## 页面验证
 
-XCUITest 在独立 AtlasUITests 数据目录使用共享 DemoAtlas，仅 DEBUG 测试启动启用，不读取或重置用户库。覆盖翻页、切换 tab 后页码保留、收藏、原版个人页、资料编辑与草稿入口，并保存截图。
+XCUITest 在独立 AtlasUITests 数据目录使用共享示例数据，仅 DEBUG 测试启动启用，不读取或重置用户库。覆盖翻页、切换 tab 后页码保留、目录城市筛选与跳页、收藏城市分类、精简添加入口、原版个人页、资料编辑与草稿入口，并保存截图。
 
 已完成 iPhone ARM64 Release、iPhone 16 Pro 模拟器和 14 项 iOS 共享测试验证。产物版本、校验值与模拟器截图见 [iOS 构建交付](../../design/atlas-ui-handoff-v2/implementation/iOS构建交付.md)。
+
+上段为前一版的验证记录。本次简化动线和城市分类的构建状态见 [最新改版记录](../../design/atlas-ui-handoff-v2/implementation/简化动线与城市分类落地.md)，不要将旧安装包视为当前版本。

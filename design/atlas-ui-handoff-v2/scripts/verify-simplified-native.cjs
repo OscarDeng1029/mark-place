@@ -18,10 +18,10 @@ function nodesText(nodes){return nodes.map(n=>n.text||n['content-desc']).filter(
 async function waitFor(label){for(let i=0;i<8;i++){const nodes=dump();if(nodes.some(n=>n.text===label||n['content-desc']===label))return nodes;await pause(500);}throw Error('Missing '+label+'\n'+nodesText(dump()));}
 async function tap(label){const nodes=await waitFor(label);const n=nodes.find(n=>(n.text===label||n['content-desc']===label)&&n.bounds!=='[0,0][0,0]');assert(n,'Visible '+label);const b=n.bounds.match(/\d+/g).map(Number);adb('shell','input','tap',String(Math.round((b[0]+b[2])/2)),String(Math.round((b[1]+b[3])/2)));await pause(250);}
 async function fillField(index,value){let n;for(let i=0;i<8;i++){n=dump().filter(n=>n.class==='android.widget.EditText')[index];if(n)break;await pause(400);}assert(n,'Field '+index);const b=n.bounds.match(/\d+/g).map(Number);adb('shell','input','tap',String((b[0]+b[2])/2),String((b[1]+b[3])/2));adb('shell','input','text',value);await pause(200);}
-function shot(name){fs.writeFileSync(path.join(out,name+'.png'),execFileSync('adb',['exec-out','screencap','-p']));console.log('Captured '+name);}
+function shot(name,directory=out){fs.writeFileSync(path.join(directory,name+'.png'),execFileSync('adb',['exec-out','screencap','-p']));console.log('Captured '+name);}
 async function launch(mode){adb('shell','am','start','-W','-S','-n','com.mylittleatlas.app/.MainActivity','--es','atlas_preview',mode);await waitFor('我的手账');await pause(800);}
 const checks=[];
-(async()=>{
+async function verify(){
   const before=execFileSync('adb',['shell','run-as','com.mylittleatlas.app','cat','files/atlas.json']);
   await launch('demo');await pause(600);shot('02-demo-home');
   await tap('后一页 →');await waitFor('第 2 / 3 页');
@@ -47,8 +47,10 @@ const checks=[];
   await tap('写下第一篇手账');await fillField(0,'FirstPlace');adb('shell','input','keyevent','4');await tap('保存，生成手账');await waitFor('第 1 / 1 页');shot('13-first-entry');checks.push('空库可直接生成第一篇手账，无需先收藏');
   const after=execFileSync('adb',['shell','run-as','com.mylittleatlas.app','cat','files/atlas.json']);
   assert(before.equals(after),'Real user records must remain unchanged');checks.push('真实用户数据字节保持不变');
-  adb('shell','am','start','-S','-n','com.mylittleatlas.app/.MainActivity');await waitFor('我的手账');shot('01-current-user-home');
+  adb('shell','am','start','-S','-n','com.mylittleatlas.app/.MainActivity');await waitFor('我的手账');shot('01-current-user-home',scratch);
   const report={checks,counts:JSON.parse(after),fixture:'Debug-only in-memory library; real user records never mutated'};
-  report.counts={places:report.counts.places.length,visits:report.counts.visits.length,collections:report.counts.collections.length,drafts:report.counts.drafts.length};
+  report.counts={places:report.counts.places.length,visits:report.counts.visits.length,collections:report.counts.collections.length,drafts:(report.counts.drafts||[]).length};
   fs.writeFileSync(path.join(scratch,'verification.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
-})().catch(error=>{console.error(error);process.exitCode=1;});
+}
+if(require.main===module)verify().catch(error=>{console.error(error);process.exitCode=1;});
+module.exports={launch,tap,waitFor,shot,dump,nodesText,pause,adb};
