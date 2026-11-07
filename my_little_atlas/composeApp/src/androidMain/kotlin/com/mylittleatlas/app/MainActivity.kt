@@ -11,6 +11,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.mylittleatlas.app.platform.AndroidPlatformServices
 import com.mylittleatlas.app.ui.AtlasApp
+import com.mylittleatlas.app.platform.PlatformServices
+import com.mylittleatlas.app.data.AtlasStorage
+import com.mylittleatlas.app.data.AtlasRepository
+import com.mylittleatlas.app.data.PreviewAtlas
+import com.mylittleatlas.app.domain.AtlasData
 
 class MainActivity : ComponentActivity() {
     private lateinit var services: AndroidPlatformServices
@@ -35,7 +40,19 @@ class MainActivity : ComponentActivity() {
         services.backupReader = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             services.readSelectedBackup(uri)
         }
-        setContent { AtlasApp(services, incomingText) {
+        val preview=intent.getStringExtra("atlas_preview").takeIf {
+            applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0
+        }
+        val uiServices:PlatformServices=if(preview=="demo" || preview=="empty") {
+            val isolated=object:AtlasStorage {
+                private var value:String?=null
+                override fun read()=value
+                override fun write(content:String) { value=content }
+            }
+            AtlasRepository(isolated).save(if(preview=="demo")PreviewAtlas.create() else AtlasData(demoContent=false,onboarded=true,preferredCity="上海"))
+            object:PlatformServices by services { override val storage=isolated }
+        } else services
+        setContent { AtlasApp(uiServices, incomingText) {
             incomingText = null
             intent?.removeExtra(Intent.EXTRA_TEXT)
         } }

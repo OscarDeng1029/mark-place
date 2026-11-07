@@ -57,7 +57,7 @@ fun ProfileV2(controller:AtlasController,onShare:()->Unit,onJournal:()->Unit,onC
         }
         Text(data.signature,fontSize=11.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=4.dp))
         Spacer(Modifier.height(20.dp))
-        AtlasMetrics(listOf(data.places.size to "收藏地点",data.places.count{data.isVisited(it.id)} to "去过的地方",data.places.map{it.city}.distinct().size to "探索城市"))
+        AtlasMetrics(listOf(data.places.size to "收藏地点",data.places.count{data.isVisited(it.id)} to "去过的地方",data.visitedCities().size to "去过的城市"))
         Spacer(Modifier.height(21.dp));SectionTitle("我的小小成就","勋章墙",{page="badges"})
         Row(Modifier.fillMaxWidth().padding(top=12.dp,bottom=15.dp)) {
             listOf("城市探索家","咖啡爱好者","留住光影").forEachIndexed{i,label->Column(Modifier.weight(1f).clickable{page="badges"},horizontalAlignment=Alignment.CenterHorizontally){
@@ -65,10 +65,10 @@ fun ProfileV2(controller:AtlasController,onShare:()->Unit,onJournal:()->Unit,onC
                 Text(label,fontSize=10.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=8.dp))
             }}
         }
-        SettingRow(Glyph.BOOK,"我的到访记录",data.visits.size.toString()+" 篇",onJournal);ThinDivider()
-        SettingRow(Glyph.MAP,"我的城市图鉴",data.places.map{it.city}.distinct().size.toString()+" 座城市",onCity);ThinDivider()
+        SettingRow(Glyph.BOOK,"我的手账",data.visits.size.toString()+" 篇记录",onJournal);ThinDivider()
+        SettingRow(Glyph.MAP,"去过的城市",data.visitedCities().size.toString()+" 座城市 · 在地图查看",onCity);ThinDivider()
         SettingRow(Glyph.EDIT,"未完成的草稿",data.drafts.size.toString()+" 篇"){page="drafts"};ThinDivider()
-        SettingRow(Glyph.SHARE,"分享我的图鉴","只分享主动选择的内容",onShare)
+        SettingRow(Glyph.SHARE,"分享我的收藏","只分享主动选择的内容",onShare)
         Text("默认私密 · 记录保存在此设备",fontSize=10.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=20.dp).align(Alignment.CenterHorizontally))
     }
     deletingDraft?.let{draft->ConfirmDialog("删除这篇草稿？","未完成的文字将被删除，原照片文件继续保留。","删除草稿",{if(controller.deleteDraft(draft.id))deletingDraft=null},{deletingDraft=null})}
@@ -79,8 +79,8 @@ fun ProfileV2(controller:AtlasController,onShare:()->Unit,onJournal:()->Unit,onC
         "drafts"->AtlasFullPage("未完成的草稿",{page=""}) {
             if(data.drafts.isEmpty())EmptyPage("这一刻，没有待续的一页","写到一半的到访会保存在这里。")
             data.drafts.forEach{draft->val place=data.places.find{it.id==draft.placeId}
-                if(place!=null)Column(Modifier.fillMaxWidth().background(AtlasColors.Card,RoundedCornerShape(12.dp)).padding(15.dp)){
-                    Text(place.name,style=MaterialTheme.typography.titleMedium);Text(draft.date,fontSize=10.sp,color=AtlasColors.Muted)
+                Column(Modifier.fillMaxWidth().background(AtlasColors.Card,RoundedCornerShape(12.dp)).padding(15.dp)){
+                    Text(place?.name ?: draft.placeName.ifBlank{"还没写下地点"},style=MaterialTheme.typography.titleMedium);Text(draft.date,fontSize=10.sp,color=AtlasColors.Muted)
                     Text(draft.note.ifBlank{"还没写下文字"},maxLines=2,fontSize=12.sp,modifier=Modifier.padding(top=9.dp))
                     Row{TextButton(onClick={page="";onDraft(draft)}){Text("继续写")};TextButton(onClick={deletingDraft=draft}){Text("删除草稿")}}
                 }

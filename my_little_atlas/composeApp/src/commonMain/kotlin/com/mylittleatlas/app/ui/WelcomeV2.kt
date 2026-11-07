@@ -23,7 +23,7 @@ fun WelcomeV2(controller:AtlasController){
         }
         Text("收下喜欢的地点，在地图上找到下一站，再把每一次到访写成自己的小小手账。",fontSize=13.sp,lineHeight=23.sp,color=AtlasColors.Muted)
         OutlinedButton(onClick={choosing=true},modifier=Modifier.fillMaxWidth()){AtlasIcon(Glyph.PIN,size=17.dp);Spacer(Modifier.width(8.dp));Text("从 "+city+" 开始探索")}
-        PrimaryButton("翻开我的图鉴",{if(controller.chooseCity(city))controller.completeOnboarding()},Modifier.fillMaxWidth(),Glyph.BOOK)
+        PrimaryButton("开始我的手账",{if(controller.chooseCity(city))controller.completeOnboarding()},Modifier.fillMaxWidth(),Glyph.BOOK)
         Text("不用登录，也可以开始。记录默认只留在本机。",fontSize=10.sp,color=AtlasColors.Muted,modifier=Modifier.align(Alignment.CenterHorizontally))
     }
     if(choosing)AlertDialog(onDismissRequest={choosing=false},title={Text("从哪座城开始？")},text={Column{

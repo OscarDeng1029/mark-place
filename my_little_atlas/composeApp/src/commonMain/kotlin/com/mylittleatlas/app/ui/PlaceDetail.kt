@@ -27,12 +27,11 @@ import com.mylittleatlas.app.presentation.AtlasController
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun PlaceDetail(controller:AtlasController,place:Place,onClose:()->Unit,onShare:()->Unit,onShareVisit:(Visit)->Unit={onShare()}) {
+fun PlaceDetail(controller:AtlasController,place:Place,onClose:()->Unit,onShare:()->Unit,onShareVisit:(Visit)->Unit={onShare()},onJournalSaved:(Visit)->Unit={}) {
     var checkIn by remember{mutableStateOf(false)}
     var edit by remember{mutableStateOf(false)}
     var delete by remember{mutableStateOf(false)}
     var savedVisit by remember{mutableStateOf<Visit?>(null)}
-    var savedSuccess by remember{mutableStateOf(false)}
     val data=controller.data
     val visits=data.visits.filter{it.placeId==place.id}.sortedByDescending{it.date}
     Dialog(onDismissRequest=onClose,properties=DialogProperties(usePlatformDefaultWidth=false)) {
@@ -100,15 +99,14 @@ fun PlaceDetail(controller:AtlasController,place:Place,onClose:()->Unit,onShare:
                     OutlinedButton(onClick={controller.navigate(place)},Modifier.height(50.dp),shape=RoundedCornerShape(15.dp),contentPadding=PaddingValues(horizontal=17.dp)) {
                         AtlasIcon(Glyph.NAVIGATE,size=18.dp,color=AtlasColors.Green);Spacer(Modifier.width(7.dp));Text("导航",fontSize=13.sp)
                     }
-                    PrimaryButton("记一次到访",{checkIn=true},Modifier.weight(1f),Glyph.BOOK)
+                    PrimaryButton("在这里写手账",{checkIn=true},Modifier.weight(1f),Glyph.BOOK)
                 }
             }
         }
     }
-    if(checkIn) CheckInPageV2(controller,place,{checkIn=false},onSaved={savedVisit=it;savedSuccess=true})
+    if(checkIn) JournalEntryEditor(controller,place,{checkIn=false},onSaved={checkIn=false;onJournalSaved(it)})
     savedVisit?.let{old->controller.data.visits.find{it.id==old.id}?.let{visit->
-        if(savedSuccess)VisitSavedV2(place,visit,{savedSuccess=false},{savedSuccess=false;savedVisit=null})
-        else JournalDetailV2(controller,place,visit,{savedVisit=null},{savedVisit=null},{onShareVisit(visit)})
+        JournalDetailV2(controller,place,visit,{savedVisit=null},{savedVisit=null},{onShareVisit(visit)})
     }}
     if(edit) EditPlaceDialog(controller,place,{edit=false})
     if(delete) ConfirmDialog("移出这个去处？","将同时删除这个地点的到访文字记录。导入的照片文件仍保留在应用目录；需要保留记录时请先导出备份。","移出收藏",{if(controller.deletePlace(place)){delete=false;onClose()}},{delete=false})

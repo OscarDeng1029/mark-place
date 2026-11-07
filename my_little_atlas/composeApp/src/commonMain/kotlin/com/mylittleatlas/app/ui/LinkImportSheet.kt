@@ -35,7 +35,7 @@ fun ImportSheet(controller: AtlasController, initialText: String, onClose: () ->
     var duplicatePlace by remember { mutableStateOf<Place?>(null) }
     var name by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
-    var city by remember { mutableStateOf("上海") }
+    var city by remember { mutableStateOf(controller.data.preferredCity.ifBlank{"上海"}) }
     var source by remember { mutableStateOf(SourceLinks.extract(initialText).orEmpty()) }
     var selected by remember { mutableStateOf(setOf<String>()) }
     var folders by remember { mutableStateOf(emptySet<String>()) }
@@ -203,7 +203,7 @@ fun ImportSheet(controller: AtlasController, initialText: String, onClose: () ->
         ScrapbookBadge(3,null,Modifier.size(100.dp).align(Alignment.CenterHorizontally))
         Text(success.toString()+" 处地点，已收进图鉴",style=MaterialTheme.typography.headlineMedium)
         Text("它们都还是「想去」。确认位置后会显示在私人地图，真正到访时再留下一篇手账。",fontSize=13.sp,lineHeight=23.sp,color=AtlasColors.Muted)
-        PrimaryButton("回到我的图鉴",onClose,Modifier.fillMaxWidth(),Glyph.BOOKMARK)
+        PrimaryButton("收好了",onClose,Modifier.fillMaxWidth(),Glyph.BOOKMARK)
         OutlinedButton(onClick={success=0;reset();text="";name="";address="";manualPoi=null;screenshot=null},modifier=Modifier.fillMaxWidth()){Text("继续收藏下一处")}
     }
     locating?.let { shop -> PoiPicker(controller.platform, city, shop.name, shop.candidates, { p ->

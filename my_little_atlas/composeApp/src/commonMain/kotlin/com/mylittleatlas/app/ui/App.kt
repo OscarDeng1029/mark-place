@@ -27,7 +27,7 @@ import com.mylittleatlas.app.presentation.AtlasController
 import kotlinx.coroutines.delay
 
 enum class AtlasTab(val title: String, val glyph: Glyph) {
-    HOME("手账",Glyph.BOOK), MAP("地图",Glyph.MAP), COLLECTIONS("收藏",Glyph.BOOKMARK), JOURNAL("足迹",Glyph.BOOK), PROFILE("我的",Glyph.PERSON)
+    HOME("手账",Glyph.BOOK), MAP("地图",Glyph.MAP), COLLECTIONS("收藏",Glyph.BOOKMARK), PROFILE("我的",Glyph.PERSON)
 }
 
 private val primaryTabs = listOf(AtlasTab.HOME, AtlasTab.MAP, AtlasTab.COLLECTIONS, AtlasTab.PROFILE)
@@ -40,10 +40,10 @@ fun AtlasApp(platform: PlatformServices, incomingText: String? = null, onIncomin
     var showImport by remember { mutableStateOf(false) }
     var importTab by remember { mutableStateOf(0) }
     var showAddMenu by remember { mutableStateOf(false) }
-    var visitPicker by remember { mutableStateOf(false) }
+    var writing by remember { mutableStateOf(false) }
     var recordingId by remember { mutableStateOf<String?>(null) }
     var recordingDraft by remember { mutableStateOf<VisitDraft?>(null) }
-    var showCities by remember { mutableStateOf(false) }
+    var editingVisit by remember { mutableStateOf<Visit?>(null) }
     var importedText by remember { mutableStateOf("") }
     var collectionId by remember { mutableStateOf<String?>(null) }
     var search by remember { mutableStateOf("") }
@@ -56,8 +56,12 @@ fun AtlasApp(platform: PlatformServices, incomingText: String? = null, onIncomin
     var mapFolder by remember { mutableStateOf<String?>(null) }
     var mapCity by remember { mutableStateOf<String?>(null) }
     var journalVisitId by remember { mutableStateOf<String?>(null) }
-    var savedVisitId by remember { mutableStateOf<String?>(null) }
     var bookPage by remember { mutableStateOf(0) }
+    var bookTarget by remember { mutableStateOf<String?>(null) }
+    var directoryCity by remember { mutableStateOf<String?>(null) }
+    var collectionCity by remember { mutableStateOf<String?>(null) }
+    var collectionFilter by remember { mutableStateOf(PlaceFilter.ALL) }
+    var mapFilter by remember { mutableStateOf(PlaceFilter.ALL) }
     LaunchedEffect(incomingText) {
         if(!incomingText.isNullOrBlank()) { importedText=incomingText;showImport=true }
     }
@@ -75,15 +79,19 @@ fun AtlasApp(platform: PlatformServices, incomingText: String? = null, onIncomin
                         Box(Modifier.weight(1f).fillMaxWidth()) {
                             Box(Modifier.fillMaxSize().widthIn(max=1200.dp).align(Alignment.TopCenter)) {
                                 when(tab) {
-                                    AtlasTab.HOME -> JournalHomeV3(controller.data,platform.today(),{detailId=it.id},
-                                        {collectionId=null;search="";searching=false;tab=AtlasTab.COLLECTIONS},{tab=AtlasTab.MAP},{tab=AtlasTab.JOURNAL},
-                                        {journalVisitId=it.id},{showAddMenu=true},{id->recordingId=id},wide,bookPage,{bookPage=it})
-                                    AtlasTab.MAP -> key(mapFolder,mapCity){MapScreen(controller,{detailId=it.id}, {tab=AtlasTab.COLLECTIONS},wide,mapFolder,mapCity)}
+                                    AtlasTab.HOME -> JournalHomeSimple(controller.data,{journalVisitId=it.id},
+                                        {editingVisit=it;recordingId=it.placeId;writing=true},
+                                        {recordingId=null;recordingDraft=null;editingVisit=null;writing=true},
+                                        {importedText="";importTab=1;showImport=true},wide,bookPage,{bookPage=it},
+                                        bookTarget,{bookTarget=null},directoryCity,{directoryCity=it})
+                                    AtlasTab.MAP -> key(mapFolder,mapCity,mapFilter){MapScreen(controller,{detailId=it.id}, {tab=AtlasTab.COLLECTIONS},wide,mapFolder,mapCity,mapFilter)}
                                     AtlasTab.COLLECTIONS -> CollectionsV2(controller, collectionId, {collectionId=it;search="";searching=false}, {detailId=it.id},
-                                        search,{search=it},searching,{searching=it}, {importedText="";showImport=true},wide,{tab=AtlasTab.HOME},
-                                        {mapFolder=it;mapCity=null;tab=AtlasTab.MAP},{id->val folder=controller.data.collections.find{it.id==id};shareSubset=controller.data.copy(places=controller.data.places.filter{id in it.collectionIds});shareTitle=folder?.name;shareAtlas=true})
-                                    AtlasTab.JOURNAL -> JournalScreen(controller.data,{detailId=it.id},{tab=AtlasTab.COLLECTIONS},wide,{journalVisitId=it.id},{showCities=true})
-                                    AtlasTab.PROFILE -> ProfileV2(controller,{shareAtlas=true},{tab=AtlasTab.JOURNAL},{showCities=true},{recordingDraft=it;recordingId=it.placeId})
+                                        search,{search=it},searching,{searching=it}, {importedText="";importTab=1;showImport=true},wide,{tab=AtlasTab.HOME},
+                                        {mapFolder=it;mapCity=null;mapFilter=PlaceFilter.ALL;tab=AtlasTab.MAP},{id->val folder=controller.data.collections.find{it.id==id};shareSubset=controller.data.copy(places=controller.data.places.filter{id in it.collectionIds});shareTitle=folder?.name;shareAtlas=true},
+                                        collectionCity,{collectionCity=it},collectionFilter,{collectionFilter=it})
+                                    AtlasTab.PROFILE -> ProfileV2(controller,{shareAtlas=true},{tab=AtlasTab.HOME},
+                                        {mapFolder=null;mapCity=null;mapFilter=PlaceFilter.VISITED;tab=AtlasTab.MAP},
+                                        {recordingDraft=it;recordingId=it.placeId.takeIf { id->id.isNotBlank() };editingVisit=null;writing=true})
                                 }
                             }
                             if(controller.message != null) {
@@ -98,30 +106,21 @@ fun AtlasApp(platform: PlatformServices, incomingText: String? = null, onIncomin
                 }
             }
         }
-        if(showAddMenu) AlertDialog(onDismissRequest={showAddMenu=false},title={Text("收下一点小美好",style=MaterialTheme.typography.titleLarge)},text={
-            Column(verticalArrangement=Arrangement.spacedBy(12.dp)) {
-                SettingRow(Glyph.BOOKMARK,"导入灵感","粘贴攻略文字或公开分享链接"){showAddMenu=false;importedText="";importTab=0;showImport=true}
-                SettingRow(Glyph.PIN,"手动添加地点","先收藏心动，地址可以慢慢补"){showAddMenu=false;importedText="";importTab=1;showImport=true}
-                SettingRow(Glyph.BOOK,"记录一次到访","选择已收藏的地点，写下今天"){showAddMenu=false;visitPicker=true}
-            }
-        },confirmButton={TextButton(onClick={showAddMenu=false}){Text("下次再记")}},containerColor=AtlasColors.Card)
-        if(visitPicker) AlertDialog(onDismissRequest={visitPicker=false},title={Text("今天去过哪里？")},text={
-            Column(Modifier.heightIn(max=450.dp).verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(8.dp)) {
-                controller.data.places.forEach{place->TextButton(onClick={recordingId=place.id;visitPicker=false}){Text(place.name)}}
-                if(controller.data.places.isEmpty())Text("先收藏一处地点，再留下你的到访。",fontSize=13.sp)
-            }
-        },confirmButton={TextButton(onClick={visitPicker=false}){Text("取消")}},containerColor=AtlasColors.Card)
-        recordingId?.let{id->controller.data.places.find{it.id==id}?.let{place->CheckInPageV2(controller,place,{recordingId=null;recordingDraft=null},draft=recordingDraft,onSaved={savedVisitId=it.id})}}
-        if(showCities)CityAtlasV2(controller,{showCities=false},{showCities=false;detailId=it.id},{city->showCities=false;mapCity=city;mapFolder=null;tab=AtlasTab.MAP},{city->shareSubset=controller.data.copy(places=controller.data.places.filter{it.city==city});shareTitle=city+"的城市图鉴";shareAtlas=true})
+        if(showAddMenu) SimpleAddSheet({showAddMenu=false},
+            {showAddMenu=false;recordingId=null;recordingDraft=null;editingVisit=null;writing=true},
+            {showAddMenu=false;importedText="";importTab=1;showImport=true})
+        if(writing)JournalEntryEditor(controller,controller.data.places.find{it.id==recordingId},
+            {writing=false;recordingId=null;recordingDraft=null;editingVisit=null},recordingDraft,
+            {bookTarget=it.id;tab=AtlasTab.HOME;detailId=null;journalVisitId=null},editingVisit)
         detailId?.let { id ->
             controller.data.places.find { it.id == id }?.let { place ->
-                PlaceDetail(controller,place,{detailId=null},{sharePlace=place},onShareVisit={shareVisit=it;sharePlace=place})
+                PlaceDetail(controller,place,{detailId=null},{sharePlace=place},onShareVisit={shareVisit=it;sharePlace=place},
+                    onJournalSaved={detailId=null;bookTarget=it.id;tab=AtlasTab.HOME})
             }
         }
         if(showImport) key(importedText) {
             ImportSheet(controller,importedText,{showImport=false;importedText="";importTab=0;onIncomingConsumed()},importTab)
         }
-        savedVisitId?.let{id->controller.data.visits.find{it.id==id}?.let{visit->controller.data.places.find{it.id==visit.placeId}?.let{place->VisitSavedV2(place,visit,{savedVisitId=null;journalVisitId=visit.id},{savedVisitId=null})}}}
         journalVisitId?.let { id -> controller.data.visits.find{it.id==id}?.let{visit->
             controller.data.places.find{it.id==visit.placeId}?.let{place->
                 JournalDetailV2(controller,place,visit,{journalVisitId=null},{journalVisitId=null;detailId=place.id},{shareVisit=visit;sharePlace=place})
@@ -135,12 +134,12 @@ fun AtlasApp(platform: PlatformServices, incomingText: String? = null, onIncomin
 @Composable
 private fun BottomBar(tab: AtlasTab,onTab:(AtlasTab)->Unit,onAdd:()->Unit) {
     Surface(color=AtlasColors.Card,shadowElevation=0.dp) {
-        val selectedTab = if (tab == AtlasTab.JOURNAL) AtlasTab.HOME else tab
+        val selectedTab = tab
         Row(Modifier.fillMaxWidth().height(62.dp).padding(horizontal=8.dp),verticalAlignment=Alignment.CenterVertically) {
             BottomNavItem(AtlasTab.HOME,selectedTab==AtlasTab.HOME,onTab,Modifier.weight(1f))
             BottomNavItem(AtlasTab.MAP,selectedTab==AtlasTab.MAP,onTab,Modifier.weight(1f))
             Box(Modifier.weight(1f).fillMaxHeight().clickable(role=Role.Button,onClick=onAdd).semantics {
-                contentDescription = "收藏新去处"
+                contentDescription = "添加"
             }, contentAlignment=Alignment.Center) {
                 Box(Modifier.size(46.dp).clip(CircleShape).background(AtlasColors.Green),contentAlignment=Alignment.Center) {
                     AtlasIcon(Glyph.PLUS,color=AtlasColors.Card,size=24.dp)
@@ -178,7 +177,7 @@ private fun DesktopRail(tab: AtlasTab,onTab:(AtlasTab)->Unit,onAdd:()->Unit) {
                 Text(item.title,fontSize=14.sp,color=if(tab==item) AtlasColors.Green else AtlasColors.Muted)
             }
         }
-        Spacer(Modifier.height(24.dp));PrimaryButton("收藏新去处",onAdd,Modifier.fillMaxWidth(),Glyph.PLUS)
+        Spacer(Modifier.height(24.dp));PrimaryButton("添加",onAdd,Modifier.fillMaxWidth(),Glyph.PLUS)
         Spacer(Modifier.weight(1f));AtlasIcon(Glyph.LOCK,color=AtlasColors.Sage,size=18.dp)
         Text("一份只属于你的城市收藏。",fontSize=11.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=10.dp))
         Handwritten("Collect a better life ♡",Modifier.padding(top=18.dp),size=16)

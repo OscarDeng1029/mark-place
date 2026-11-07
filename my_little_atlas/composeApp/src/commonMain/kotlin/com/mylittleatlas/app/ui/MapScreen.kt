@@ -30,9 +30,9 @@ import kotlinx.coroutines.*
 import kotlin.math.*
 
 @Composable
-fun MapScreen(controller: AtlasController, onPlace: (Place)->Unit, onList: ()->Unit, wide: Boolean,initialFolder:String?=null,initialCity:String?=null) {
+fun MapScreen(controller: AtlasController, onPlace: (Place)->Unit, onList: ()->Unit, wide: Boolean,initialFolder:String?=null,initialCity:String?=null,initialFilter:PlaceFilter=PlaceFilter.ALL) {
     val data = controller.data
-    var filter by remember { mutableStateOf(PlaceFilter.ALL) }
+    var filter by remember { mutableStateOf(initialFilter) }
     var selectedId by remember { mutableStateOf<String?>(null) }
     var collectionId by remember { mutableStateOf(initialFolder) }
     var city by remember { mutableStateOf(initialCity) }
@@ -133,6 +133,9 @@ fun MapScreen(controller: AtlasController, onPlace: (Place)->Unit, onList: ()->U
                         unfocusedBorderColor=AtlasColors.Line,focusedBorderColor=AtlasColors.Sage))
                 Spacer(Modifier.width(10.dp)); IconButton(if(listMode)Glyph.MAP else Glyph.LIST,"切换地图列表",{listMode=!listMode},filled=true)
             }
+            Surface(color=AtlasColors.Card,shape=RoundedCornerShape(10.dp)) {
+                CityFilterRow(data.places.map{it.city}.distinct(),city,{city=it;selectedId=null},Modifier.padding(horizontal=8.dp)) { c->data.places.count{c==null||it.city==c} }
+            }
             FilterRow(filter,{ filter=it; selectedId=null })
             Row(Modifier.background(AtlasColors.Card.copy(alpha=.96f),RoundedCornerShape(10.dp)).padding(horizontal=11.dp,vertical=7.dp),verticalAlignment=Alignment.CenterVertically) {
                 Box(Modifier.size(5.dp).background(AtlasColors.Sage,CircleShape)); Spacer(Modifier.width(6.dp))
@@ -140,7 +143,7 @@ fun MapScreen(controller: AtlasController, onPlace: (Place)->Unit, onList: ()->U
                 if(unlocated.isNotEmpty()) Text("  补全",fontSize=10.sp,color=AtlasColors.Green,modifier=Modifier.clickable { pending=true })
             }
         }
-        Column(Modifier.align(Alignment.TopEnd).padding(end=18.dp,top=162.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
+        Column(Modifier.align(Alignment.TopEnd).padding(end=18.dp,top=210.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
             IconButton(Glyph.LAYERS,"筛选收藏夹",{ layers=true },filled=true)
             IconButton(Glyph.PLUS,"放大地图",{ zoom=(zoom+1).coerceAtMost(18) },filled=true)
             Surface(Modifier.size(42.dp).clickable { zoom=(zoom-1).coerceAtLeast(3) }.semantics { contentDescription="缩小地图" },shape=CircleShape,color=AtlasColors.Card) {

@@ -19,10 +19,11 @@ import com.mylittleatlas.app.presentation.AtlasController
 @Composable
 fun CollectionsV2(controller:AtlasController,collectionId:String?,onCollection:(String?)->Unit,onPlace:(Place)->Unit,
     search:String,onSearch:(String)->Unit,searching:Boolean,onSearching:(Boolean)->Unit,onAdd:()->Unit,wide:Boolean,
-    onBack:()->Unit,onMap:(String?)->Unit,onShare:(String)->Unit) {
+    onBack:()->Unit,onMap:(String?)->Unit,onShare:(String)->Unit,city:String?=null,onCity:(String?)->Unit={},
+    filter:PlaceFilter=PlaceFilter.ALL,onFilter:(PlaceFilter)->Unit={}) {
     val data=controller.data
     val folder=data.collections.find{it.id==collectionId}
-    var filter by remember{mutableStateOf(PlaceFilter.ALL)}
+    var showFolders by remember{mutableStateOf(false)}
     var editing by remember{mutableStateOf(false)}
     var options by remember{mutableStateOf(false)}
     var bulk by remember{mutableStateOf(false)}
@@ -30,13 +31,19 @@ fun CollectionsV2(controller:AtlasController,collectionId:String?,onCollection:(
     var picker by remember{mutableStateOf(false)}
     var deleteFolder by remember{mutableStateOf(false)}
     var deletePlaces by remember{mutableStateOf(false)}
-    val places=data.filterPlaces(filter,search,collectionId)
+    val sourcePlaces=data.places.filter{collectionId==null||collectionId in it.collectionIds}
+    val cities=sourcePlaces.map{it.city}.distinct()
+    val activeCity=city?.takeIf{it in cities}
+    val places=data.filterPlaces(filter,search,collectionId).filter{activeCity==null||it.city==activeCity}
     val toggle:(String)->Unit={id->selected=if(id in selected)selected-id else selected+id}
     Column(Modifier.fillMaxSize()) {
-        Row(Modifier.fillMaxWidth().height(54.dp).padding(horizontal=8.dp),verticalAlignment=Alignment.CenterVertically){
-            IconButton(Glyph.BACK,if(folder!=null)"返回收藏" else "返回手账",{if(folder!=null)onCollection(null) else {onSearching(false);onSearch("");onBack()}})
-            Text(if(searching)"搜索我的收藏" else folder?.name ?: "我的收藏夹",fontSize=15.sp,modifier=Modifier.weight(1f))
-            if(folder!=null)IconButton(Glyph.MORE,"收藏夹更多操作",{options=true}) else IconButton(Glyph.PLUS,"新建收藏夹",{editing=true})
+        Row(Modifier.fillMaxWidth().height(76.dp).padding(horizontal=20.dp),verticalAlignment=Alignment.CenterVertically){
+            if(folder!=null)IconButton(Glyph.BACK,"返回收藏",{onCollection(null)})
+            Column(Modifier.weight(1f)) {
+                Text(folder?.name ?: "我的收藏",style=MaterialTheme.typography.headlineMedium,fontSize=25.sp)
+                if(folder==null)Text("先收下喜欢，再慢慢出发",fontSize=10.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=3.dp))
+            }
+            if(folder!=null)IconButton(Glyph.MORE,"收藏夹更多操作",{options=true}) else IconButton(Glyph.PLUS,"收藏地点",onAdd)
         }
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal=20.dp).padding(bottom=24.dp),verticalArrangement=Arrangement.spacedBy(16.dp)){
             if(folder!=null&&!searching){
@@ -51,23 +58,42 @@ fun CollectionsV2(controller:AtlasController,collectionId:String?,onCollection:(
                     Tag("列表",true,{});Tag("地图",false,{onMap(folder.id)});Spacer(Modifier.weight(1f));Tag(if(bulk)"完成整理" else "整理",bulk,{bulk=!bulk;selected=emptySet()})
                 }
             }
-            OutlinedTextField(search,{onSearch(it);onSearching(true)},Modifier.fillMaxWidth(),placeholder={Text("地点、区域或想去的理由",fontSize=12.sp)},
+            CityFilterRow(cities,activeCity,onCity) { c->sourcePlaces.count{c==null||it.city==c} }
+            OutlinedTextField(search,{onSearch(it);onSearching(true)},Modifier.fillMaxWidth(),placeholder={Text("找地点、区域或想去的理由",fontSize=12.sp)},
                 leadingIcon={AtlasIcon(Glyph.SEARCH,size=18.dp,color=AtlasColors.Muted)},singleLine=true,shape=RoundedCornerShape(11.dp),colors=OutlinedTextFieldDefaults.colors(unfocusedBorderColor=AtlasColors.Line))
             if(folder==null&&!searching&&search.isBlank()){
-                Text("把心动，按喜欢的方式收好",style=MaterialTheme.typography.titleLarge)
+                Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+                    TextButton(onClick={showFolders=!showFolders}) { AtlasIcon(Glyph.FOLDER,size=16.dp);Spacer(Modifier.width(5.dp));Text(if(showFolders)"收起收藏夹" else "收藏夹",fontSize=11.sp) }
+                    Spacer(Modifier.weight(1f))
+                    TextButton(onClick={bulk=!bulk;selected=emptySet()}) { Text(if(bulk)"完成整理" else "整理",fontSize=11.sp) }
+                }
+                if(showFolders) {
+                TextButton(onClick={editing=true}) { Text("＋ 新建收藏夹",fontSize=11.sp) }
                 data.collections.chunked(if(wide)4 else 2).forEach{row->Row(horizontalArrangement=Arrangement.spacedBy(12.dp)){
                     row.forEach{CollectionTileV2(it,data,{onCollection(it.id)},Modifier.weight(1f))};repeat((if(wide)4 else 2)-row.size){Spacer(Modifier.weight(1f))}
                 }}
-                Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){Text("所有地点",style=MaterialTheme.typography.titleMedium,modifier=Modifier.weight(1f));TextButton(onClick={bulk=!bulk;selected=emptySet()}){Text(if(bulk)"完成整理" else "批量整理",fontSize=11.sp)}}
+                }
             }
-            FilterRow(filter,{filter=it})
+            Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) { listOf(PlaceFilter.ALL,PlaceFilter.WANT,PlaceFilter.VISITED).forEach { f -> Tag(f.title,filter==f,{onFilter(f);selected=emptySet()}) } }
             Text(if(bulk)"已选 "+selected.size+" 处" else "共 "+places.size+" 个心动去处",fontSize=11.sp,color=AtlasColors.Muted)
-            places.forEach{place->Row(verticalAlignment=Alignment.CenterVertically){
+            if(folder==null&&!bulk)places.chunked(if(wide)4 else 2).forEach { row ->
+                Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+                    row.forEach { place ->
+                        Column(Modifier.weight(1f).clickable{onPlace(place)}) {
+                            Photo(place.cover,Modifier.fillMaxWidth().height(if(wide)210.dp else 170.dp).clip(RoundedCornerShape(9.dp)),place.name)
+                            Text(place.name,fontSize=12.sp,maxLines=1,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis,modifier=Modifier.padding(top=9.dp))
+                            Text(place.city+" · "+place.kind.title,fontSize=10.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=4.dp,bottom=5.dp))
+                            Tag(if(data.isVisited(place.id))"去过" else "想去")
+                        }
+                    }
+                    repeat((if(wide)4 else 2)-row.size) { Spacer(Modifier.weight(1f)) }
+                }
+            } else places.forEach{place->Row(verticalAlignment=Alignment.CenterVertically){
                 if(bulk)Checkbox(place.id in selected,{toggle(place.id)})
                 PlaceRow(place,data,{if(bulk)toggle(place.id) else onPlace(place)},Modifier.weight(1f))
             }}
             if(places.isEmpty())EmptyPage(if(search.isNotBlank())"还没找到「"+search+"」" else "这一页，等你慢慢填满",
-                if(search.isNotBlank())"试试店名或所在区域，也可以直接添加这个地点。" else "收下一处喜欢的地方，留给下次出发。","添加一个地点",onAdd)
+                if(search.isNotBlank())"试试店名或所在区域，也可以直接添加这个地点。" else "换个城市或状态看看，也可以收下一个新地点。","添加一个地点",onAdd)
         }
         if(bulk)Column(Modifier.fillMaxWidth().background(AtlasColors.Card).padding(10.dp)){
             Row(verticalAlignment=Alignment.CenterVertically){TextButton(onClick={selected=if(selected.size==places.size)emptySet() else places.map{it.id}.toSet()}){Text(if(selected.size==places.size)"取消全选" else "全选")};Text("已选 "+selected.size+" 处",fontSize=12.sp)}

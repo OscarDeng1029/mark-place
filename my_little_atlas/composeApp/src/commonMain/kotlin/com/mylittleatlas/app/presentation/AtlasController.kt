@@ -77,6 +77,26 @@ class AtlasController(val platform: PlatformServices) {
     }
 
     fun updateVisit(visit: Visit): Boolean = commit(data.copy(visits=data.visits.map{if(it.id==visit.id)visit else it}))
+    /** New places, the entry and removal of its draft are saved together. */
+    fun saveJournalEntry(placeId: String?, name: String, city: String, date: String, note: String,
+        photos: List<String>, revisit: Boolean, draftId: String? = null, visitId: String? = null): Visit? {
+        if(name.isBlank() || city.isBlank() || !isValidAtlasDate(date) || date > platform.today()) {
+            message = "请填写地点、城市和有效的到访日期。"; return null
+        }
+        val existingVisit = visitId?.let { id -> data.visits.find { it.id == id } }
+        if(visitId != null && existingVisit == null) { message = "这篇记录已不存在。"; return null }
+        val existingPlace = placeId?.let { id -> data.places.find { it.id == id } }
+            ?.takeIf { it.name == name.trim() && it.city == city.trim() }
+            ?: data.places.find { it.name == name.trim() && it.city == city.trim() }
+        val place = existingPlace ?: Place(platform.uniqueId(), name.trim(), city.trim(), cover = "city", addedOn = platform.today())
+        val visit = Visit(existingVisit?.id ?: platform.uniqueId(), place.id, date, note.trim(), photos,
+            existingVisit?.layout ?: "warm")
+        val nextPlaces = if(existingPlace == null) listOf(place.copy(wantRevisit = revisit)) + data.places
+            else data.places.map { if(it.id == place.id) it.copy(wantRevisit = revisit) else it }
+        val next = data.copy(places = nextPlaces, visits = listOf(visit) + data.visits.filterNot { it.id == visit.id },
+            drafts = data.drafts.filterNot { it.id == draftId })
+        return if(commit(next)) { message = "已保存，翻到新的一页。"; visit } else null
+    }
     fun deleteVisit(id: String): Boolean = commit(data.copy(visits=data.visits.filterNot{it.id==id}))
     fun saveDraft(draft: VisitDraft): Boolean = commit(data.copy(drafts=listOf(draft)+data.drafts.filterNot{it.id==draft.id}))
     fun deleteDraft(id: String): Boolean = commit(data.copy(drafts=data.drafts.filterNot{it.id==id}))

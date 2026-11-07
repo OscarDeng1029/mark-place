@@ -53,6 +53,7 @@ data class Visit(
 data class VisitDraft(
     val id: String, val placeId: String, val date: String, val note: String = "",
     val photoPaths: List<String> = emptyList(), val revisit: Boolean = false,
+    val placeName: String = "", val city: String = "",
 )
 
 @Serializable
@@ -88,6 +89,11 @@ fun AtlasData.filterPlaces(filter: PlaceFilter, query: String = "", collectionId
     }
 
 fun AtlasData.countIn(collection: Collection) = places.count { collection.id in it.collectionIds }
+
+/** The notebook and its directory always use the same order. */
+fun AtlasData.journalVisits(): List<Visit> = visits.filter { v -> places.any { it.id == v.placeId } }.sortedByDescending { it.date }
+
+fun AtlasData.visitedCities(): List<String> = places.filter { isVisited(it.id) }.map { it.city.trim() }.filter { it.isNotEmpty() }.distinct()
 
 /** Selection is explicit. Matching candidates never mutates the library. */
 data class ImportCandidate(

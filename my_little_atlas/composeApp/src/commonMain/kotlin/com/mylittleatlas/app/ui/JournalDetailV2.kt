@@ -29,7 +29,7 @@ fun JournalDetailV2(controller:AtlasController,place:Place,visit:Visit,onClose:(
         Paper(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing), textured = true) {
             Column(Modifier.fillMaxSize()) {
                 Row(Modifier.fillMaxWidth().height(54.dp).padding(horizontal=9.dp),verticalAlignment=Alignment.CenterVertically) {
-                    IconButton(Glyph.BACK,"返回足迹",onClose)
+                    IconButton(Glyph.BACK,"返回手账",onClose)
                     Text("我的手账",fontSize=15.sp,modifier=Modifier.weight(1f),textAlign=androidx.compose.ui.text.style.TextAlign.Center)
                     IconButton(Glyph.MORE,"到访记录更多操作",{options=true})
                 }

@@ -29,7 +29,7 @@ class AtlasRepository(private val storage: AtlasStorage) {
         require(data.places.map { it.id }.distinct().size == data.places.size) { "备份中有重复地点编号。" }
         require(data.collections.map { it.id }.distinct().size == data.collections.size) { "备份中有重复收藏夹编号。" }
         require(data.visits.all { v -> data.places.any { it.id == v.placeId } }) { "备份包含没有对应地点的到访记录。" }
-        require(data.drafts.all { v -> data.places.any { it.id == v.placeId } }) { "备份包含没有对应地点的草稿。" }
+        require(data.drafts.all { v -> v.placeId.isBlank() || data.places.any { it.id == v.placeId } }) { "备份包含没有对应地点的草稿。" }
         require(data.visits.map{it.id}.distinct().size==data.visits.size) { "备份中有重复到访编号。" }
         require(data.drafts.map{it.id}.distinct().size==data.drafts.size) { "备份中有重复草稿编号。" }
         return data

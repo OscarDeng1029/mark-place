@@ -6,7 +6,7 @@ import androidx.compose.ui.window.ComposeUIViewController
 import androidx.compose.runtime.mutableStateOf
 import com.mylittleatlas.app.data.AtlasRepository
 import com.mylittleatlas.app.data.AtlasStorage
-import com.mylittleatlas.app.data.DemoAtlas
+import com.mylittleatlas.app.data.PreviewAtlas
 import com.mylittleatlas.app.platform.IosPlatformBridge
 import com.mylittleatlas.app.platform.IosPlatformServices
 import com.mylittleatlas.app.ui.AtlasApp
@@ -26,4 +26,4 @@ fun MainViewController(bridge: IosPlatformBridge): UIViewController {
 fun previewAtlasJson(): String = AtlasRepository(object : AtlasStorage {
     override fun read(): String? = null
     override fun write(content: String) = Unit
-}).export(DemoAtlas.create())
+}).export(PreviewAtlas.create())
