@@ -47,6 +47,7 @@ fun MapScreen(controller: AtlasController, onPlace: (Place)->Unit, onList: ()->U
     var locating by remember { mutableStateOf<Place?>(null) }
     var query by remember { mutableStateOf("") }
     val places = data.filterPlaces(filter,query,collectionId=collectionId).filter{(city==null||it.city==city)&&(kind==null||it.kind==kind)}
+    val cityPlaces=data.places.filter{(city==null||it.city==city)&&(collectionId==null||collectionId in it.collectionIds)}
     val plotted = places.filter { !data.isDemoPlace(it) && MapGeometry.position(it)!=null }
     val unlocated = places.filter { !data.isDemoPlace(it) && MapGeometry.position(it)==null }
     val sampleCount = places.count { data.isDemoPlace(it) }
@@ -139,11 +140,14 @@ fun MapScreen(controller: AtlasController, onPlace: (Place)->Unit, onList: ()->U
             FilterRow(filter,{ filter=it; selectedId=null })
             Row(Modifier.background(AtlasColors.Card.copy(alpha=.96f),RoundedCornerShape(10.dp)).padding(horizontal=11.dp,vertical=7.dp),verticalAlignment=Alignment.CenterVertically) {
                 Box(Modifier.size(5.dp).background(AtlasColors.Sage,CircleShape)); Spacer(Modifier.width(6.dp))
-                Text("${plotted.size} 处已定位${if(unlocated.isNotEmpty()) " · ${unlocated.size} 处待定位" else ""}${if(sampleCount>0) " · 示例不标注" else ""}",fontSize=10.sp,color=AtlasColors.Muted)
+                Column(Modifier.weight(1f)) {
+                    Text("${city ?: "全部城市"} · ${cityPlaces.count{data.isVisited(it.id)}} 处去过 · ${cityPlaces.count{!data.isVisited(it.id)}} 处想去",fontSize=11.sp,color=AtlasColors.Green)
+                    Text("${plotted.size} 处已定位${if(unlocated.isNotEmpty()) " · ${unlocated.size} 处待定位" else ""}${if(sampleCount>0) " · 示例不标注" else ""}",fontSize=9.sp,color=AtlasColors.Muted)
+                }
                 if(unlocated.isNotEmpty()) Text("  补全",fontSize=10.sp,color=AtlasColors.Green,modifier=Modifier.clickable { pending=true })
             }
         }
-        Column(Modifier.align(Alignment.TopEnd).padding(end=18.dp,top=210.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
+        Column(Modifier.align(Alignment.TopEnd).padding(end=18.dp,top=230.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
             IconButton(Glyph.LAYERS,"筛选收藏夹",{ layers=true },filled=true)
             IconButton(Glyph.PLUS,"放大地图",{ zoom=(zoom+1).coerceAtMost(18) },filled=true)
             Surface(Modifier.size(42.dp).clickable { zoom=(zoom-1).coerceAtLeast(3) }.semantics { contentDescription="缩小地图" },shape=CircleShape,color=AtlasColors.Card) {
