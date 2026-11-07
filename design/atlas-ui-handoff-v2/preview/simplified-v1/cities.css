@@ -1,0 +1,9 @@
+.city-tabs{display:flex;align-items:center;gap:7px;overflow-x:auto;scrollbar-width:none;padding:4px 0 8px;flex-shrink:0}
+.city-tabs::-webkit-scrollbar{display:none}
+.city-tabs button{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex-shrink:0;padding:8px 12px;border-radius:7px;background:#f1f2ea;color:#909a80;border:1px solid #e6e9dd;font-size:11px;min-height:36px}
+.city-tabs button.active{color:#53664b;background:#e8eddf;border-color:#cfdac2}
+.city-tabs button span{font-size:9px;opacity:.7}
+.directory-sheet .sheet-subtitle{margin-bottom:11px}
+.directory-sheet .search{margin:9px 0 18px}
+.app-scroll>.city-tabs{margin:9px 0 0;padding-bottom:13px;border-bottom:1px solid var(--line)}
+.app-scroll>.city-tabs+.filters{margin-top:15px}
