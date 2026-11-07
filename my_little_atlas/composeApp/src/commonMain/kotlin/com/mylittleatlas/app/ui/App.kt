@@ -68,8 +68,7 @@ fun AtlasApp(platform: PlatformServices, incomingText: String? = null, onIncomin
         AtlasBackHandler(tab!=AtlasTab.HOME){if(tab==AtlasTab.COLLECTIONS&&collectionId!=null){collectionId=null;search=""}else{tab=AtlasTab.HOME;search="";searching=false}}
         BoxWithConstraints(Modifier.fillMaxSize()) {
             val wide = maxWidth >= 900.dp
-            Paper(Modifier.fillMaxSize(), textured = tab == AtlasTab.HOME,
-                color = if (tab == AtlasTab.PROFILE) PersonalBackground else AtlasColors.Paper) {
+            Paper(Modifier.fillMaxSize(), textured = tab == AtlasTab.HOME || tab == AtlasTab.PROFILE) {
                 Row(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
                     if(wide) DesktopRail(tab,{tab=it;collectionId=null}, {showAddMenu=true})
                     Column(Modifier.weight(1f).fillMaxHeight()) {
@@ -84,8 +83,7 @@ fun AtlasApp(platform: PlatformServices, incomingText: String? = null, onIncomin
                                         search,{search=it},searching,{searching=it}, {importedText="";showImport=true},wide,{tab=AtlasTab.HOME},
                                         {mapFolder=it;mapCity=null;tab=AtlasTab.MAP},{id->val folder=controller.data.collections.find{it.id==id};shareSubset=controller.data.copy(places=controller.data.places.filter{id in it.collectionIds});shareTitle=folder?.name;shareAtlas=true})
                                     AtlasTab.JOURNAL -> JournalScreen(controller.data,{detailId=it.id},{tab=AtlasTab.COLLECTIONS},wide,{journalVisitId=it.id},{showCities=true})
-                                    AtlasTab.PROFILE -> ProfileV2(controller,{shareAtlas=true},{tab=AtlasTab.JOURNAL},{showCities=true},{recordingDraft=it;recordingId=it.placeId},
-                                        {collectionId=null;search="";searching=false;tab=AtlasTab.COLLECTIONS})
+                                    AtlasTab.PROFILE -> ProfileV2(controller,{shareAtlas=true},{tab=AtlasTab.JOURNAL},{showCities=true},{recordingDraft=it;recordingId=it.placeId})
                                 }
                             }
                             if(controller.message != null) {
@@ -136,7 +134,7 @@ fun AtlasApp(platform: PlatformServices, incomingText: String? = null, onIncomin
 
 @Composable
 private fun BottomBar(tab: AtlasTab,onTab:(AtlasTab)->Unit,onAdd:()->Unit) {
-    Surface(color=if(tab==AtlasTab.PROFILE) Color.White else AtlasColors.Card,shadowElevation=0.dp) {
+    Surface(color=AtlasColors.Card,shadowElevation=0.dp) {
         val selectedTab = if (tab == AtlasTab.JOURNAL) AtlasTab.HOME else tab
         Row(Modifier.fillMaxWidth().height(62.dp).padding(horizontal=8.dp),verticalAlignment=Alignment.CenterVertically) {
             BottomNavItem(AtlasTab.HOME,selectedTab==AtlasTab.HOME,onTab,Modifier.weight(1f))

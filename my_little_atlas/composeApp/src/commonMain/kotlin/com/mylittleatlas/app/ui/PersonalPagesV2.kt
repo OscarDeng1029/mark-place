@@ -12,8 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -24,10 +23,10 @@ import com.mylittleatlas.app.presentation.AtlasController
 @Composable
 fun AtlasFullPage(title:String,onClose:()->Unit,actions:@Composable RowScope.()->Unit={},content:@Composable ColumnScope.()->Unit) {
     Dialog(onDismissRequest=onClose,properties=DialogProperties(usePlatformDefaultWidth=false)) {
-        Paper(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing).imePadding(), color = PersonalBackground) {
+        Paper(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing).imePadding(), textured = true) {
             Column(Modifier.fillMaxSize()) {
-                Row(Modifier.fillMaxWidth().background(Color.White).height(54.dp).padding(horizontal=8.dp),verticalAlignment=Alignment.CenterVertically) {
-                    IconButton(Glyph.BACK,"返回",onClose);Text(title,fontSize=16.sp,fontWeight=FontWeight.SemiBold,modifier=Modifier.weight(1f));actions()
+                Row(Modifier.fillMaxWidth().height(54.dp).padding(horizontal=8.dp),verticalAlignment=Alignment.CenterVertically) {
+                    IconButton(Glyph.BACK,"返回",onClose);Text(title,fontSize=15.sp,modifier=Modifier.weight(1f));actions()
                 }
                 Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(20.dp),verticalArrangement=Arrangement.spacedBy(17.dp),content=content)
             }
@@ -36,18 +35,49 @@ fun AtlasFullPage(title:String,onClose:()->Unit,actions:@Composable RowScope.()-
 }
 
 @Composable
-fun ProfileV2(controller:AtlasController,onShare:()->Unit,onJournal:()->Unit,onCity:()->Unit,onDraft:(VisitDraft)->Unit,onCollections:()->Unit={}) {
+fun ProfileV2(controller:AtlasController,onShare:()->Unit,onJournal:()->Unit,onCity:()->Unit,onDraft:(VisitDraft)->Unit) {
     val data=controller.data
     var page by remember{mutableStateOf("")}
     var deletingDraft by remember{mutableStateOf<VisitDraft?>(null)}
-    PersonalCenterV4(data,{page="edit"},{page="settings"},{page="badges"},{page="drafts"},onShare,onJournal,onCity,onCollections)
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal=18.dp).padding(top=18.dp,bottom=24.dp)) {
+        Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+            Text("A PERSONAL ATLAS",letterSpacing=1.5.sp,fontSize=9.sp,color=AtlasColors.Muted,modifier=Modifier.weight(1f))
+            IconButton(Glyph.SETTINGS,"设置",{page="settings"})
+        }
+        Box(Modifier.fillMaxWidth().height(166.dp)) {
+            Photo(data.profileCover,Modifier.fillMaxSize().clip(RoundedCornerShape(10.dp)))
+            Tape(Modifier.offset(x=20.dp,y=(-5).dp).rotate(-5f))
+            TextButton(onClick={page="edit"},modifier=Modifier.align(Alignment.BottomEnd)){Text("编辑封面",fontSize=10.sp,color=AtlasColors.Card)}
+            Box(Modifier.align(Alignment.BottomStart).offset(x=13.dp,y=24.dp).size(58.dp).clip(CircleShape).background(AtlasColors.SagePale).clickable{page="edit"},contentAlignment=Alignment.Center){AtlasIcon(Glyph.PERSON,size=29.dp,color=AtlasColors.Green)}
+        }
+        Spacer(Modifier.height(33.dp))
+        Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){
+            Text(data.nickname+"的城市手账",style=MaterialTheme.typography.titleLarge,modifier=Modifier.weight(1f))
+            TextButton(onClick={page="edit"}){Text("编辑资料",fontSize=10.sp)}
+        }
+        Text(data.signature,fontSize=11.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=4.dp))
+        Spacer(Modifier.height(20.dp))
+        AtlasMetrics(listOf(data.places.size to "收藏地点",data.places.count{data.isVisited(it.id)} to "去过的地方",data.places.map{it.city}.distinct().size to "探索城市"))
+        Spacer(Modifier.height(21.dp));SectionTitle("我的小小成就","勋章墙",{page="badges"})
+        Row(Modifier.fillMaxWidth().padding(top=12.dp,bottom=15.dp)) {
+            listOf("城市探索家","咖啡爱好者","留住光影").forEachIndexed{i,label->Column(Modifier.weight(1f).clickable{page="badges"},horizontalAlignment=Alignment.CenterHorizontally){
+                ScrapbookBadge(i,label,Modifier.size(64.dp),unlocked=badgeProgress(data,i)>0)
+                Text(label,fontSize=10.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=8.dp))
+            }}
+        }
+        SettingRow(Glyph.BOOK,"我的到访记录",data.visits.size.toString()+" 篇",onJournal);ThinDivider()
+        SettingRow(Glyph.MAP,"我的城市图鉴",data.places.map{it.city}.distinct().size.toString()+" 座城市",onCity);ThinDivider()
+        SettingRow(Glyph.EDIT,"未完成的草稿",data.drafts.size.toString()+" 篇"){page="drafts"};ThinDivider()
+        SettingRow(Glyph.SHARE,"分享我的图鉴","只分享主动选择的内容",onShare)
+        Text("默认私密 · 记录保存在此设备",fontSize=10.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=20.dp).align(Alignment.CenterHorizontally))
+    }
     deletingDraft?.let{draft->ConfirmDialog("删除这篇草稿？","未完成的文字将被删除，原照片文件继续保留。","删除草稿",{if(controller.deleteDraft(draft.id))deletingDraft=null},{deletingDraft=null})}
     when(page){
         "settings"->SettingsV2(controller,{page=""})
         "edit"->EditProfileV2(controller,{page=""})
         "badges"->BadgesV2(data,{page=""})
         "drafts"->AtlasFullPage("未完成的草稿",{page=""}) {
-            if(data.drafts.isEmpty())EmptyPage("暂无草稿","未完成的到访记录会保存在这里。")
+            if(data.drafts.isEmpty())EmptyPage("这一刻，没有待续的一页","写到一半的到访会保存在这里。")
             data.drafts.forEach{draft->val place=data.places.find{it.id==draft.placeId}
                 if(place!=null)Column(Modifier.fillMaxWidth().background(AtlasColors.Card,RoundedCornerShape(12.dp)).padding(15.dp)){
                     Text(place.name,style=MaterialTheme.typography.titleMedium);Text(draft.date,fontSize=10.sp,color=AtlasColors.Muted)
@@ -116,10 +146,10 @@ fun SettingsV2(controller:AtlasController,onClose:()->Unit) {
     var clear by remember{mutableStateOf(false)}
     var info by remember{mutableStateOf("")}
     AtlasFullPage("设置",onClose) {
-        Text("数据与应用设置",fontSize=20.sp,fontWeight=FontWeight.SemiBold)
+        Text("把这本手账，好好收着。",style=MaterialTheme.typography.titleLarge)
         SettingRow(Glyph.DOWNLOAD,"导出备份","保存地点、收藏夹、文字、草稿与资料"){controller.exportBackup()}
         SettingRow(Glyph.FOLDER,"恢复备份","恢复前会再次确认"){restore=true}
-        Box(Modifier.fillMaxWidth().background(Color.White,RoundedCornerShape(12.dp)).padding(16.dp)){Text("JSON 备份不含照片文件。请同时保留原设备的应用照片，跨设备恢复时图片可能不可用。",fontSize=12.sp,color=AtlasColors.Muted)}
+        PaperNote(Modifier.fillMaxWidth()){Text("JSON 备份不含照片文件。请同时保留原设备的应用照片，跨设备恢复时图片可能不可用。",fontSize=12.sp,color=AtlasColors.Muted)}
         SettingRow(Glyph.LOCK,"账号与设备同步","当前使用本机私密存储"){info="account"}
         SettingRow(Glyph.LAYERS,"关于这本图鉴","版本 0.1.0 · 原生多平台"){info="about"}
         if(controller.data.demoContent)SettingRow(Glyph.CLOSE,"开始我的空白图鉴","会清除当前图鉴中的地点、到访与草稿"){clear=true}
