@@ -88,7 +88,7 @@ class AtlasController(val platform: PlatformServices) {
         val existingPlace = placeId?.let { id -> data.places.find { it.id == id } }
             ?.takeIf { it.name == name.trim() && it.city == city.trim() }
             ?: data.places.find { it.name == name.trim() && it.city == city.trim() }
-        val place = existingPlace ?: Place(platform.uniqueId(), name.trim(), city.trim(), cover = "city", addedOn = platform.today())
+        val place = existingPlace ?: Place(platform.uniqueId(), name.trim(), city.trim(), kind = PlaceKind.OTHER, cover = "city", addedOn = platform.today())
         val visit = Visit(existingVisit?.id ?: platform.uniqueId(), place.id, date, note.trim(), photos,
             existingVisit?.layout ?: "warm")
         val nextPlaces = if(existingPlace == null) listOf(place.copy(wantRevisit = revisit)) + data.places

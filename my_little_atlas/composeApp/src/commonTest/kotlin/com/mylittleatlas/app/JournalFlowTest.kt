@@ -17,6 +17,7 @@ class JournalFlowTest {
         val visit=controller.saveJournalEntry(null,"湖边","杭州","2026-11-08","坐一会儿",emptyList(),false,"draft")
         assertNotNull(visit)
         assertEquals("杭州",controller.data.places.single().city)
+        assertEquals(PlaceKind.OTHER,controller.data.places.single().kind)
         assertEquals(controller.data.places.single().id,visit.placeId)
         assertEquals(1,controller.data.visits.size)
         assertTrue(controller.data.drafts.isEmpty())

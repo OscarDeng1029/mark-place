@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class PlaceKind(val title: String, val symbol: String) {
-    COFFEE("咖啡", "☕"), FOOD("餐厅", "◡"), SWEET("甜品", "◇"), BOOK("书店", "▥"), WALK("漫游", "⌁")
+    COFFEE("咖啡", "☕"), FOOD("餐厅", "◡"), SWEET("甜品", "◇"), BOOK("书店", "▥"), WALK("漫游", "⌁"), OTHER("日常", "·")
 }
 
 enum class PlaceFilter(val title: String) { ALL("全部"), WANT("想去"), VISITED("去过"), REVISIT("再去") }
