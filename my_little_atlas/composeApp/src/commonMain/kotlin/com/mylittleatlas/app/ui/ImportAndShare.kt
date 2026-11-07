@@ -36,7 +36,7 @@ fun ShareSheet(data:AtlasData,place:Place?,platform:PlatformServices,onClose:()-
     AtlasFullPage(if(saved)"这份美好，已收好" else "分享这份美好",onClose) {
         if(saved)PaperNote(Modifier.fillMaxWidth()){Column{
             Text("图片已保存",style=MaterialTheme.typography.titleLarge)
-            Text("可以在相册的 MyLittleAtlas 中找到它。",fontSize=12.sp,color=AtlasColors.Muted)
+            Text("可以在系统相册或所选文件位置找到它。",fontSize=12.sp,color=AtlasColors.Muted)
         }}
         Text("选一个喜欢的样子",fontSize=12.sp,color=AtlasColors.Muted)
         Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){listOf("warm" to "暖色手账","film" to "胶片日记","note" to "纸上小记").forEach{(id,label)->Tag(label,template==id,{template=id;saved=false})}}

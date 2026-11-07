@@ -29,10 +29,29 @@ val prepareDebugKey = tasks.register("prepareAtlasDebugKey") {
 kotlin {
     androidTarget { compilerOptions { jvmTarget.set(JvmTarget.JVM_17) } }
     jvm("desktop") { compilerOptions { jvmTarget.set(JvmTarget.JVM_17) } }
+    // Apple toolchains run on macOS. Windows/Android builds keep their existing task graph.
+    val appleTargets = if (System.getProperty("os.name") == "Mac OS X" ||
+        providers.gradleProperty("atlas.ios").orNull == "true") {
+        listOf(iosArm64(), iosSimulatorArm64(), iosX64()).onEach { target ->
+            target.binaries.framework {
+                baseName = "AtlasShared"
+                isStatic = true
+                binaryOption("bundleId", "com.mylittleatlas.shared")
+            }
+        }
+    } else emptyList()
     sourceSets {
         val jvmMain by creating { dependsOn(commonMain.get()) }
         androidMain.get().dependsOn(jvmMain)
         getByName("desktopMain").dependsOn(jvmMain)
+        if (appleTargets.isNotEmpty()) {
+            val iosMain by creating { dependsOn(commonMain.get()) }
+            val iosTest by creating { dependsOn(commonTest.get()) }
+            appleTargets.forEach { target ->
+                getByName(target.name + "Main").dependsOn(iosMain)
+                getByName(target.name + "Test").dependsOn(iosTest)
+            }
+        }
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)

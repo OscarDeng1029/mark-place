@@ -1,0 +1,107 @@
+name: iOS native build
+on:
+  push:
+    branches: [main]
+    paths:
+      - "my_little_atlas/**"
+      - ".github/workflows/ios.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: my_little_atlas
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Prepare Xcode project and simulator
+        run: |
+          set -euo pipefail
+          if ! command -v xcodegen >/dev/null; then brew install xcodegen; fi
+          xcodebuild -version
+          xcodegen generate --spec iosApp/project.yml
+          mkdir -p build/ios-delivery build/ios-screenshots
+          xcrun simctl list devices available --json > build/simulators.json
+          python3 - <<'PY'
+          import json, os
+          devices = json.load(open("build/simulators.json"))["devices"]
+          phone = next(d for group in devices.values() for d in group if d["name"].startswith("iPhone"))
+          with open(os.environ["GITHUB_ENV"], "a") as out:
+              out.write("ATLAS_SIMULATOR=" + phone["udid"] + "\n")
+          print("Selected:", phone["name"], phone["udid"])
+          PY
+          xcrun simctl boot "$(
+            python3 -c 'import json; d=json.load(open("build/simulators.json"))["devices"]; print(next(p["udid"] for g in d.values() for p in g if p["name"].startswith("iPhone")))'
+          )" || true
+      - name: Test shared Kotlin code on iOS
+        run: |
+          set -euo pipefail
+          if [ "$(uname -m)" = "arm64" ]; then task=iosSimulatorArm64Test; else task=iosX64Test; fi
+          bash ./gradlew ":composeApp:$task" :composeApp:desktopTest --stacktrace 2>&1 | tee build/ios-shared-tests.log
+      - name: Build and test native iOS simulator app
+        run: |
+          set -euo pipefail
+          xcodebuild test \
+            -project iosApp/MyLittleAtlas.xcodeproj -scheme MyLittleAtlas \
+            -configuration Debug -destination "platform=iOS Simulator,id=$ATLAS_SIMULATOR" \
+            -derivedDataPath build/ios-simulator -resultBundlePath build/ios-ui-tests.xcresult \
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee build/ios-simulator.log
+          ditto -c -k --sequesterRsrc --keepParent \
+            build/ios-simulator/Build/Products/Debug-iphonesimulator/MyLittleAtlas.app \
+            build/ios-delivery/MyLittleAtlas-simulator.app.zip
+          xcrun xcresulttool export attachments --path build/ios-ui-tests.xcresult --output-path build/ios-screenshots
+      - name: Build unsigned iPhone app
+        run: |
+          set -euo pipefail
+          xcodebuild build \
+            -project iosApp/MyLittleAtlas.xcodeproj -scheme MyLittleAtlas \
+            -configuration Release -sdk iphoneos -destination "generic/platform=iOS" \
+            -derivedDataPath build/ios-device CODE_SIGNING_ALLOWED=NO 2>&1 | tee build/ios-device.log
+          mkdir -p build/ios-package/Payload
+          cp -R build/ios-device/Build/Products/Release-iphoneos/MyLittleAtlas.app build/ios-package/Payload/
+          cd build/ios-package
+          ditto -c -k --sequesterRsrc Payload ../ios-delivery/MyLittleAtlas-unsigned.ipa
+      - name: Summarize build errors
+        if: failure()
+        run: |
+          python3 - <<'PY'
+          import glob
+          for file in glob.glob("build/ios-*.log"):
+              lines = open(file, errors="replace").readlines()
+              errors = [s.strip() for s in lines if "error:" in s.lower() or s.startswith("e: ") or "FAILED" in s]
+              for text in (errors or lines[-12:])[:35]:
+                  print("::error title=" + file + "::" + text.replace("%", "%25").replace("\n", "%0A").replace("\r", "%0D"))
+          PY
+      - name: Upload iOS apps
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: MyLittleAtlas-iOS
+          path: my_little_atlas/build/ios-delivery/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Upload native screenshots and verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: iOS-screenshots-and-tests
+          path: |
+            my_little_atlas/build/ios-screenshots/
+            my_little_atlas/build/ios-*.log
+            my_little_atlas/build/ios-ui-tests.xcresult/
+            my_little_atlas/composeApp/build/test-results/
+            my_little_atlas/iosApp/MyLittleAtlas.xcodeproj/
+          if-no-files-found: warn
+          retention-days: 14

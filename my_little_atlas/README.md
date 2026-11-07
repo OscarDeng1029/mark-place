@@ -38,7 +38,9 @@ gradlew.bat :composeApp:run
 
 普通构建使用 Google Maven 和 Maven Central 网络仓库，不要设置 `ATLAS_MAVEN_LOCAL`。APK 在 `composeApp/build/outputs/apk/debug/composeApp-debug.apk`。`dist/MyLittleAtlas-desktop` 中的 jar 需要本机安装 JDK 17+，可通过目录内的启动脚本运行。
 
-Windows MSI 安装器还需下载 Compose Desktop 的 WiX 组件；本次网络下载超时，因此未生成 MSI。iOS 当前未纳入可构建 target，需要后续添加 Swift 宿主工程和 UIKit 平台适配。
+Windows MSI 安装器还需下载 Compose Desktop 的 WiX 组件；本次网络下载超时，因此未生成 MSI。
+
+iOS 已添加原生 Swift 宿主、Apple 编译目标和 UIKit 系统能力适配，共用现有页面与素材；构建、模拟器截图测试和真机签名说明见 [iOS 工程说明](iosApp/README.md)。GitHub Actions 使用 macOS 构建模拟器 App 和未签名真机 IPA，实际结果以对应 Actions 运行状态为准。
 
 ## 资源授权
 

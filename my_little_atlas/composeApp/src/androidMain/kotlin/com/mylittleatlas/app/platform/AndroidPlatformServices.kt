@@ -121,7 +121,7 @@ class AndroidPlatformServices(private val context: ComponentActivity) : Platform
         val send = Intent(Intent.ACTION_SEND).setType("image/png").putExtra(Intent.EXTRA_STREAM, uri).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         context.startActivity(Intent.createChooser(send, "分享我的城市收藏图鉴"))
     }
-    override fun saveImage(bitmap: ImageBitmap): Boolean = runCatching {
+    override suspend fun saveImage(bitmap: ImageBitmap): Boolean = runCatching {
         if(android.os.Build.VERSION.SDK_INT<29)return@runCatching false
         val values=android.content.ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME,"MyLittleAtlas-"+System.currentTimeMillis()+".png")

@@ -1,0 +1,53 @@
+name: MyLittleAtlas
+options:
+  bundleIdPrefix: com.mylittleatlas
+  deploymentTarget:
+    iOS: "16.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    SUPPORTS_MACCATALYST: NO
+    TARGETED_DEVICE_FAMILY: "1,2"
+    DEVELOPMENT_TEAM: ""
+targets:
+  MyLittleAtlas:
+    type: application
+    platform: iOS
+    sources:
+      - path: iosApp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.mylittleatlas.app
+        INFOPLIST_FILE: iosApp/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        FRAMEWORK_SEARCH_PATHS: "$(inherited) $(SRCROOT)/../composeApp/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)"
+        OTHER_LDFLAGS: "$(inherited) -framework AtlasShared"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    preBuildScripts:
+      - name: Build shared Kotlin Compose framework
+        script: |
+          cd "$SRCROOT/.."
+          bash ./gradlew :composeApp:embedAndSignAppleFrameworkForXcode
+        basedOnDependencyAnalysis: false
+  MyLittleAtlasUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: iosAppUITests
+    dependencies:
+      - target: MyLittleAtlas
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.mylittleatlas.app.uitests
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  MyLittleAtlas:
+    build:
+      targets:
+        MyLittleAtlas: all
+    test:
+      targets:
+        - MyLittleAtlasUITests

@@ -33,4 +33,4 @@ App 使用 **Kotlin Compose Multiplatform**，Android 与桌面 JVM 共用界面
 
 ## 当前范围
 
-Android 调试 APK 已在 Android 16 模拟器安装运行；桌面 JVM 源码已通过编译。已接入原生真实地图与“小红书链接 → 识别店名 → 高德核对 → 明确选择收藏 → 地图标记”流程，解析与门店查询使用本机 API 服务。原有导航、手账视觉和其他功能保持。iOS 尚未加入可构建目标。连接方式与实际功能边界见 App 说明。
+Android 调试 APK 已在 Android 16 模拟器安装运行；桌面 JVM 源码已通过编译。已接入原生真实地图与“小红书链接 → 识别店名 → 高德核对 → 明确选择收藏 → 地图标记”流程，解析与门店查询使用本机 API 服务。iOS 已加入相同 Compose 页面和 Swift 原生能力适配，使用 macOS CI 编译和截图测试，详见 [iOS 工程](my_little_atlas/iosApp/README.md)。真机安装需要 Apple 签名。

@@ -78,7 +78,7 @@ class DesktopPlatformServices : PlatformServices {
             runCatching { ImageIO.write(bitmap.toAwtImage(), "png", file) }
         }
     }
-    override fun saveImage(bitmap: ImageBitmap): Boolean {
+    override suspend fun saveImage(bitmap: ImageBitmap): Boolean {
         val chooser=JFileChooser().apply{dialogTitle="保存图鉴图片";selectedFile=File("my-little-atlas.png");fileFilter=FileNameExtensionFilter("PNG 图片","png")}
         if(chooser.showSaveDialog(null)!=JFileChooser.APPROVE_OPTION)return false
         val target=chooser.selectedFile.let{if(it.extension.equals("png",true))it else File(it.parentFile,it.name+".png")}

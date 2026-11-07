@@ -20,3 +20,5 @@ tooling/local-env.ps1
 iosApp/Pods/
 iosApp/*.xcworkspace/
 iosApp/xcuserdata/
+iosApp/*.xcodeproj/
+iosApp/DerivedData/
