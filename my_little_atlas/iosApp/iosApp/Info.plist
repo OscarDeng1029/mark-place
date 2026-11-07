@@ -12,6 +12,11 @@
     <key>CFBundleURLTypes</key>
     <array><dict><key>CFBundleURLName</key><string>com.mylittleatlas.import</string><key>CFBundleURLSchemes</key><array><string>mylittleatlas</string></array></dict></array>
     <key>LSRequiresIPhoneOS</key><true/>
+    <key>UIApplicationSceneManifest</key>
+    <dict>
+        <key>UIApplicationSupportsMultipleScenes</key><false/>
+        <key>UISceneConfigurations</key><dict/>
+    </dict>
     <key>UILaunchScreen</key><dict><key>UIColorName</key><string>LaunchBackground</string></dict>
     <key>UIUserInterfaceStyle</key><string>Light</string>
     <key>UISupportedInterfaceOrientations</key>

@@ -13,10 +13,10 @@ final class IosNativeServices: NSObject, IosPlatformBridge, CLLocationManagerDel
     private var photoDelegate: PhotoSelection?
     private var documentDelegate: BackupSelection?
     private var locationManager: CLLocationManager?
-    private var locationResult: ((String?, String?, String?) -> KotlinUnit)?
+    private var locationResult: ((String?, String?, String?) -> Void)?
     private var locationTimeout: DispatchWorkItem?
     private var requests: [String: URLSessionDataTask] = [:]
-    private var incomingText: ((String) -> KotlinUnit)?
+    private var incomingText: ((String) -> Void)?
     private var pendingText: String?
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.default
@@ -74,7 +74,7 @@ final class IosNativeServices: NSObject, IosPlatformBridge, CLLocationManagerDel
         return data.kotlinBytes()
     }
 
-    func pickPhoto(onResult: @escaping (String?) -> KotlinUnit) {
+    func pickPhoto(onResult: @escaping (String?) -> Void) {
         var configuration = PHPickerConfiguration(photoLibrary: .shared())
         configuration.filter = .images
         configuration.selectionLimit = 1
@@ -97,7 +97,7 @@ final class IosNativeServices: NSObject, IosPlatformBridge, CLLocationManagerDel
             present(UIDocumentPickerViewController(forExporting: [url], asCopy: true))
         } catch { showError("备份导出失败，请重试。") }
     }
-    func importBackup(onResult: @escaping (String?) -> KotlinUnit) {
+    func importBackup(onResult: @escaping (String?) -> Void) {
         let picker = UIDocumentPickerViewController(forOpeningContentTypes: [.json, .plainText], asCopy: true)
         picker.allowsMultipleSelection = false
         let selection = BackupSelection { [weak self] text in
@@ -114,7 +114,7 @@ final class IosNativeServices: NSObject, IosPlatformBridge, CLLocationManagerDel
         guard let image = UIImage(data: bytes.swiftData()) else { showError("图片生成失败，请重试。"); return }
         share([image])
     }
-    func savePng(bytes: KotlinByteArray, onResult: @escaping (KotlinBoolean) -> KotlinUnit) {
+    func savePng(bytes: KotlinByteArray, onResult: @escaping (KotlinBoolean) -> Void) {
         guard let image = UIImage(data: bytes.swiftData()) else { _ = onResult(KotlinBoolean(bool: false)); return }
         PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
             guard status == .authorized || status == .limited else {
@@ -129,7 +129,7 @@ final class IosNativeServices: NSObject, IosPlatformBridge, CLLocationManagerDel
         }
     }
 
-    func locate(onResult: @escaping (String?, String?, String?) -> KotlinUnit) {
+    func locate(onResult: @escaping (String?, String?, String?) -> Void) {
         guard locationResult == nil else { _ = onResult(nil, nil, "正在获取位置，请稍候。"); return }
         guard CLLocationManager.locationServicesEnabled() else {
             _ = onResult(nil, nil, "系统定位服务未开启，也可以继续手动浏览。"); return
@@ -203,7 +203,7 @@ final class IosNativeServices: NSObject, IosPlatformBridge, CLLocationManagerDel
     }
 
     func request(url: String, jsonBody: String?, tile: Bool,
-                 onResult: @escaping (KotlinByteArray?, String?) -> KotlinUnit) -> String {
+                 onResult: @escaping (KotlinByteArray?, String?) -> Void) -> String {
         let id = UUID().uuidString
         guard let destination = URL(string: url),
               destination.scheme == "https" || (destination.scheme == "http" && ["127.0.0.1", "localhost"].contains(destination.host ?? "")) else {
@@ -246,7 +246,7 @@ final class IosNativeServices: NSObject, IosPlatformBridge, CLLocationManagerDel
         DispatchQueue.main.async { [weak self] in self?.requests.removeValue(forKey: id)?.cancel() }
     }
 
-    func observeIncomingText(onText: @escaping (String) -> KotlinUnit) {
+    func observeIncomingText(onText: @escaping (String) -> Void) {
         incomingText = onText
         if let pendingText { self.pendingText = nil; _ = onText(pendingText) }
         consumeSharedImport()

@@ -26,6 +26,11 @@ jobs:
           distribution: temurin
           java-version: "21"
       - uses: gradle/actions/setup-gradle@v5
+      - name: Cache Kotlin Native toolchain
+        uses: actions/cache@v4
+        with:
+          path: ~/.konan
+          key: konan-${{ runner.os }}-${{ runner.arch }}-2.2.20-v1
       - name: Prepare Xcode project and simulator
         run: |
           set -euo pipefail
@@ -105,5 +110,6 @@ jobs:
             my_little_atlas/build/ios-ui-tests.xcresult/
             my_little_atlas/composeApp/build/test-results/
             my_little_atlas/iosApp/MyLittleAtlas.xcodeproj/
+            my_little_atlas/composeApp/build/xcode-frameworks/**/Headers/
           if-no-files-found: warn
           retention-days: 14
