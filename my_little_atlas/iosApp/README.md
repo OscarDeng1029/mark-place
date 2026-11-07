@@ -58,3 +58,5 @@ Artifacts：
 ## 页面验证
 
 XCUITest 在独立 AtlasUITests 数据目录使用共享 DemoAtlas，仅 DEBUG 测试启动启用，不读取或重置用户库。覆盖翻页、切换 tab 后页码保留、收藏、原版个人页、资料编辑与草稿入口，并保存截图。
+
+已完成 iPhone ARM64 Release、iPhone 16 Pro 模拟器和 14 项 iOS 共享测试验证。产物版本、校验值与模拟器截图见 [iOS 构建交付](../../design/atlas-ui-handoff-v2/implementation/iOS构建交付.md)。

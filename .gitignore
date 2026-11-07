@@ -28,6 +28,8 @@ Thumbs.db
 # Generated installers; keep preview images in dist
 my_little_atlas/dist/**/*.jar
 my_little_atlas/dist/*.apk
+my_little_atlas/dist/ios/*.ipa
+my_little_atlas/dist/ios/*.zip
 
 # Raw downloaded research pages remain local; summaries and manifests are tracked
 market_research_2026-11-06/sources/
