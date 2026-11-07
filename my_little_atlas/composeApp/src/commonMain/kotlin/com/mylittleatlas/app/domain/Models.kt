@@ -23,6 +23,9 @@ data class Place(
     val source: String = "",
     val latitude: Double? = null,
     val longitude: Double? = null,
+    val gcjLatitude: Double? = null,
+    val gcjLongitude: Double? = null,
+    val poiId: String = "",
     val wantRevisit: Boolean = false,
     val addedOn: String = "",
 )
@@ -56,6 +59,8 @@ data class AtlasData(
 )
 
 fun AtlasData.isVisited(id: String) = visits.any { it.placeId == id }
+fun AtlasData.isDemoPlace(place: Place) = demoContent && place.poiId.isBlank() &&
+    place.id in setOf("hidden", "slow", "butter", "paper", "daily", "green", "riverside", "tart")
 fun AtlasData.matches(place: Place, filter: PlaceFilter): Boolean = when (filter) {
     PlaceFilter.ALL -> true
     PlaceFilter.WANT -> !isVisited(place.id)
@@ -73,7 +78,12 @@ fun AtlasData.filterPlaces(filter: PlaceFilter, query: String = "", collectionId
 fun AtlasData.countIn(collection: Collection) = places.count { collection.id in it.collectionIds }
 
 /** Selection is explicit. Matching candidates never mutates the library. */
-data class ImportCandidate(val name: String, val address: String, val city: String, val source: String)
+data class ImportCandidate(
+    val name: String, val address: String, val city: String, val source: String,
+    val district: String = "", val latitude: Double? = null, val longitude: Double? = null,
+    val gcjLatitude: Double? = null, val gcjLongitude: Double? = null, val poiId: String = "",
+    val reason: String = "", val kind: PlaceKind = PlaceKind.COFFEE,
+)
 
 object TextPlaceImporter {
     fun extract(text: String): List<ImportCandidate> = text.lineSequence()
@@ -88,7 +98,8 @@ object TextPlaceImporter {
         }.distinctBy { "${it.city}|${it.name}|${it.address}".lowercase() }.toList()
 
     fun isDuplicate(candidate: ImportCandidate, places: List<Place>): Boolean = places.any {
-        it.name.equals(candidate.name, true) && it.city == candidate.city && it.address == candidate.address
+        (candidate.poiId.isNotBlank() && candidate.poiId == it.poiId) ||
+            (it.name.equals(candidate.name, true) && it.city == candidate.city && it.address == candidate.address)
     }
 }
 

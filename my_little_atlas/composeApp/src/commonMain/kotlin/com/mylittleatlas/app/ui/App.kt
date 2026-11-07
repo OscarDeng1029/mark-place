@@ -44,7 +44,7 @@ fun AtlasApp(platform: PlatformServices, incomingText: String? = null, onIncomin
     var sharePlace by remember { mutableStateOf<Place?>(null) }
     var shareAtlas by remember { mutableStateOf(false) }
     LaunchedEffect(incomingText) {
-        if(!incomingText.isNullOrBlank()) { importedText=incomingText;showImport=true;onIncomingConsumed() }
+        if(!incomingText.isNullOrBlank()) { importedText=incomingText;showImport=true }
     }
     LaunchedEffect(controller.message) {
         if(controller.message != null) {delay(4200);controller.message=null}
@@ -61,7 +61,7 @@ fun AtlasApp(platform: PlatformServices, incomingText: String? = null, onIncomin
                                 when(tab) {
                                     AtlasTab.HOME -> HomeScreen(controller.data, {detailId=it.id}, {id->collectionId=id;tab=AtlasTab.COLLECTIONS},
                                         {tab=AtlasTab.MAP}, {tab=AtlasTab.JOURNAL}, {searching=true;tab=AtlasTab.COLLECTIONS}, {tab=AtlasTab.PROFILE}, wide)
-                                    AtlasTab.MAP -> MapScreen(controller.data,{detailId=it.id}, {tab=AtlasTab.COLLECTIONS},wide)
+                                    AtlasTab.MAP -> MapScreen(controller,{detailId=it.id}, {tab=AtlasTab.COLLECTIONS},wide)
                                     AtlasTab.COLLECTIONS -> CollectionsScreen(controller, collectionId, {collectionId=it}, {detailId=it.id},
                                         search,{search=it},searching,{searching=it}, {importedText="";showImport=true},wide)
                                     AtlasTab.JOURNAL -> JournalScreen(controller.data,{detailId=it.id},{tab=AtlasTab.COLLECTIONS},wide)
@@ -85,7 +85,9 @@ fun AtlasApp(platform: PlatformServices, incomingText: String? = null, onIncomin
                 PlaceDetail(controller,place,{detailId=null},{sharePlace=place})
             }
         }
-        if(showImport) ImportSheet(controller,importedText,{showImport=false;importedText=""})
+        if(showImport) key(importedText) {
+            ImportSheet(controller,importedText,{showImport=false;importedText="";onIncomingConsumed()})
+        }
         if(shareAtlas || sharePlace != null) ShareSheet(controller.data,sharePlace,platform,{shareAtlas=false;sharePlace=null})
     }
 }

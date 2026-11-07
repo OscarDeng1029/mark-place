@@ -30,6 +30,9 @@ kotlin {
     androidTarget { compilerOptions { jvmTarget.set(JvmTarget.JVM_17) } }
     jvm("desktop") { compilerOptions { jvmTarget.set(JvmTarget.JVM_17) } }
     sourceSets {
+        val jvmMain by creating { dependsOn(commonMain.get()) }
+        androidMain.get().dependsOn(jvmMain)
+        getByName("desktopMain").dependsOn(jvmMain)
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)

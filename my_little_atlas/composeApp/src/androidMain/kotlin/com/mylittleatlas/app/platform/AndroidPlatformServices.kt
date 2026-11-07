@@ -30,6 +30,11 @@ import java.time.LocalDate
 import java.util.UUID
 
 class AndroidPlatformServices(private val context: ComponentActivity) : PlatformServices {
+    private val preferences = context.getSharedPreferences("atlas-services", android.content.Context.MODE_PRIVATE)
+    override var serviceUrl: String
+        get() = preferences.getString("endpoint", "http://127.0.0.1:3212")!!
+        set(value) { preferences.edit().putString("endpoint", value.trim().trimEnd('/')).apply() }
+    override val transport: AtlasTransport = JvmAtlasTransport { serviceUrl }
     private val dataFile = File(context.filesDir, "atlas.json")
     override val storage: AtlasStorage = object : AtlasStorage {
         override fun read() = dataFile.takeIf { it.exists() }?.readText(Charsets.UTF_8)
@@ -97,6 +102,9 @@ class AndroidPlatformServices(private val context: ComponentActivity) : Platform
     }
     override fun openSource(url: String) { runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url))) } }
 }
+
+actual fun decodeMapTile(bytes: ByteArray): ImageBitmap =
+    requireNotNull(BitmapFactory.decodeByteArray(bytes, 0, bytes.size)).asImageBitmap()
 
 @Composable
 actual fun LocalPhoto(path: String, modifier: Modifier) {

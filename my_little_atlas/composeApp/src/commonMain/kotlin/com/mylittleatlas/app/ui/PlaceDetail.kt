@@ -61,7 +61,7 @@ fun PlaceDetail(controller:AtlasController,place:Place,onClose:()->Unit,onShare:
                         Spacer(Modifier.weight(1f));Tag(if(visits.isNotEmpty())"去过 ${visits.size} 次" else "想去")
                     }
                     Text(place.address,fontSize=12.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=9.dp))
-                    if(data.demoContent) Text("示例地点 · 配图为氛围素材",fontSize=9.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=6.dp))
+                    if(data.isDemoPlace(place)) Text("示例地点 · 配图为氛围素材",fontSize=9.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=6.dp))
                     Spacer(Modifier.height(23.dp));ThinDivider();Spacer(Modifier.height(19.dp))
                     Row(verticalAlignment=Alignment.CenterVertically){AtlasIcon(Glyph.BOOKMARK,size=16.dp,color=AtlasColors.Sage);Spacer(Modifier.width(8.dp));Text("为什么想来",fontSize=11.sp,color=AtlasColors.Muted)}
                     Text(place.reason.ifBlank{"把第一次心动的理由，留在这里。"},style=MaterialTheme.typography.bodyLarge,modifier=Modifier.padding(top=10.dp,bottom=14.dp))
@@ -154,7 +154,9 @@ fun EditPlaceDialog(controller:AtlasController,place:Place,onClose:()->Unit) {
     },confirmButton={TextButton(onClick={
         val changedAddress=address.trim()!=place.address||city.trim()!=place.city
         if(controller.updatePlace(place.copy(name=name.trim(),city=city.trim(),address=address.trim(),reason=reason.trim(),collectionIds=folders,
-            latitude=if(changedAddress)null else place.latitude,longitude=if(changedAddress)null else place.longitude)))onClose()
+            latitude=if(changedAddress)null else place.latitude,longitude=if(changedAddress)null else place.longitude,
+            gcjLatitude=if(changedAddress)null else place.gcjLatitude,gcjLongitude=if(changedAddress)null else place.gcjLongitude,
+            poiId=if(changedAddress)"" else place.poiId)))onClose()
     },enabled=name.isNotBlank()&&city.isNotBlank()&&address.isNotBlank()){Text("保存")}},dismissButton={TextButton(onClick=onClose){Text("取消")}},containerColor=AtlasColors.Card)
 }
 

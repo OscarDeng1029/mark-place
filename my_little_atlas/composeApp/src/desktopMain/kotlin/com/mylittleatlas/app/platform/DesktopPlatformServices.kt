@@ -29,6 +29,11 @@ import javax.swing.filechooser.FileNameExtensionFilter
 class DesktopPlatformServices : PlatformServices {
     private val appDir = File(System.getProperty("user.home"), ".mylittleatlas").apply { mkdirs() }
     private val dataFile = File(appDir, "atlas.json")
+    private val endpointFile = File(appDir, "service-url.txt")
+    override var serviceUrl: String
+        get() = runCatching { endpointFile.readText().trim() }.getOrDefault("http://127.0.0.1:3212")
+        set(value) { endpointFile.writeText(value.trim().trimEnd('/')) }
+    override val transport: AtlasTransport = JvmAtlasTransport { serviceUrl }
     override val storage: AtlasStorage = object : AtlasStorage {
         override fun read() = dataFile.takeIf { it.exists() }?.readText(Charsets.UTF_8)
         override fun write(content: String) {
@@ -76,12 +81,15 @@ class DesktopPlatformServices : PlatformServices {
         val query = java.net.URLEncoder.encode("${place.name} ${place.address} ${place.city}", "UTF-8")
         val city = java.net.URLEncoder.encode(place.city, "UTF-8")
         val url = if (place.latitude != null && place.longitude != null) {
-            "https://uri.amap.com/marker?position=${place.longitude},${place.latitude}&name=$query&coordinate=gaode&callnative=1"
+            val gcj = com.mylittleatlas.app.domain.MapGeometry.position(place)!!
+            "https://uri.amap.com/marker?position=${gcj.longitude},${gcj.latitude}&name=$query&coordinate=gaode&callnative=1"
         } else "https://uri.amap.com/search?keyword=$query&city=$city"
         runCatching { Desktop.getDesktop().browse(java.net.URI(url)) }
     }
     override fun openSource(url: String) { runCatching { Desktop.getDesktop().browse(java.net.URI(url)) } }
 }
+
+actual fun decodeMapTile(bytes: ByteArray): ImageBitmap = SkiaImage.makeFromEncoded(bytes).toComposeImageBitmap()
 
 @Composable
 actual fun LocalPhoto(path: String, modifier: Modifier) {

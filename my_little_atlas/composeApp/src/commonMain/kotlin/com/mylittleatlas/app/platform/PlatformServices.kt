@@ -7,6 +7,8 @@ import com.mylittleatlas.app.data.AtlasStorage
 import com.mylittleatlas.app.domain.Place
 
 interface PlatformServices {
+    var serviceUrl: String
+    val transport: AtlasTransport
     val storage: AtlasStorage
     fun today(): String
     fun uniqueId(): String

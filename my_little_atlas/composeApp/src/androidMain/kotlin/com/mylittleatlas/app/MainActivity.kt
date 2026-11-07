@@ -28,7 +28,10 @@ class MainActivity : ComponentActivity() {
         services.backupReader = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             services.readSelectedBackup(uri)
         }
-        setContent { AtlasApp(services, incomingText) { incomingText = null } }
+        setContent { AtlasApp(services, incomingText) {
+            incomingText = null
+            intent?.removeExtra(Intent.EXTRA_TEXT)
+        } }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -38,5 +41,6 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun sharedText(intent: Intent?): String? =
-        if (intent?.action == Intent.ACTION_SEND && intent.type == "text/plain") intent.getStringExtra(Intent.EXTRA_TEXT) else null
+        if (intent?.action == Intent.ACTION_SEND && intent.type?.startsWith("text/") == true)
+            intent.getCharSequenceExtra(Intent.EXTRA_TEXT)?.toString()?.takeIf { it.isNotBlank() } else null
 }

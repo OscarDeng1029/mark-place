@@ -37,13 +37,18 @@ class AtlasController(val platform: PlatformServices) {
         for (candidate in candidates) {
             if (!TextPlaceImporter.isDuplicate(candidate, next)) {
                 next.add(0, Place(platform.uniqueId(), candidate.name, candidate.city, address = candidate.address,
+                    district = candidate.district, latitude = candidate.latitude, longitude = candidate.longitude,
+                    gcjLatitude = candidate.gcjLatitude, gcjLongitude = candidate.gcjLongitude, poiId = candidate.poiId,
+                    reason = candidate.reason, kind = candidate.kind,
+                    cover = when(candidate.kind) { PlaceKind.FOOD -> "interior"; PlaceKind.SWEET -> "dessert"; PlaceKind.WALK -> "city"; else -> "cafe" },
                     collectionIds = collectionIds, source = candidate.source, addedOn = platform.today()))
             }
         }
         val count = next.size - data.places.size
         if (count == 0) { message = "所选地点已经在你的收藏里。"; return 0 }
         if (!commit(data.copy(places = next))) return 0
-        message = "已收藏 $count 个想去的地方。地址尚未匹配坐标。"
+        val located = candidates.count { it.latitude != null && it.longitude != null }
+        message = "已收藏 $count 个想去的地方。${if(located > 0) "$located 处已定位，可在地图查看。" else "可在地图中补全位置。"}"
         return count
     }
 
@@ -66,7 +71,7 @@ class AtlasController(val platform: PlatformServices) {
 
     fun rename(name: String) { if (name.isNotBlank()) commit(data.copy(nickname = name.trim().take(24))) }
     fun navigate(place: Place) {
-        platform.navigate(if (data.demoContent) place.copy(latitude = null, longitude = null) else place)
+        platform.navigate(if (data.isDemoPlace(place)) place.copy(latitude = null, longitude = null) else place)
     }
     fun exportBackup() = platform.exportBackup(repository.export(data))
     fun restoreBackup() = platform.importBackup { raw ->
