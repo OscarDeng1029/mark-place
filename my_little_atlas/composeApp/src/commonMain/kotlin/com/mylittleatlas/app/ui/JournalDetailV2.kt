@@ -52,7 +52,8 @@ fun JournalDetailV2(controller:AtlasController,place:Place,visit:Visit,onClose:(
                         Text(place.city+" · "+place.district+"    查看地点 →",fontSize=11.sp,color=AtlasColors.Muted,modifier=Modifier.padding(start=5.dp))
                     }
                     Spacer(Modifier.height(22.dp))
-                    Handwritten(visit.note.ifBlank{"把这一天，留在这一页。"},size=17)
+                    Handwritten(visit.displayTitle(place.name),size=17)
+                    Text(visit.displayBody().ifBlank{"把这一天，留在这一页。"},fontSize=13.sp,lineHeight=22.sp,modifier=Modifier.padding(top=10.dp))
                     ThinDivider(Modifier.padding(top=17.dp))
                     Spacer(Modifier.height(25.dp))
                     Box(Modifier.fillMaxWidth().height(if(visit.photoPaths.size>1)156.dp else 86.dp)) {
@@ -94,19 +95,24 @@ fun JournalCoverV2(place:Place,visit:Visit,modifier:Modifier=Modifier) {
 
 @Composable
 fun JournalEditorV2(controller:AtlasController,place:Place,visit:Visit,onClose:()->Unit) {
-    var note by remember{mutableStateOf(visit.note)}
+    val savedTitle=visit.title.trim().takeIf{it.isNotBlank()}
+    val initialTitle=savedTitle ?: visit.note.lineSequence().firstOrNull()?.trim().orEmpty()
+    val initialBody=if(savedTitle==null)visit.note.lineSequence().drop(1).joinToString("\n").trimStart() else visit.note
+    var title by remember{mutableStateOf(initialTitle)}
+    var note by remember{mutableStateOf(initialBody)}
     var date by remember{mutableStateOf(visit.date)}
     var photos by remember{mutableStateOf(visit.photoPaths)}
     var layout by remember{mutableStateOf(visit.layout)}
     var calendar by remember{mutableStateOf(false)}
     var discard by remember{mutableStateOf(false)}
-    val changed=note!=visit.note||date!=visit.date||photos!=visit.photoPaths||layout!=visit.layout
+    val changed=title!=initialTitle||note!=initialBody||date!=visit.date||photos!=visit.photoPaths||layout!=visit.layout
     val close={if(changed)discard=true else onClose()}
-    AtlasFullPage("调整这一页",close,actions={TextButton(onClick={if(controller.updateVisit(visit.copy(note=note.trim(),date=date,photoPaths=photos,layout=layout)))onClose()},enabled=isValidAtlasDate(date)&&date<=controller.platform.today()){Text("保存")}}) {
+    AtlasFullPage("调整这一页",close,actions={TextButton(onClick={if(controller.updateVisit(visit.copy(title=title.trim().ifBlank{place.name},note=note.trim(),date=date,photoPaths=photos,layout=layout)))onClose()},enabled=isValidAtlasDate(date)&&date<=controller.platform.today()){Text("保存")}}) {
         Text("给回忆，选一个喜欢的样子",style=MaterialTheme.typography.titleLarge)
         Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){listOf("warm" to "暖色手账","film" to "胶片日记","note" to "纸上小记").forEach{(id,label)->Tag(label,layout==id,{layout=id})}}
         JournalCoverV2(place,visit.copy(layout=layout,photoPaths=photos),Modifier.fillMaxWidth())
         TextButton(onClick={calendar=true}){AtlasIcon(Glyph.BOOK,size=17.dp);Spacer(Modifier.width(8.dp));Text(date+"  ·  修改日期")}
+        AtlasField(title,{title=it},"这一页的标题")
         AtlasField(note,{note=it},"这一天的小记",singleLine=false)
         Text("照片顺序 · 第一张为封面",fontSize=12.sp,color=AtlasColors.Muted)
         photos.forEachIndexed{index,path->Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){

@@ -79,7 +79,8 @@ class AtlasController(val platform: PlatformServices) {
     fun updateVisit(visit: Visit): Boolean = commit(data.copy(visits=data.visits.map{if(it.id==visit.id)visit else it}))
     /** New places, the entry and removal of its draft are saved together. */
     fun saveJournalEntry(placeId: String?, name: String, city: String, date: String, note: String,
-        photos: List<String>, revisit: Boolean, draftId: String? = null, visitId: String? = null): Visit? {
+        photos: List<String>, revisit: Boolean, draftId: String? = null, visitId: String? = null,
+        title: String = ""): Visit? {
         if(name.isBlank() || city.isBlank() || !isValidAtlasDate(date) || date > platform.today()) {
             message = "请填写地点、城市和有效的到访日期。"; return null
         }
@@ -89,8 +90,11 @@ class AtlasController(val platform: PlatformServices) {
             ?.takeIf { it.name == name.trim() && it.city == city.trim() }
             ?: data.places.find { it.name == name.trim() && it.city == city.trim() }
         val place = existingPlace ?: Place(platform.uniqueId(), name.trim(), city.trim(), kind = PlaceKind.OTHER, cover = "city", addedOn = platform.today())
+        val normalizedTitle = title.trim().ifBlank {
+            existingVisit?.title?.trim()?.takeIf { it.isNotBlank() } ?: name.trim()
+        }
         val visit = Visit(existingVisit?.id ?: platform.uniqueId(), place.id, date, note.trim(), photos,
-            existingVisit?.layout ?: "warm")
+            existingVisit?.layout ?: "warm", normalizedTitle)
         val nextPlaces = if(existingPlace == null) listOf(place.copy(wantRevisit = revisit)) + data.places
             else data.places.map { if(it.id == place.id) it.copy(wantRevisit = revisit) else it }
         val next = data.copy(places = nextPlaces, visits = listOf(visit) + data.visits.filterNot { it.id == visit.id },

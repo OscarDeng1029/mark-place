@@ -72,7 +72,8 @@ fun PlaceDetail(controller:AtlasController,place:Place,onClose:()->Unit,onShare:
                         visits.forEach{visit->
                             Column(Modifier.padding(top=12.dp).fillMaxWidth().background(AtlasColors.Card,RoundedCornerShape(16.dp)).clickable{savedVisit=visit}.padding(16.dp)) {
                                 Row(verticalAlignment=Alignment.CenterVertically){Text(visit.date.replace('-','.'),fontFamily=FontFamily.Serif,fontSize=13.sp,color=AtlasColors.Green);Spacer(Modifier.weight(1f));AtlasIcon(Glyph.COFFEE,size=17.dp,color=AtlasColors.Peach)}
-                                Text(visit.note.ifBlank{"在这里，留下一段属于自己的时光。"},fontSize=14.sp,lineHeight=25.sp,modifier=Modifier.padding(top=10.dp))
+                                Text(visit.displayTitle(place.name),fontSize=14.sp,lineHeight=25.sp,modifier=Modifier.padding(top=10.dp))
+                                Text(visit.displayBody().ifBlank{"在这里，留下一段属于自己的时光。"},fontSize=12.sp,lineHeight=21.sp,modifier=Modifier.padding(top=6.dp))
                                 if(visit.photoPaths.isNotEmpty()) FlowRow(Modifier.padding(top=12.dp),horizontalArrangement=Arrangement.spacedBy(8.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
                                     visit.photoPaths.forEach{LocalPhoto(it,Modifier.size(100.dp).clip(RoundedCornerShape(9.dp)))}
                                 }

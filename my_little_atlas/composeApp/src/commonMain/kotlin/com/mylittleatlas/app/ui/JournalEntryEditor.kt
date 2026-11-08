@@ -26,23 +26,30 @@ fun JournalEntryEditor(controller:AtlasController,place:Place?,onClose:()->Unit,
     val draftId=remember { draft?.id ?: controller.platform.uniqueId() }
     val initialName=draft?.placeName?.takeIf { it.isNotBlank() } ?: place?.name.orEmpty()
     val initialCity=draft?.city?.takeIf { it.isNotBlank() } ?: place?.city ?: controller.data.preferredCity
+    val savedTitle=visit?.title?.trim()?.takeIf { it.isNotBlank() }
+        ?: draft?.title?.trim()?.takeIf { it.isNotBlank() }
+    val savedNote=visit?.note ?: draft?.note.orEmpty()
+    val hasLegacyContent=visit != null || draft != null
+    val initialTitle=savedTitle ?: if(hasLegacyContent) savedNote.lineSequence().firstOrNull()?.trim().orEmpty() else ""
+    val initialBody=if(savedTitle == null && hasLegacyContent) savedNote.lineSequence().drop(1).joinToString("\n").trimStart() else savedNote
     var name by remember { mutableStateOf(initialName) }
     var city by remember { mutableStateOf(initialCity) }
     var selectedId by remember { mutableStateOf(place?.id) }
     var date by remember { mutableStateOf(visit?.date ?: draft?.date ?: controller.platform.today()) }
-    var note by remember { mutableStateOf(visit?.note ?: draft?.note.orEmpty()) }
+    var title by remember { mutableStateOf(initialTitle) }
+    var note by remember { mutableStateOf(initialBody) }
     var photos by remember { mutableStateOf(visit?.photoPaths ?: draft?.photoPaths ?: emptyList()) }
     var revisit by remember { mutableStateOf(draft?.revisit ?: place?.wantRevisit ?: false) }
     var calendar by remember { mutableStateOf(false) }
     var discard by remember { mutableStateOf(false) }
     var choosing by remember { mutableStateOf(false) }
-    val changed=name!=initialName || city!=initialCity || date!=(visit?.date ?: draft?.date ?: controller.platform.today()) ||
-        note!=(visit?.note ?: draft?.note.orEmpty()) || photos!=(visit?.photoPaths ?: draft?.photoPaths ?: emptyList<String>())
+    val changed=name!=initialName || city!=initialCity || title!=initialTitle || date!=(visit?.date ?: draft?.date ?: controller.platform.today()) ||
+        note!=initialBody || photos!=(visit?.photoPaths ?: draft?.photoPaths ?: emptyList<String>())
     val valid=name.isNotBlank() && city.isNotBlank() && isValidAtlasDate(date) && date<=controller.platform.today()
     fun close() { if(changed)discard=true else onClose() }
     fun saveDraft() {
         val actualId=selectedId?.takeIf { id -> controller.data.places.any { it.id==id && it.name==name.trim() && it.city==city.trim() } }.orEmpty()
-        if(controller.saveDraft(VisitDraft(draftId,actualId,date,note,photos,revisit,name.trim(),city.trim())))onClose()
+        if(controller.saveDraft(VisitDraft(draftId,actualId,date,note,photos,revisit,name.trim(),city.trim(),title.trim())))onClose()
     }
     Dialog(onDismissRequest={close()},properties=DialogProperties(usePlatformDefaultWidth=false)) {
         Paper(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing).imePadding(),color=androidx.compose.ui.graphics.Color(0xFFFDFCF9)) {
@@ -83,13 +90,15 @@ fun JournalEntryEditor(controller:AtlasController,place:Place?,onClose:()->Unit,
                             AtlasIcon(Glyph.PLUS,size=23.dp);Text("添加照片",fontSize=10.sp,modifier=Modifier.padding(top=8.dp))
                         }
                     }
+                    Row { Text("这一页的标题",fontSize=13.sp,modifier=Modifier.weight(1f));Text("选填",fontSize=10.sp,color=AtlasColors.Muted) }
+                    OutlinedTextField(title,{title=it},Modifier.fillMaxWidth(),placeholder={Text("例如：找到一本喜欢的散文",fontSize=12.sp)},singleLine=true,shape=RoundedCornerShape(10.dp))
                     Row { Text("想记住什么？",fontSize=13.sp,modifier=Modifier.weight(1f));Text("选填",fontSize=10.sp,color=AtlasColors.Muted) }
                     OutlinedTextField(note,{note=it},Modifier.fillMaxWidth(),placeholder={Text("一杯喜欢的咖啡，或今天的小小心情……",fontSize=12.sp)},minLines=4,shape=RoundedCornerShape(10.dp))
                     Text("排版交给手账，你只管记录。",fontSize=10.sp,color=AtlasColors.Muted,modifier=Modifier.align(Alignment.CenterHorizontally))
                 }
                 HorizontalDivider(color=AtlasColors.Line)
                 PrimaryButton(if(visit==null)"保存，生成手账" else "保存修改",{
-                    val saved=controller.saveJournalEntry(selectedId,name,city,date,note,photos,revisit,draft?.id,visit?.id)
+                    val saved=controller.saveJournalEntry(selectedId,name,city,date,note,photos,revisit,draft?.id,visit?.id,title)
                     if(saved!=null) { onSaved(saved);onClose() }
                 },Modifier.fillMaxWidth().padding(16.dp),Glyph.CHECK,enabled=valid)
             }

@@ -99,7 +99,7 @@ fun JournalHomeSimple(data: AtlasData, onOpen: (Visit)->Unit, onEdit: (Visit)->U
         val matches = visits.filter { v ->
             val place = data.places.first { it.id == v.placeId }
             (activeCity == null || place.city == activeCity) &&
-                (query.isBlank() || listOf(place.name, place.city, v.date, v.note).any { it.contains(query.trim(), true) })
+            (query.isBlank() || listOf(place.name, place.city, v.date, v.title, v.note).any { it.contains(query.trim(), true) })
         }
         ModalBottomSheet(onDismissRequest = { directory = false }, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
             containerColor = Color(0xFFFDFCF8), modifier = Modifier.widthIn(max=640.dp)) {
@@ -159,7 +159,8 @@ private fun EmptyJournalLeaf(onWrite:()->Unit,onCollect:()->Unit) {
 private fun JournalMemoryLeaf(place:Place,visit:Visit,index:Int,demo:Boolean,onOpen:()->Unit,onEdit:()->Unit) {
     BoxWithConstraints(Modifier.fillMaxSize().padding(start=37.dp,end=16.dp,top=23.dp,bottom=26.dp)) {
         val h=maxHeight;val w=maxWidth;val alternate=index%3==1
-        val title=visit.note.lineSequence().firstOrNull()?.takeIf { it.isNotBlank() } ?: place.name
+        val title=visit.displayTitle(place.name)
+        val body=visit.displayBody()
         Column(Modifier.align(Alignment.TopStart)) {
             Text(visit.date.replace('-','.')+" · "+place.city,fontSize=10.sp,color=AtlasColors.Sage,letterSpacing=1.sp)
             Text(title,style=MaterialTheme.typography.titleLarge,fontSize=22.sp,lineHeight=32.sp,maxLines=2,overflow=TextOverflow.Ellipsis,modifier=Modifier.padding(top=12.dp))
@@ -176,7 +177,7 @@ private fun JournalMemoryLeaf(place:Place,visit:Visit,index:Int,demo:Boolean,onO
         }
         CoffeePostmark(Modifier.align(if(alternate)Alignment.TopStart else Alignment.TopEnd).offset(y=h*.25f).size(59.dp))
         PaperNote(Modifier.align(if(alternate)Alignment.BottomStart else Alignment.BottomEnd).offset(y=(-h*.075f)).width(w*.91f).height(h*.22f).rotate(if(alternate)-3f else 3f).clickable(onClick=onOpen)) {
-            Text(visit.note.ifBlank { "来过这里，就已经很值得记住。" },fontSize=12.sp,lineHeight=21.sp,maxLines=4,overflow=TextOverflow.Ellipsis)
+            Text(body.ifBlank { "来过这里，就已经很值得记住。" },fontSize=12.sp,lineHeight=21.sp,maxLines=4,overflow=TextOverflow.Ellipsis)
         }
         Row(Modifier.align(Alignment.BottomStart).fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.SpaceBetween) {
             TextButton(onClick=onOpen,contentPadding=PaddingValues(0.dp)) { Text("展开这一页 ↗",fontSize=10.sp,color=AtlasColors.Muted) }

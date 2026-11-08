@@ -47,6 +47,8 @@ data class Visit(
     val note: String,
     val photoPaths: List<String> = emptyList(),
     val layout: String = "warm",
+    /** A short heading for the notebook page. Empty means this is legacy data. */
+    val title: String = "",
 )
 
 @Serializable
@@ -54,6 +56,7 @@ data class VisitDraft(
     val id: String, val placeId: String, val date: String, val note: String = "",
     val photoPaths: List<String> = emptyList(), val revisit: Boolean = false,
     val placeName: String = "", val city: String = "",
+    val title: String = "",
 )
 
 @Serializable
@@ -94,6 +97,23 @@ fun AtlasData.countIn(collection: Collection) = places.count { collection.id in 
 fun AtlasData.journalVisits(): List<Visit> = visits.filter { v -> places.any { it.id == v.placeId } }.sortedByDescending { it.date }
 
 fun AtlasData.visitedCities(): List<String> = places.filter { isVisited(it.id) }.map { it.city.trim() }.filter { it.isNotEmpty() }.distinct()
+
+/** Keep old records readable while new records use an explicit title field. */
+fun Visit.displayTitle(placeName: String): String = title.trim().ifBlank {
+    note.lineSequence().firstOrNull()?.trim().takeIf { !it.isNullOrBlank() } ?: placeName
+}
+
+fun Visit.displayBody(): String = if (title.trim().isBlank()) {
+    note.lineSequence().drop(1).joinToString("\n").trimStart()
+} else note
+
+fun VisitDraft.displayTitle(): String = title.trim().ifBlank {
+    note.lineSequence().firstOrNull()?.trim().takeIf { !it.isNullOrBlank() } ?: placeName
+}
+
+fun VisitDraft.displayBody(): String = if (title.trim().isBlank()) {
+    note.lineSequence().drop(1).joinToString("\n").trimStart()
+} else note
 
 /** Selection is explicit. Matching candidates never mutates the library. */
 data class ImportCandidate(

@@ -14,14 +14,25 @@ class JournalFlowTest {
         val platform=TestPlatform()
         val controller=AtlasController(platform)
         controller.saveDraft(VisitDraft("draft","","2026-11-08",placeName="湖边",city="杭州"))
-        val visit=controller.saveJournalEntry(null,"湖边","杭州","2026-11-08","坐一会儿",emptyList(),false,"draft")
+        val visit=controller.saveJournalEntry(null,"湖边","杭州","2026-11-08","坐一会儿",emptyList(),false,"draft",title="风吹过湖面")
         assertNotNull(visit)
         assertEquals("杭州",controller.data.places.single().city)
         assertEquals(PlaceKind.OTHER,controller.data.places.single().kind)
         assertEquals(controller.data.places.single().id,visit.placeId)
+        assertEquals("风吹过湖面",visit.title)
         assertEquals(1,controller.data.visits.size)
         assertTrue(controller.data.drafts.isEmpty())
         assertEquals(controller.data,AtlasRepository(platform.storage).load())
+    }
+
+    @Test fun explicitTitleAndBodyStaySeparateAndLegacyNotesRemainReadable() {
+        val place=Place("p","纸间书店")
+        val modern=Visit("modern",place.id,"2026-11-08","正文第二行",title="这一页的标题")
+        assertEquals("这一页的标题",modern.displayTitle(place.name))
+        assertEquals("正文第二行",modern.displayBody())
+        val legacy=Visit("legacy",place.id,"2026-11-07","旧标题\n旧正文")
+        assertEquals("旧标题",legacy.displayTitle(place.name))
+        assertEquals("旧正文",legacy.displayBody())
     }
 
     @Test fun failedSaveKeepsDraftAndDoesNotLeaveAnExtraPlace() {

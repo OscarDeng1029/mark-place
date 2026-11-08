@@ -81,7 +81,8 @@ fun ProfileV2(controller:AtlasController,onShare:()->Unit,onJournal:()->Unit,onC
             data.drafts.forEach{draft->val place=data.places.find{it.id==draft.placeId}
                 Column(Modifier.fillMaxWidth().background(AtlasColors.Card,RoundedCornerShape(12.dp)).padding(15.dp)){
                     Text(place?.name ?: draft.placeName.ifBlank{"还没写下地点"},style=MaterialTheme.typography.titleMedium);Text(draft.date,fontSize=10.sp,color=AtlasColors.Muted)
-                    Text(draft.note.ifBlank{"还没写下文字"},maxLines=2,fontSize=12.sp,modifier=Modifier.padding(top=9.dp))
+                    Text(draft.displayTitle(),maxLines=1,fontSize=12.sp,modifier=Modifier.padding(top=9.dp))
+                    Text(draft.displayBody().ifBlank{"还没写下文字"},maxLines=2,fontSize=11.sp,color=AtlasColors.Muted,modifier=Modifier.padding(top=5.dp))
                     Row{TextButton(onClick={page="";onDraft(draft)}){Text("继续写")};TextButton(onClick={deletingDraft=draft}){Text("删除草稿")}}
                 }
             }
