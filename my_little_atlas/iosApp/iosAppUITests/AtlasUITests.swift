@@ -50,7 +50,7 @@ final class AtlasUITests: XCTestCase {
         tap("添加")
         XCTAssertTrue(element("今天，想记下什么？").waitForExistence(timeout: 10))
         capture("06-simple-add")
-        tap("写手账")
+        tap("写小记")
         XCTAssertTrue(element("可以直接填写新地点，不用先收藏。").waitForExistence(timeout: 10))
         capture("07-direct-entry")
         tap("取消")

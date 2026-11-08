@@ -57,6 +57,7 @@ data class VisitDraft(
     val photoPaths: List<String> = emptyList(), val revisit: Boolean = false,
     val placeName: String = "", val city: String = "",
     val title: String = "",
+    val layout: String = "warm",
 )
 
 @Serializable

@@ -85,12 +85,12 @@ fun JournalHomeSimple(data: AtlasData, onOpen: (Visit)->Unit, onEdit: (Visit)->U
             }
         }
         if(visits.isNotEmpty()) Row(Modifier.fillMaxWidth().height(53.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-            TextButton(onClick = { scope.launch { pager.animateScrollToPage((pager.currentPage-1).coerceAtLeast(0)) } }, enabled = pager.currentPage>0) { Text("← 前一页", fontSize = 11.sp) }
+            IconButton(Glyph.BACK,"前一页 →",{ scope.launch { pager.animateScrollToPage((pager.currentPage-1).coerceAtLeast(0)) } },Modifier.graphicsLayer { alpha=if(pager.currentPage>0) 1f else .25f })
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("第 ${pager.currentPage+1} / ${visits.size} 页", fontSize = 10.sp, color = AtlasColors.Green)
                 Text("左右翻阅 · 最近的记录在前", fontSize = 8.sp, color = AtlasColors.Muted)
             }
-            TextButton(onClick = { scope.launch { pager.animateScrollToPage((pager.currentPage+1).coerceAtMost(visits.lastIndex)) } }, enabled = pager.currentPage<visits.lastIndex) { Text("后一页 →", fontSize = 11.sp) }
+            IconButton(Glyph.ARROW,"后一页 →",{ scope.launch { pager.animateScrollToPage((pager.currentPage+1).coerceAtMost(visits.lastIndex)) } },Modifier.graphicsLayer { alpha=if(pager.currentPage<visits.lastIndex) 1f else .25f })
         } else Text("每一次记录，都会长成新的一页。", fontSize = 10.sp, color = AtlasColors.Muted, modifier = Modifier.padding(vertical = 18.dp))
     }
     if(directory) {
@@ -149,7 +149,7 @@ private fun EmptyJournalLeaf(onWrite:()->Unit,onCollect:()->Unit) {
         Column(Modifier.align(Alignment.BottomCenter).fillMaxWidth()) {
             Text("记下地点、日期和一点心情，\n就能自动变成一页手账。",fontSize=11.sp,lineHeight=22.sp,color=AtlasColors.Muted)
             Spacer(Modifier.height(22.dp))
-            PrimaryButton("写下第一篇手账",onWrite,Modifier.fillMaxWidth(),Glyph.EDIT)
+            PrimaryButton("写下第一篇小记",onWrite,Modifier.fillMaxWidth(),Glyph.EDIT)
             TextButton(onClick=onCollect,modifier=Modifier.align(Alignment.CenterHorizontally)) { Text("先收藏一个想去的地方",fontSize=10.sp) }
         }
     }
@@ -169,9 +169,9 @@ private fun JournalMemoryLeaf(place:Place,visit:Visit,index:Int,demo:Boolean,onO
                 Text(place.name+" · "+place.kind.title,fontSize=10.sp,color=AtlasColors.Muted,maxLines=1,overflow=TextOverflow.Ellipsis,modifier=Modifier.padding(start=4.dp))
             }
         }
-        if(visit.photoPaths.isNotEmpty() || demo) PolaroidPhoto(place.cover,
+        if(visit.photoPaths.isNotEmpty() || demo) JournalPhotoPiece(place,visit,
             Modifier.align(if(alternate)Alignment.TopEnd else Alignment.TopStart).offset(y=h*.32f).width(w*.88f).height(h*.42f).clickable(onClick=onOpen),
-            caption=place.name,rotation=if(alternate)5f else -5f,localPath=visit.photoPaths.firstOrNull())
+            caption=place.name,rotation=if(alternate)5f else -5f)
         else Box(Modifier.offset(x=5.dp,y=h*.36f).fillMaxWidth(.92f).height(h*.25f).rotate(-3f).background(AtlasColors.SagePale).clickable(onClick=onOpen).padding(20.dp)) {
             Column { Handwritten(place.name,size=21);Text("这一天，也值得记住。",fontSize=11.sp,color=AtlasColors.Sage,modifier=Modifier.padding(top=14.dp)) }
         }
@@ -183,5 +183,23 @@ private fun JournalMemoryLeaf(place:Place,visit:Visit,index:Int,demo:Boolean,onO
             TextButton(onClick=onOpen,contentPadding=PaddingValues(0.dp)) { Text("展开这一页 ↗",fontSize=10.sp,color=AtlasColors.Muted) }
             TextButton(onClick=onEdit,contentPadding=PaddingValues(0.dp)) { AtlasIcon(Glyph.EDIT,size=12.dp);Spacer(Modifier.width(4.dp));Text("编辑这一页",fontSize=10.sp) }
         }
+    }
+}
+
+@Composable
+private fun JournalPhotoPiece(place: Place, visit: Visit, modifier: Modifier, caption: String, rotation: Float) {
+    val source=visit.photoPaths.firstOrNull()?.let { "local:$it" } ?: place.cover
+    when(visit.layout) {
+        "film" -> Column(modifier.rotate(rotation).background(AtlasColors.Ink).padding(8.dp)) {
+            Photo(source,Modifier.fillMaxWidth().weight(1f).clip(RoundedCornerShape(2.dp)))
+            Text("A MOMENT TO KEEP  /  ${visit.date}",fontSize=8.sp,color=AtlasColors.Card,modifier=Modifier.padding(top=7.dp))
+        }
+        "note" -> PaperNote(modifier.rotate(rotation)) {
+            Column(Modifier.fillMaxSize()) {
+                Photo(source,Modifier.fillMaxWidth().weight(1f).clip(RoundedCornerShape(2.dp)))
+                Handwritten(caption,Modifier.padding(top=6.dp),size=11)
+            }
+        }
+        else -> PolaroidPhoto(place.cover,modifier,caption=caption,rotation=rotation,localPath=visit.photoPaths.firstOrNull())
     }
 }

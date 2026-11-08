@@ -100,7 +100,7 @@ fun PlaceDetail(controller:AtlasController,place:Place,onClose:()->Unit,onShare:
                     OutlinedButton(onClick={controller.navigate(place)},Modifier.height(50.dp),shape=RoundedCornerShape(15.dp),contentPadding=PaddingValues(horizontal=17.dp)) {
                         AtlasIcon(Glyph.NAVIGATE,size=18.dp,color=AtlasColors.Green);Spacer(Modifier.width(7.dp));Text("导航",fontSize=13.sp)
                     }
-                    PrimaryButton("在这里写手账",{checkIn=true},Modifier.weight(1f),Glyph.BOOK)
+                    PrimaryButton("在这里写小记",{checkIn=true},Modifier.weight(1f),Glyph.BOOK)
                 }
             }
         }
