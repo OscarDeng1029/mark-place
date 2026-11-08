@@ -49,7 +49,8 @@ fun JournalEntryEditor(controller:AtlasController,place:Place?,onClose:()->Unit,
     fun close() { if(changed)discard=true else onClose() }
     fun saveDraft() {
         val actualId=selectedId?.takeIf { id -> controller.data.places.any { it.id==id && it.name==name.trim() && it.city==city.trim() } }.orEmpty()
-        if(controller.saveDraft(VisitDraft(draftId,actualId,date,note,photos,revisit,name.trim(),city.trim(),title.trim())))onClose()
+        val draftTitle=title.trim().ifBlank { name.trim() }
+        if(controller.saveDraft(VisitDraft(draftId,actualId,date,note,photos,revisit,name.trim(),city.trim(),draftTitle)))onClose()
     }
     Dialog(onDismissRequest={close()},properties=DialogProperties(usePlatformDefaultWidth=false)) {
         Paper(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing).imePadding(),color=androidx.compose.ui.graphics.Color(0xFFFDFCF9)) {
