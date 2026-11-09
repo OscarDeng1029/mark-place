@@ -1,0 +1,886 @@
+{
+  "checks": [
+    "Six adaptive layouts preserve original image ratio; square keepsake uses a square crop window",
+    "Header is 49px",
+    "Stamp overlap is below half its circular area, sampling actual rotated photo rectangles",
+    "All automatic double-photo layouts overlap; example total photo area more than doubles",
+    "Square sticky note, square keepsake card, lower-left clipping and upper-left cut paper occupy distinct positions",
+    "Square layout defaults to a true square crop and can restore the complete original photo",
+    "Square/strip/cut paper options, front/back swap and reading the floating note all work",
+    "All four paper styles and manual side/stack arrangements work",
+    "Photo swipe changes only that photo, preserving the other photo and notebook page",
+    "User crop mode saves aspect, focus and zoom; returning to full image restores original ratio",
+    "Crop and page editors cancel without saving; chosen layout applies on confirmation; directory switches layouts",
+    "Local image upload reads actual dimensions, remains local and falls back to single-photo layout",
+    "A user-uploaded 4:1 panorama keeps its full original ratio, including both edges",
+    "A square upload keeps a square photo frame without a template forcing it wide",
+    "375px mobile view has no horizontal overflow"
+  ],
+  "errors": [],
+  "frames": [
+    {
+      "style": "daily",
+      "sample": "mixed",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 251,
+          "height": 324,
+          "boxRatio": 0.7746913580246914,
+          "photoRatio": 0.7733952049497294,
+          "left": 621.4777221679688,
+          "right": 888.6693115234375,
+          "top": 305.91021728515625,
+          "bottom": 642.5804443359375
+        }
+      ],
+      "overlap": 0.21189591078066913,
+      "note": {
+        "position": "bottom",
+        "shape": "rectangle",
+        "width": 309,
+        "height": 108,
+        "top": 682.8753051757812,
+        "bottom": 801.5934448242188
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "daily",
+      "sample": "landscape",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 291,
+          "height": 192,
+          "boxRatio": 1.515625,
+          "photoRatio": 1.51285930408472,
+          "left": 604.7474975585938,
+          "right": 905.4151611328125,
+          "top": 366.07476806640625,
+          "bottom": 573.3846435546875
+        }
+      ],
+      "overlap": 0.20693928128872366,
+      "note": {
+        "position": "bottom",
+        "shape": "rectangle",
+        "width": 309,
+        "height": 108,
+        "top": 682.8753051757812,
+        "bottom": 801.5934448242188
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "daily",
+      "sample": "portrait",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 251,
+          "height": 324,
+          "boxRatio": 0.7746913580246914,
+          "photoRatio": 0.7733952049497294,
+          "left": 621.4777221679688,
+          "right": 888.6693115234375,
+          "top": 305.91021728515625,
+          "bottom": 642.5804443359375
+        }
+      ],
+      "overlap": 0.21189591078066913,
+      "note": {
+        "position": "bottom",
+        "shape": "rectangle",
+        "width": 309,
+        "height": 108,
+        "top": 682.8753051757812,
+        "bottom": 801.5934448242188
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "duo",
+      "sample": "mixed",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 218,
+          "height": 282,
+          "boxRatio": 0.7730496453900709,
+          "photoRatio": 0.7733952049497294,
+          "left": 593.8787841796875,
+          "right": 830.9425659179688,
+          "top": 307.9958190917969,
+          "bottom": 604.3087768554688
+        },
+        {
+          "fit": "contain",
+          "width": 262,
+          "height": 175,
+          "boxRatio": 1.497142857142857,
+          "photoRatio": 1.4992503748125936,
+          "left": 639.335205078125,
+          "right": 911.5634765625,
+          "top": 559.6166381835938,
+          "bottom": 750.0694580078125
+        }
+      ],
+      "overlap": 0.20817843866171004,
+      "note": {
+        "position": "top-right",
+        "shape": "square",
+        "width": 146,
+        "height": 146,
+        "top": 316.3199768066406,
+        "bottom": 472.1487731933594
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "duo",
+      "sample": "landscape",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 284,
+          "height": 188,
+          "boxRatio": 1.5106382978723405,
+          "photoRatio": 1.51285930408472,
+          "left": 600.8621215820312,
+          "right": 894.394287109375,
+          "top": 305.9398498535156,
+          "bottom": 508.33209228515625
+        },
+        {
+          "fit": "contain",
+          "width": 272,
+          "height": 186,
+          "boxRatio": 1.4623655913978495,
+          "photoRatio": 1.4577259475218658,
+          "left": 629.5569458007812,
+          "right": 911.9198608398438,
+          "top": 476.9168701171875,
+          "bottom": 679.3785400390625
+        }
+      ],
+      "overlap": 0.2174721189591078,
+      "note": {
+        "position": "bottom-left",
+        "shape": "square",
+        "width": 151,
+        "height": 145,
+        "top": 649.38232421875,
+        "bottom": 802.08642578125
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "duo",
+      "sample": "portrait",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 251,
+          "height": 324,
+          "boxRatio": 0.7746913580246914,
+          "photoRatio": 0.7733952049497294,
+          "left": 621.4777221679688,
+          "right": 888.6693115234375,
+          "top": 305.91021728515625,
+          "bottom": 642.5804443359375
+        }
+      ],
+      "overlap": 0.21189591078066913,
+      "note": {
+        "position": "bottom",
+        "shape": "rectangle",
+        "width": 309,
+        "height": 108,
+        "top": 682.8753051757812,
+        "bottom": 801.5934448242188
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "square",
+      "sample": "mixed",
+      "photos": [
+        {
+          "fit": "cover",
+          "width": 275,
+          "height": 275,
+          "boxRatio": 1,
+          "photoRatio": 0.7733952049497294,
+          "left": 615.2808837890625,
+          "right": 895.0384521484375,
+          "top": 315.35858154296875,
+          "bottom": 595.1160888671875
+        }
+      ],
+      "overlap": 0.24504337050805453,
+      "note": {
+        "position": "bottom-right",
+        "shape": "square",
+        "width": 132,
+        "height": 132,
+        "top": 660.791259765625,
+        "bottom": 801.677490234375
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "square",
+      "sample": "landscape",
+      "photos": [
+        {
+          "fit": "cover",
+          "width": 275,
+          "height": 275,
+          "boxRatio": 1,
+          "photoRatio": 1.51285930408472,
+          "left": 615.2808837890625,
+          "right": 895.0384521484375,
+          "top": 315.35858154296875,
+          "bottom": 595.1160888671875
+        }
+      ],
+      "overlap": 0.24504337050805453,
+      "note": {
+        "position": "bottom-right",
+        "shape": "square",
+        "width": 132,
+        "height": 132,
+        "top": 660.791259765625,
+        "bottom": 801.677490234375
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "square",
+      "sample": "portrait",
+      "photos": [
+        {
+          "fit": "cover",
+          "width": 275,
+          "height": 275,
+          "boxRatio": 1,
+          "photoRatio": 0.7733952049497294,
+          "left": 615.2808837890625,
+          "right": 895.0384521484375,
+          "top": 315.35858154296875,
+          "bottom": 595.1160888671875
+        }
+      ],
+      "overlap": 0.24504337050805453,
+      "note": {
+        "position": "bottom-right",
+        "shape": "square",
+        "width": 132,
+        "height": 132,
+        "top": 660.791259765625,
+        "bottom": 801.677490234375
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "postcard",
+      "sample": "mixed",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 236,
+          "height": 306,
+          "boxRatio": 0.7712418300653595,
+          "photoRatio": 0.7733952049497294,
+          "left": 633.085693359375,
+          "right": 877.218017578125,
+          "top": 313.19970703125,
+          "bottom": 625.2779541015625
+        }
+      ],
+      "overlap": 0.2057001239157373,
+      "note": {
+        "position": "bottom-right",
+        "shape": "cut",
+        "width": 151,
+        "height": 145,
+        "top": 650.6436157226562,
+        "bottom": 800.8251342773438
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "postcard",
+      "sample": "landscape",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 283,
+          "height": 186,
+          "boxRatio": 1.521505376344086,
+          "photoRatio": 1.51285930408472,
+          "left": 611.268798828125,
+          "right": 899.050537109375,
+          "top": 367.86358642578125,
+          "bottom": 561.5828247070312
+        }
+      ],
+      "overlap": 0.20446096654275092,
+      "note": {
+        "position": "bottom-right",
+        "shape": "cut",
+        "width": 151,
+        "height": 145,
+        "top": 650.6436157226562,
+        "bottom": 800.8251342773438
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "postcard",
+      "sample": "portrait",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 236,
+          "height": 306,
+          "boxRatio": 0.7712418300653595,
+          "photoRatio": 0.7733952049497294,
+          "left": 633.085693359375,
+          "right": 877.218017578125,
+          "top": 313.19970703125,
+          "bottom": 625.2779541015625
+        }
+      ],
+      "overlap": 0.2057001239157373,
+      "note": {
+        "position": "bottom-right",
+        "shape": "cut",
+        "width": 151,
+        "height": 145,
+        "top": 650.6436157226562,
+        "bottom": 800.8251342773438
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "film",
+      "sample": "mixed",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 216,
+          "height": 279,
+          "boxRatio": 0.7741935483870968,
+          "photoRatio": 0.7733952049497294,
+          "left": 595.175537109375,
+          "right": 830.0643310546875,
+          "top": 318.05511474609375,
+          "bottom": 611.65673828125
+        },
+        {
+          "fit": "contain",
+          "width": 260,
+          "height": 173,
+          "boxRatio": 1.5028901734104045,
+          "photoRatio": 1.4992503748125936,
+          "left": 640.1907348632812,
+          "right": 910.3416137695312,
+          "top": 556.9989624023438,
+          "bottom": 746.0040283203125
+        }
+      ],
+      "overlap": 0.20508054522924413,
+      "note": {
+        "position": "bottom-left",
+        "shape": "cut",
+        "width": 150,
+        "height": 146,
+        "top": 648.4091796875,
+        "bottom": 802.0595703125
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "film",
+      "sample": "landscape",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 282,
+          "height": 186,
+          "boxRatio": 1.5161290322580645,
+          "photoRatio": 1.51285930408472,
+          "left": 602.052490234375,
+          "right": 893.5178833007812,
+          "top": 315.9871826171875,
+          "bottom": 516.9484252929688
+        },
+        {
+          "fit": "contain",
+          "width": 270,
+          "height": 185,
+          "boxRatio": 1.4594594594594594,
+          "photoRatio": 1.4577259475218658,
+          "left": 630.4133911132812,
+          "right": 910.6970825195312,
+          "top": 499.6429443359375,
+          "bottom": 700.625732421875
+        }
+      ],
+      "overlap": 0.21468401486988847,
+      "note": {
+        "position": "bottom-left",
+        "shape": "cut",
+        "width": 151,
+        "height": 145,
+        "top": 649.38232421875,
+        "bottom": 802.08642578125
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "film",
+      "sample": "portrait",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 240,
+          "height": 310,
+          "boxRatio": 0.7741935483870968,
+          "photoRatio": 0.7733952049497294,
+          "left": 627.39990234375,
+          "right": 883.0454711914062,
+          "top": 316.17987060546875,
+          "bottom": 638.3026123046875
+        }
+      ],
+      "overlap": 0.21096654275092938,
+      "note": {
+        "position": "bottom",
+        "shape": "rectangle",
+        "width": 309,
+        "height": 108,
+        "top": 682.8753051757812,
+        "bottom": 801.5934448242188
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "collect",
+      "sample": "mixed",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 218,
+          "height": 282,
+          "boxRatio": 0.7730496453900709,
+          "photoRatio": 0.7733952049497294,
+          "left": 678.1368408203125,
+          "right": 912.8711547851562,
+          "top": 307.8597106933594,
+          "bottom": 602.435791015625
+        },
+        {
+          "fit": "contain",
+          "width": 262,
+          "height": 175,
+          "boxRatio": 1.497142857142857,
+          "photoRatio": 1.4992503748125936,
+          "left": 598.4208984375,
+          "right": 870.649169921875,
+          "top": 559.6166381835938,
+          "bottom": 750.0694580078125
+        }
+      ],
+      "overlap": 0.21127633209417596,
+      "note": {
+        "position": "top-left",
+        "shape": "cut",
+        "width": 148,
+        "height": 151,
+        "top": 317.2563171386719,
+        "bottom": 478.2124328613281
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "collect",
+      "sample": "landscape",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 284,
+          "height": 188,
+          "boxRatio": 1.5106382978723405,
+          "photoRatio": 1.51285930408472,
+          "left": 600.8621215820312,
+          "right": 894.394287109375,
+          "top": 305.9398498535156,
+          "bottom": 508.33209228515625
+        },
+        {
+          "fit": "contain",
+          "width": 272,
+          "height": 186,
+          "boxRatio": 1.4623655913978495,
+          "photoRatio": 1.4577259475218658,
+          "left": 629.5569458007812,
+          "right": 911.9198608398438,
+          "top": 476.9168701171875,
+          "bottom": 679.3785400390625
+        }
+      ],
+      "overlap": 0.21313506815365552,
+      "note": {
+        "position": "bottom-right",
+        "shape": "square",
+        "width": 151,
+        "height": 145,
+        "top": 649.38232421875,
+        "bottom": 802.08642578125
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "collect",
+      "sample": "portrait",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 251,
+          "height": 324,
+          "boxRatio": 0.7746913580246914,
+          "photoRatio": 0.7733952049497294,
+          "left": 621.4777221679688,
+          "right": 888.6693115234375,
+          "top": 305.91021728515625,
+          "bottom": 642.5804443359375
+        }
+      ],
+      "overlap": 0.21189591078066913,
+      "note": {
+        "position": "bottom",
+        "shape": "rectangle",
+        "width": 309,
+        "height": 108,
+        "top": 682.8753051757812,
+        "bottom": 801.5934448242188
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "quiet",
+      "sample": "mixed",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 254,
+          "height": 328,
+          "boxRatio": 0.774390243902439,
+          "photoRatio": 0.7733952049497294,
+          "left": 628.65625,
+          "right": 882.328125,
+          "top": 306.234375,
+          "bottom": 634.234375
+        }
+      ],
+      "overlap": 0,
+      "note": {
+        "position": "bottom",
+        "shape": "rectangle",
+        "width": 309,
+        "height": 108,
+        "top": 682.8753051757812,
+        "bottom": 801.5934448242188
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "quiet",
+      "sample": "landscape",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 303,
+          "height": 200,
+          "boxRatio": 1.515,
+          "photoRatio": 1.51285930408472,
+          "left": 604,
+          "right": 907,
+          "top": 365.578125,
+          "bottom": 565.859375
+        }
+      ],
+      "overlap": 0,
+      "note": {
+        "position": "bottom",
+        "shape": "rectangle",
+        "width": 309,
+        "height": 108,
+        "top": 682.8753051757812,
+        "bottom": 801.5934448242188
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    },
+    {
+      "style": "quiet",
+      "sample": "portrait",
+      "photos": [
+        {
+          "fit": "contain",
+          "width": 254,
+          "height": 328,
+          "boxRatio": 0.774390243902439,
+          "photoRatio": 0.7733952049497294,
+          "left": 628.65625,
+          "right": 882.328125,
+          "top": 306.234375,
+          "bottom": 634.234375
+        }
+      ],
+      "overlap": 0,
+      "note": {
+        "position": "bottom",
+        "shape": "rectangle",
+        "width": 309,
+        "height": 108,
+        "top": 682.8753051757812,
+        "bottom": 801.5934448242188
+      },
+      "book": {
+        "left": 573,
+        "right": 932,
+        "top": 202.046875,
+        "bottom": 842.046875
+      },
+      "phone": {
+        "left": 556,
+        "right": 946
+      },
+      "stage": 503,
+      "header": 49
+    }
+  ]
+}

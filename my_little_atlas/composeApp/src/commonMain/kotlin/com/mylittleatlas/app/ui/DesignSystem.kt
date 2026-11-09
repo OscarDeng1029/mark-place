@@ -91,7 +91,7 @@ fun Paper(modifier: Modifier = Modifier, textured: Boolean = false, color: Color
     }
 }
 
-enum class Glyph { HOME, MAP, BOOKMARK, HEART, PERSON, PLUS, BOOK, SEARCH, PIN, ARROW, BACK, CLOSE, CHECK, MORE, LAYERS, NAVIGATE, SHARE, CAMERA, FOLDER, COFFEE, DOWNLOAD, SETTINGS, LOCK, SPARKLE, LIST, EDIT }
+enum class Glyph { HOME, MAP, BOOKMARK, HEART, PERSON, PLUS, BOOK, SEARCH, PIN, ARROW, BACK, FORWARD, CLOSE, CHECK, MORE, LAYERS, NAVIGATE, SHARE, CAMERA, FOLDER, COFFEE, DOWNLOAD, SETTINGS, LOCK, SPARKLE, LIST, EDIT }
 
 @Composable
 fun AtlasIcon(glyph: Glyph, modifier: Modifier = Modifier, color: Color = AtlasColors.Ink, size: Dp = 22.dp) {
@@ -116,6 +116,7 @@ fun AtlasIcon(glyph: Glyph, modifier: Modifier = Modifier, color: Color = AtlasC
             Glyph.PIN -> {val p=Path().apply {moveTo(12*scale,22*scale);cubicTo(8*scale,17*scale,4*scale,13*scale,4*scale,9*scale);cubicTo(4*scale,-1f*scale,20*scale,-1f*scale,20*scale,9*scale);cubicTo(20*scale,13*scale,16*scale,17*scale,12*scale,22*scale)};drawPath(p,color,style=stroke);drawCircle(color,2.5f*scale,pt(12f,9f),style=stroke)}
             Glyph.ARROW -> {line(4f,12f,20f,12f);path(15f to 7f,20f to 12f,15f to 17f)}
             Glyph.BACK -> {path(15f to 5f,8f to 12f,15f to 19f)}
+            Glyph.FORWARD -> {path(9f to 5f,16f to 12f,9f to 19f)}
             Glyph.CLOSE -> {line(6f,6f,18f,18f);line(6f,18f,18f,6f)}
             Glyph.CHECK -> path(5f to 12f,10f to 17f,20f to 6f)
             Glyph.MORE -> (5..19 step 7).forEach {drawCircle(color,1.4f*scale,pt(it.toFloat(),12f))}

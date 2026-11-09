@@ -24,11 +24,11 @@ fun ShareSheet(data:AtlasData,place:Place?,platform:PlatformServices,onClose:()-
     var showDate by remember{mutableStateOf(false)}
     var showAddress by remember{mutableStateOf(false)}
     var includeNote by remember{mutableStateOf(true)}
-    var template by remember{mutableStateOf(visit?.layout ?: "warm")}
+    val currentVisit=visit ?: place?.let{p->data.visits.filter{it.placeId==p.id}.maxByOrNull{it.date}}
+    var template by remember{mutableStateOf(currentVisit?.layout ?: "warm")}
     var busy by remember{mutableStateOf(false)}
     var feedback by remember{mutableStateOf<String?>(null)}
     var saved by remember{mutableStateOf(false)}
-    val currentVisit=visit ?: place?.let{p->data.visits.filter{it.placeId==p.id}.maxByOrNull{it.date}}
     val places=place?.let{listOf(it)} ?: data.places
     val visits=if(visit!=null)1 else data.visits.count{v->places.any{it.id==v.placeId}}
     val heading=title ?: place?.name ?: data.nickname+"的城市图鉴"
@@ -39,7 +39,7 @@ fun ShareSheet(data:AtlasData,place:Place?,platform:PlatformServices,onClose:()-
             Text("可以在系统相册或所选文件位置找到它。",fontSize=12.sp,color=AtlasColors.Muted)
         }}
         Text("选一个喜欢的样子",fontSize=12.sp,color=AtlasColors.Muted)
-        Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){listOf("warm" to "暖色手账","film" to "胶片日记","note" to "纸上小记").forEach{(id,label)->Tag(label,template==id,{template=id;saved=false})}}
+        JournalStylePicker(template,{template=it;saved=false})
         // Record the exact on-screen poster including the user's privacy choices.
         Column(Modifier.fillMaxWidth().drawWithContent{layer.record{this@drawWithContent.drawContent()};drawLayer(layer)}
             .background(if(template=="film")AtlasColors.Ink else AtlasColors.Card).padding(18.dp)){
@@ -48,7 +48,7 @@ fun ShareSheet(data:AtlasData,place:Place?,platform:PlatformServices,onClose:()-
             Text(heading,style=MaterialTheme.typography.headlineSmall,color=ink,modifier=Modifier.padding(top=12.dp))
             Text(place?.let{it.city+" · "+it.kind.title} ?: "慢慢收藏，慢慢出发。",fontSize=11.sp,color=ink.copy(alpha=.7f),modifier=Modifier.padding(top=5.dp,bottom=15.dp))
             if(place!=null){
-                JournalCoverV2(place,(currentVisit ?: Visit("preview",place.id,"","",emptyList())).copy(layout=template),Modifier.fillMaxWidth())
+                JournalCoverV2(place,(currentVisit ?: Visit("preview",place.id,"","",emptyList())).copy(layout=template),Modifier.fillMaxWidth(),data.isDemoPlace(place))
                 if(includeNote)Text(currentVisit?.note?.ifBlank{place.reason} ?: place.reason,fontSize=12.sp,lineHeight=21.sp,color=ink,modifier=Modifier.padding(top=16.dp))
                 if(showDate&&currentVisit!=null)Text(currentVisit.date,fontSize=10.sp,color=ink.copy(alpha=.7f),modifier=Modifier.padding(top=10.dp))
                 if(showAddress&&place.address.isNotBlank())Text(place.address,fontSize=10.sp,color=ink.copy(alpha=.7f),modifier=Modifier.padding(top=6.dp))

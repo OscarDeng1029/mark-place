@@ -11,7 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,7 +43,7 @@ fun JournalDetailV2(controller:AtlasController,place:Place,visit:Visit,onClose:(
                         Tag("第 "+controller.data.visits.filter{it.placeId==place.id}.sortedWith(compareBy<Visit>{it.date}.thenBy{it.id}).indexOfFirst{it.id==visit.id}.let{it+1}+" 次到访")
                     }
                     Spacer(Modifier.height(20.dp))
-                    JournalCoverV2(place,visit,Modifier.fillMaxWidth())
+                    JournalCoverV2(place,visit,Modifier.fillMaxWidth(),controller.data.isDemoPlace(place))
                     Spacer(Modifier.height(24.dp))
                     Text(place.name,style=MaterialTheme.typography.headlineMedium)
                     Row(Modifier.padding(top=8.dp).clickable(onClick=onPlace),verticalAlignment=Alignment.CenterVertically) {
@@ -56,10 +55,8 @@ fun JournalDetailV2(controller:AtlasController,place:Place,visit:Visit,onClose:(
                     Text(visit.displayBody().ifBlank{"把这一天，留在这一页。"},fontSize=13.sp,lineHeight=22.sp,modifier=Modifier.padding(top=10.dp))
                     ThinDivider(Modifier.padding(top=17.dp))
                     Spacer(Modifier.height(25.dp))
-                    Box(Modifier.fillMaxWidth().height(if(visit.photoPaths.size>1)156.dp else 86.dp)) {
-                        if(visit.photoPaths.size>1)PolaroidPhoto(place.cover,Modifier.offset(x=7.dp).size(135.dp,128.dp),rotation=-7f,showTape=false,localPath=visit.photoPaths.getOrNull(1))
-                        if(visit.photoPaths.size>2)PolaroidPhoto(place.cover,Modifier.offset(x=129.dp,y=8.dp).size(135.dp,128.dp),rotation=6f,showTape=false,localPath=visit.photoPaths.getOrNull(2))
-                        if(visit.photoPaths.size<=1)Handwritten("good things take time ♡",Modifier.padding(top=24.dp),size=14)
+                    Box(Modifier.fillMaxWidth().height(86.dp)) {
+                        Handwritten("good things take time ♡",Modifier.padding(top=24.dp),size=14)
                         CoffeePostmark(Modifier.align(Alignment.BottomEnd).size(76.dp))
                     }
                     Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){Tag("这一天的记忆");if(place.wantRevisit)Tag("还想再来",tint=AtlasColors.PeachPale)}
@@ -81,16 +78,8 @@ fun JournalDetailV2(controller:AtlasController,place:Place,visit:Visit,onClose:(
 }
 
 @Composable
-fun JournalCoverV2(place:Place,visit:Visit,modifier:Modifier=Modifier) {
-    when(visit.layout){
-        "film"->Column(modifier.background(AtlasColors.Ink).padding(9.dp)){
-            Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween){repeat(10){Box(Modifier.padding(bottom=8.dp).size(8.dp,5.dp).background(AtlasColors.Paper))}}
-            Photo(visit.photoPaths.firstOrNull()?.let{"local:"+it} ?: place.cover,Modifier.fillMaxWidth().height(195.dp))
-            Text("A MOMENT TO KEEP  /  "+visit.date,fontSize=8.sp,color=AtlasColors.Card,modifier=Modifier.padding(top=9.dp,bottom=4.dp))
-        }
-        "note"->PaperNote(modifier){Column{Photo(visit.photoPaths.firstOrNull()?.let{"local:"+it} ?: place.cover,Modifier.fillMaxWidth().height(180.dp));Handwritten("today is a little gift",Modifier.padding(top=12.dp),size=15)}}
-        else->PolaroidPhoto(place.cover,modifier.height(220.dp),caption="a little moment to remember",localPath=visit.photoPaths.firstOrNull())
-    }
+fun JournalCoverV2(place:Place,visit:Visit,modifier:Modifier=Modifier,showPlaceCover:Boolean=false) {
+    JournalPhotoComposition(place,visit,modifier.height(230.dp).padding(8.dp),showPlaceCover)
 }
 
 @Composable
@@ -109,8 +98,9 @@ fun JournalEditorV2(controller:AtlasController,place:Place,visit:Visit,onClose:(
     val close={if(changed)discard=true else onClose()}
     AtlasFullPage("调整这一页",close,actions={TextButton(onClick={if(controller.updateVisit(visit.copy(title=title.trim().ifBlank{place.name},note=note.trim(),date=date,photoPaths=photos,layout=layout)))onClose()},enabled=isValidAtlasDate(date)&&date<=controller.platform.today()){Text("保存")}}) {
         Text("给回忆，选一个喜欢的样子",style=MaterialTheme.typography.titleLarge)
-        Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){listOf("warm" to "暖色手账","film" to "胶片日记","note" to "纸上小记").forEach{(id,label)->Tag(label,layout==id,{layout=id})}}
-        JournalCoverV2(place,visit.copy(layout=layout,photoPaths=photos),Modifier.fillMaxWidth())
+        JournalStylePicker(layout,{layout=it})
+        JournalCoverV2(place,visit.copy(layout=layout,photoPaths=photos),Modifier.fillMaxWidth(),controller.data.isDemoPlace(place))
+        Text("照片上左右滑动可看全部；不足两张时自动使用单张布局。",fontSize=10.sp,color=AtlasColors.Muted)
         TextButton(onClick={calendar=true}){AtlasIcon(Glyph.BOOK,size=17.dp);Spacer(Modifier.width(8.dp));Text(date+"  ·  修改日期")}
         AtlasField(title,{title=it},"这一页的标题")
         AtlasField(note,{note=it},"这一天的小记",singleLine=false)

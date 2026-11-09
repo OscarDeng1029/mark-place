@@ -71,12 +71,15 @@ class AtlasController(val platform: PlatformServices) {
 
     fun addVisit(place: Place, date: String, note: String, photos: List<String>, revisit: Boolean): Boolean {
         return commit(data.copy(
-            visits = listOf(Visit(platform.uniqueId(), place.id, date, note.trim(), photos)) + data.visits,
+            visits = listOf(Visit(platform.uniqueId(), place.id, date, note.trim(), photos,
+                JournalLayoutCatalog.suggest(place.name, note, photos.size))) + data.visits,
             places = data.places.map { if (it.id == place.id) it.copy(wantRevisit = revisit) else it },
         )).also { if (it) message = "又一段小小的回忆，被好好收下了。" }
     }
 
     fun updateVisit(visit: Visit): Boolean = commit(data.copy(visits=data.visits.map{if(it.id==visit.id)visit else it}))
+    fun suggestJournalLayout(title: String, note: String, photoCount: Int, seed: String? = null): String =
+        JournalLayoutCatalog.suggest(title, note, photoCount, seed)
     /** New places, the entry and removal of its draft are saved together. */
     fun saveJournalEntry(placeId: String?, name: String, city: String, date: String, note: String,
         photos: List<String>, revisit: Boolean, draftId: String? = null, visitId: String? = null,
@@ -93,7 +96,10 @@ class AtlasController(val platform: PlatformServices) {
         val normalizedTitle = title.trim().ifBlank {
             existingVisit?.title?.trim()?.takeIf { it.isNotBlank() } ?: name.trim()
         }
-        val normalizedLayout = layout?.trim()?.takeIf { it.isNotBlank() } ?: existingVisit?.layout ?: "warm"
+        val requestedLayout = layout?.trim()?.takeIf { it.isNotBlank() && it != "auto" }
+        val normalizedLayout = requestedLayout
+            ?: existingVisit?.layout?.takeIf { it.isNotBlank() && it != "auto" }
+            ?: JournalLayoutCatalog.suggest(title, note, photos.size)
         val visit = Visit(existingVisit?.id ?: platform.uniqueId(), place.id, date, note.trim(), photos,
             normalizedLayout, normalizedTitle)
         val nextPlaces = if(existingPlace == null) listOf(place.copy(wantRevisit = revisit)) + data.places

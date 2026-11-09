@@ -10,6 +10,16 @@ import com.mylittleatlas.app.presentation.AtlasController
 import kotlin.test.*
 
 class JournalFlowTest {
+    @Test fun newEntryGetsAnAutomaticLayoutAndMirrorVariantsStayRecognizable() {
+        val platform=TestPlatform()
+        val controller=AtlasController(platform)
+        val visit=assertNotNull(controller.saveJournalEntry(null,"街角咖啡","上海","2026-11-08","一杯咖啡和一张照片",listOf("photo.jpg"),false))
+        assertTrue(visit.layout in JournalLayoutCatalog.allIds)
+        assertTrue(JournalLayoutCatalog.baseId(visit.layout) in JournalLayoutCatalog.baseIds)
+        assertTrue(JournalLayoutCatalog.isMirror("square-mirror"))
+        assertEquals("square",JournalLayoutCatalog.baseId("square-mirror"))
+    }
+
     @Test fun newEntrySavesPlaceVisitAndDraftRemovalTogether() {
         val platform=TestPlatform()
         val controller=AtlasController(platform)

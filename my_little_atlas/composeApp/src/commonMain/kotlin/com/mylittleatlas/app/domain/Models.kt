@@ -1,6 +1,7 @@
 package com.mylittleatlas.app.domain
 
 import kotlinx.serialization.Serializable
+import kotlin.random.Random
 
 @Serializable
 enum class PlaceKind(val title: String, val symbol: String) {
@@ -59,6 +60,36 @@ data class VisitDraft(
     val title: String = "",
     val layout: String = "warm",
 )
+
+/**
+ * Layout decisions are intentionally kept outside the UI. A new note gets a
+ * light-weight suggestion based on its content and photo count, while the
+ * editor can still persist an explicit layout id later.
+ */
+object JournalLayoutCatalog {
+    val baseIds = listOf("warm", "film", "note", "postcard", "duo", "story", "square")
+    val allIds = baseIds.flatMap { listOf(it, "$it-mirror") }
+
+    fun baseId(id: String): String = id.removeSuffix("-mirror").takeIf { it in baseIds } ?: "warm"
+    fun isMirror(id: String): Boolean = id.endsWith("-mirror") && baseId(id) != "warm" || id == "warm-mirror"
+    fun mirrorId(id: String, mirrored: Boolean): String = baseId(id) + if (mirrored) "-mirror" else ""
+
+    /** Select a suitable family first, then add a random left/right variant. */
+    fun suggest(title: String, note: String, photoCount: Int, seed: String? = null): String {
+        val text = "$title $note".lowercase()
+        val candidates = when {
+            photoCount >= 2 && listOf("夜", "电影", "胶片", "灯", "雨").any(text::contains) -> listOf("film", "story", "duo")
+            photoCount >= 2 -> listOf("duo", "story", "film")
+            listOf("书", "信", "旅", "车站", "邮", "明信片").any(text::contains) -> listOf("postcard", "square", "warm")
+            listOf("咖啡", "甜", "蛋糕", "早餐", "吃", "香").any(text::contains) -> listOf("warm", "note", "square")
+            photoCount == 1 -> listOf("square", "warm", "note", "postcard")
+            else -> listOf("note", "warm", "postcard")
+        }
+        val chooser = seed?.takeIf { it.isNotBlank() }?.let { Random(it.hashCode()) } ?: Random.Default
+        val base = candidates[chooser.nextInt(candidates.size)]
+        return mirrorId(base, chooser.nextBoolean())
+    }
+}
 
 @Serializable
 data class AtlasData(
